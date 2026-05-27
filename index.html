@@ -4276,6 +4276,7 @@
 
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
+    const spriteReadyPromises = [];
     const carSprites = {
       player: loadSprite("assets/cars/bolt.png"),
       bolt: loadSprite("assets/cars/bolt.png"),
@@ -4313,8 +4314,18 @@
 
     function loadSprite(src) {
       const image = new Image();
+      image.decoding = "async";
+      const ready = new Promise(resolve => {
+        image.onload = () => resolve(true);
+        image.onerror = () => resolve(false);
+      });
       image.src = src;
+      spriteReadyPromises.push(ready);
       return image;
+    }
+
+    function ensureCarSpritesReady() {
+      return Promise.all(spriteReadyPromises).catch(() => true);
     }
 
     function hexToRgb(hex) {
@@ -4421,6 +4432,7 @@
     let raceStartTime = 0;
     let raceElapsed = 0;
     let countdownStart = 0;
+    let countdownLoadPending = false;
     let countdownSoundStep = null;
     let lastFrameTime = performance.now();
     let finishData = null;
@@ -5788,8 +5800,14 @@
     }
 
     // --- Race flow ----------------------------------------------------------
-    function startCountdown() {
+    async function startCountdown() {
+      if (countdownLoadPending) return;
+      countdownLoadPending = true;
       initAudio();
+      ui.hint.textContent = "Loading cars...";
+      await ensureCarSpritesReady();
+      countdownLoadPending = false;
+
       resetRaceObjects(true);
       if (ui.countdown) {
         ui.countdown.textContent = "3";
@@ -6704,7 +6722,7 @@
       const sprite = r.car.tintColor ? tintedCarSprite(spriteKey, r.car.tintColor) : baseSprite;
       const spriteReady = sprite && (sprite instanceof HTMLCanvasElement || (sprite.complete && sprite.naturalWidth > 0));
       if (spriteReady) {
-        const f1Sprites = ["bolt"];
+        const f1Sprites = ["bolt", "cpu_bolt_blue", "cpu_bolt_green", "cpu_bolt_yellow", "cpu_bolt_purple"];
         const spriteWidth = sprite.naturalWidth || sprite.width;
         const spriteHeight = sprite.naturalHeight || sprite.height;
         const drawH = (f1Sprites.includes(spriteKey) ? 96 : 88) * mobileVisualScale;

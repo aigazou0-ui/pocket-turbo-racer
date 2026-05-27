@@ -1,4 +1,4 @@
-const CACHE_NAME = "pocket-turbo-racer-v30-cpu-precolored-images";
+const CACHE_NAME = "pocket-turbo-racer-v31-opening-cars-bry";
 const CORE_ASSETS = [
   "./",
   "./index.html",
