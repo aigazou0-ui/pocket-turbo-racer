@@ -1,0 +1,11 @@
+{
+  "version": "v28",
+  "base": "v27",
+  "changes": [
+    "CPU cars now use only safe Pocket Turbo Racer car sprites: AERO/NOVA/DART/CRUX/VELA/BOLT",
+    "Old colored CPU sprite references removed from index.html",
+    "Opening title side car changed from old blue.png to safe nova.png",
+    "Service Worker cache name updated to v28-cpu-safe"
+  ],
+  "gameplay": "No race logic or speed balance changes"
+}
