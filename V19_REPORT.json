@@ -1,0 +1,11 @@
+{
+  "version": "v19_opening_grass_blink_fix",
+  "base": "v18_car_swap_race_fix",
+  "changes": [
+    "removed black oval race-car shadow behind sprites",
+    "title logo now blinks",
+    "opening screen top and bottom green stripe areas now use the same dotted grass feel as the race background",
+    "AERO<->VELA and NOVA<->CRUX image swaps preserved",
+    "safe filenames preserved"
+  ]
+}

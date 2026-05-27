@@ -1,0 +1,25 @@
+{
+  "version": "v17_safe_names_final",
+  "base": "v16_smoother_bigger_titlecars",
+  "display_names": [
+    "AERO",
+    "NOVA",
+    "DART",
+    "CRUX",
+    "VELA",
+    "BOLT"
+  ],
+  "safe_image_files": [
+    "assets/cars/shop/aero.png",
+    "assets/cars/shop/nova.png",
+    "assets/cars/shop/dart.png",
+    "assets/cars/shop/crux.png",
+    "assets/cars/shop/vela.png",
+    "assets/cars/bolt.png",
+    "assets/cars/title/aero-title.png",
+    "assets/cars/title/crux-title.png"
+  ],
+  "risk_terms_in_paths": [],
+  "risk_terms_in_html": [],
+  "risk_terms_in_text_files": {}
+}

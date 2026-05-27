@@ -1,0 +1,11 @@
+{
+  "version": "v22_full_green_dots",
+  "base": "v21_global_grass_theme",
+  "changes": [
+    "opening screen green areas now have black dot pattern across the full green area",
+    "dots are no longer limited to partial/top-bottom rows only",
+    "global grass theme preserved",
+    "logo blink preserved",
+    "race car fixes preserved"
+  ]
+}

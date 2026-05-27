@@ -1,0 +1,11 @@
+{
+  "version": "v24_logo_transparent_large",
+  "base": "v23_logo_swap",
+  "changes": [
+    "title logo background converted to transparent",
+    "new transparent logo file: assets/ui/title-logo-v24-transparent.png",
+    "title logo enlarged to fill much more of the road area",
+    "logo blink preserved",
+    "v23 title cars, start button, and background theme preserved"
+  ]
+}

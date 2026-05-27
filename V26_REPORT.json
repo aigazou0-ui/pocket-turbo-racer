@@ -1,0 +1,10 @@
+{
+  "version": "v26_setup_alignment_fix",
+  "base": "v25_logo_huge",
+  "changes": [
+    "adjusted Race Setup car/course content alignment",
+    "matched vertical placement of car name+image and course name+mini map",
+    "reduced course preview offset",
+    "tuned both desktop and mobile landscape layout"
+  ]
+}

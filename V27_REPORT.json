@@ -1,0 +1,10 @@
+{
+  "version": "v27_setup_map_balance",
+  "base": "v26_setup_alignment_fix",
+  "changes": [
+    "moved course name/text upward to better match car name",
+    "moved mini map downward to better match car image",
+    "kept car side unchanged",
+    "kept v25/v26 title/logo/game behavior"
+  ]
+}

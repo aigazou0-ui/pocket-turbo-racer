@@ -1,0 +1,19 @@
+{
+  "version": "v18_car_swap_race_fix",
+  "base": "v17_safe_names_final",
+  "changes": [
+    "AERO image swapped with VELA image",
+    "NOVA image swapped with CRUX image",
+    "title images realigned after swaps",
+    "race canvas car smoothing returned to crisp pixel rendering",
+    "race car draw size slightly reduced for cleaner appearance"
+  ],
+  "current_image_mapping": {
+    "AERO": "assets/cars/shop/aero.png",
+    "NOVA": "assets/cars/shop/nova.png",
+    "DART": "assets/cars/shop/dart.png",
+    "CRUX": "assets/cars/shop/crux.png",
+    "VELA": "assets/cars/shop/vela.png",
+    "BOLT": "assets/cars/bolt.png"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "version": "v25_logo_huge",
+  "base": "v24_logo_transparent_large",
+  "changes": [
+    "cropped transparent margins from title logo",
+    "new cropped logo file: assets/ui/title-logo-v25-cropped.png",
+    "made title logo much larger",
+    "rebalanced opening screen columns to give more room to the logo",
+    "kept transparent background, blink, title cars, and start button"
+  ]
+}
