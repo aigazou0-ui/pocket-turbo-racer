@@ -1,0 +1,4 @@
+{
+  "version": "v33",
+  "summary": "Rebuilt from latest working version. Keeps v31 opening colors and v30 CPU precolored race cars. Adds verified car sprite preloading before countdown to prevent temporary fallback drawing and car size changes on retries. Service worker cache key is v33."
+}
