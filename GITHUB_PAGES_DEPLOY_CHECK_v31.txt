@@ -1,0 +1,4 @@
+v31
+- Title/opening 3 cars changed to blue, red, yellow.
+- Race behavior remains same as v30.
+- Service worker cache key updated for refresh.
