@@ -1,0 +1,13 @@
+Pocket Turbo Racer v29 deploy check
+
+Fix:
+- CPU cars use a vehicle different from the selected player car.
+- CPU cars are tinted to non-red colors: blue / green / yellow / purple.
+- Player car remains the selected car.
+- Old car image names black/blue/cyan/green/orange/purple/red are not required and should stay deleted.
+- service-worker.js cache name: pocket-turbo-racer-v29-cpu-color-fixed
+
+After GitHub Pages push:
+1. Open the game and refresh.
+2. On smartphone, if old colors remain, clear site data/cache for the GitHub Pages URL.
+3. Check race scene: player car is red selected car; CPU cars are different vehicles and different colors.

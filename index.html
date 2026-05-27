@@ -4056,10 +4056,10 @@
     ];
 
     const CPU_COLOR_POOL = [
-      { color: "#e53935" },
-      { color: "#c62828" },
-      { color: "#b71c1c" },
-      { color: "#8e0000" }
+      { color: "#2f80ed", label: "blue" },
+      { color: "#36b36b", label: "green" },
+      { color: "#f2c94c", label: "yellow" },
+      { color: "#9b51e0", label: "purple" }
     ];
 
     const PLAYER_CARS = [
@@ -5415,7 +5415,7 @@
           maxSpeed: cpuBaseCar.maxSpeed,
           bodyColor: colorSet.color,
           spriteId: vehicle.spriteId,
-          tintColor: null,
+          tintColor: colorSet.color,
           cpuSpeed: cpu.speed * DIFFICULTIES[selectedDifficulty].multiplier * (course.cpuSpeedScale || 1),
           cpuCornerScale: course.cpuCornerScale || 1,
           cpuWobble: cpu.wobble
