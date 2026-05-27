@@ -4696,11 +4696,11 @@
         || state === GameState.RETIRE_CONFIRM;
     }
 
-    function resizeCanvas() {
-      // Do not rebuild the canvas/world while a race is active.
+    function resizeCanvas(force = false) {
+      // Do not rebuild the canvas/world while a race is active unless explicitly forced before race objects are created.
       // On phones, rotating to portrait hides #gameRoot; the old code then measured a tiny/empty
       // canvas and called resetRaceObjects(false), which restarted the race when returning to landscape.
-      if (isRaceLayoutLocked()) {
+      if (isRaceLayoutLocked() && !force) {
         renderDirty = true;
         return;
       }
@@ -4714,7 +4714,7 @@
         canvas.height = height;
         routeMetricsCache = null;
         buildWaypoints();
-        resetRaceObjects(false);
+        if (!force) resetRaceObjects(false);
         renderDirty = true;
       }
     }
@@ -5800,7 +5800,7 @@
     }
 
     // --- Race flow ----------------------------------------------------------
-    // v35: countdown visibility restored while keeping first-race car size stable.
+    // v36: stable first-race car size via forced canvas sizing and stable touch-landscape sprite scale.
     async function startCountdown() {
       if (countdownLoadPending) return;
       countdownLoadPending = true;
@@ -5810,7 +5810,9 @@
       countdownLoadPending = false;
 
       setScreen(GameState.COUNTDOWN);
-      resizeCanvas();
+      resizeCanvas(true);
+      routeMetricsCache = null;
+      buildWaypoints();
       resetRaceObjects(true);
 
       if (ui.countdown) {
@@ -6711,8 +6713,10 @@
 
       const scale = r.kind === "bolt" ? 1.36 : 1.18;
       const carType = r.car.id || r.car.type || r.car.name.toLowerCase();
-      const isPhoneLandscape = window.matchMedia("(orientation: landscape) and (hover: none) and (pointer: coarse)").matches;
-      const mobileVisualScale = isPhoneLandscape ? 1.45 : 1;
+      // v36: matchMedia(pointer/coarse) can report false during the first race on some mobile browsers/WebViews.
+      // Use viewport + touch capability instead so the first race and retries draw cars at the same size.
+      const isTouchLandscape = (navigator.maxTouchPoints || 0) > 0 && window.innerWidth > window.innerHeight;
+      const mobileVisualScale = isTouchLandscape ? 1.45 : 1;
       const p = Math.max(2.4, Math.round(3.2 * scale * mobileVisualScale));
       const body = r.car.bodyColor;
       const shade = shadeColor(body, -46);
