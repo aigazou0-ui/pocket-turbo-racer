@@ -3762,7 +3762,7 @@
             </div>
             <div class="titleGarage">
               <div class="titleCars" aria-hidden="true">
-                <img class="titleCar" src="assets/cars/blue.png" alt="">
+                <img class="titleCar" src="assets/cars/shop/nova.png" alt="">
                 <img class="titleCar main" src="assets/cars/shop/aero.png" alt="">
                 <img class="titleCar" src="assets/cars/title/crux-title.png" alt="">
               </div>
@@ -4034,10 +4034,10 @@
     ];
 
     const CPU_CONFIG = [
-      { carId: "rally", color: "#ff8f00", spriteId: "orange", name: "CPU-A", speed: 1.21, wobble: 0.10, offset: 0.02 },
-      { carId: "bolt", color: "#8e44ad", spriteId: "purple", name: "CPU-B", speed: 1.29, wobble: 0.07, offset: 0.18 },
-      { carId: "kart", color: "#1e88e5", spriteId: "blue", name: "CPU-C", speed: 1.24, wobble: 0.08, offset: -0.16 },
-      { carId: "rally", color: "#2fb84f", spriteId: "green", name: "CPU-D", speed: 1.18, wobble: 0.10, offset: -0.03 }
+      { name: "CPU-A", speed: 1.21, wobble: 0.10, offset: 0.02 },
+      { name: "CPU-B", speed: 1.29, wobble: 0.07, offset: 0.18 },
+      { name: "CPU-C", speed: 1.24, wobble: 0.08, offset: -0.16 },
+      { name: "CPU-D", speed: 1.18, wobble: 0.10, offset: -0.03 }
     ];
 
     const DIFFICULTIES = {
@@ -4056,10 +4056,10 @@
     ];
 
     const CPU_COLOR_POOL = [
-      { color: "#1e88e5", boltSpriteId: "blue" },
-      { color: "#2fb84f", boltSpriteId: "green" },
-      { color: "#f8c62b", boltSpriteId: "orange" },
-      { color: "#242424", boltSpriteId: "black" }
+      { color: "#e53935" },
+      { color: "#c62828" },
+      { color: "#b71c1c" },
+      { color: "#8e0000" }
     ];
 
     const PLAYER_CARS = [
@@ -4278,13 +4278,7 @@
     const ctx = canvas.getContext("2d");
     const carSprites = {
       player: loadSprite("assets/cars/bolt.png"),
-      red: loadSprite("assets/cars/bolt.png"),
-      blue: loadSprite("assets/cars/blue.png"),
-      green: loadSprite("assets/cars/green.png"),
-      orange: loadSprite("assets/cars/orange.png"),
-      purple: loadSprite("assets/cars/purple.png"),
-      black: loadSprite("assets/cars/black.png"),
-      cyan: loadSprite("assets/cars/cyan.png"),
+      bolt: loadSprite("assets/cars/bolt.png"),
       aero: loadSprite("assets/cars/shop/aero.png"),
       crux: loadSprite("assets/cars/shop/crux.png"),
       vela: loadSprite("assets/cars/shop/vela.png"),
@@ -5416,13 +5410,12 @@
         const vehicle = randomCpuVehicles[index] || CPU_VEHICLE_POOL[index % CPU_VEHICLE_POOL.length];
         const colorSet = randomCpuColors[index] || CPU_COLOR_POOL[index % CPU_COLOR_POOL.length];
         const cpuBaseCar = getCar(vehicle.carId);
-        const spriteId = vehicle.carId === "bolt" ? colorSet.boltSpriteId : vehicle.spriteId;
         const cpuCar = {
           ...cpuBaseCar,
           maxSpeed: cpuBaseCar.maxSpeed,
           bodyColor: colorSet.color,
-          spriteId,
-          tintColor: vehicle.carId === "bolt" ? null : colorSet.color,
+          spriteId: vehicle.spriteId,
+          tintColor: null,
           cpuSpeed: cpu.speed * DIFFICULTIES[selectedDifficulty].multiplier * (course.cpuSpeedScale || 1),
           cpuCornerScale: course.cpuCornerScale || 1,
           cpuWobble: cpu.wobble
@@ -6686,7 +6679,7 @@
       const sprite = r.car.tintColor ? tintedCarSprite(spriteKey, r.car.tintColor) : baseSprite;
       const spriteReady = sprite && (sprite instanceof HTMLCanvasElement || (sprite.complete && sprite.naturalWidth > 0));
       if (spriteReady) {
-        const f1Sprites = ["bolt", "red", "blue", "green", "orange", "purple", "black"];
+        const f1Sprites = ["bolt"];
         const spriteWidth = sprite.naturalWidth || sprite.width;
         const spriteHeight = sprite.naturalHeight || sprite.height;
         const drawH = (f1Sprites.includes(spriteKey) ? 96 : 88) * mobileVisualScale;

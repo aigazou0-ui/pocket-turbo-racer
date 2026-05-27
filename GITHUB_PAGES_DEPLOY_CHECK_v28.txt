@@ -1,0 +1,18 @@
+Pocket Turbo Racer v28 CPU safe check
+
+Base: v27
+Fix: CPU racers no longer reference old car sprites such as blue/green/orange/purple/black.
+Fix: title side car no longer references assets/cars/blue.png.
+Service Worker cache: pocket-turbo-racer-v28-cpu-safe
+
+After copying this version to GitHub Desktop, delete these old unneeded files from the repository if they remain:
+assets/cars/black.png
+assets/cars/blue.png
+assets/cars/cyan.png
+assets/cars/green.png
+assets/cars/orange.png
+assets/cars/purple.png
+assets/cars/red.png
+assets/cars/shop/player.png
+
+Then commit and push.
