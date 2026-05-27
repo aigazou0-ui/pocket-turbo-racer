@@ -1,0 +1,10 @@
+{
+  "version": "v30",
+  "purpose": "CPU cars use pre-colored PNG images instead of runtime tinting.",
+  "changes": [
+    "Added assets/cars/cpu/*.png colored CPU variants for bolt/aero/crux/vela/nova/dart.",
+    "Updated index.html so CPU spriteId uses pre-colored image keys: cpu_<car>_<color>.",
+    "Kept old red player car images unchanged for garage/player.",
+    "Updated service-worker cache name to v30."
+  ]
+}

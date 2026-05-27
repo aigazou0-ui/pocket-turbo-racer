@@ -4283,7 +4283,31 @@
       crux: loadSprite("assets/cars/shop/crux.png"),
       vela: loadSprite("assets/cars/shop/vela.png"),
       nova: loadSprite("assets/cars/shop/nova.png"),
-      dart: loadSprite("assets/cars/shop/dart.png")
+      dart: loadSprite("assets/cars/shop/dart.png"),
+      cpu_bolt_blue: loadSprite("assets/cars/cpu/bolt_blue.png"),
+      cpu_bolt_green: loadSprite("assets/cars/cpu/bolt_green.png"),
+      cpu_bolt_yellow: loadSprite("assets/cars/cpu/bolt_yellow.png"),
+      cpu_bolt_purple: loadSprite("assets/cars/cpu/bolt_purple.png"),
+      cpu_aero_blue: loadSprite("assets/cars/cpu/aero_blue.png"),
+      cpu_aero_green: loadSprite("assets/cars/cpu/aero_green.png"),
+      cpu_aero_yellow: loadSprite("assets/cars/cpu/aero_yellow.png"),
+      cpu_aero_purple: loadSprite("assets/cars/cpu/aero_purple.png"),
+      cpu_crux_blue: loadSprite("assets/cars/cpu/crux_blue.png"),
+      cpu_crux_green: loadSprite("assets/cars/cpu/crux_green.png"),
+      cpu_crux_yellow: loadSprite("assets/cars/cpu/crux_yellow.png"),
+      cpu_crux_purple: loadSprite("assets/cars/cpu/crux_purple.png"),
+      cpu_vela_blue: loadSprite("assets/cars/cpu/vela_blue.png"),
+      cpu_vela_green: loadSprite("assets/cars/cpu/vela_green.png"),
+      cpu_vela_yellow: loadSprite("assets/cars/cpu/vela_yellow.png"),
+      cpu_vela_purple: loadSprite("assets/cars/cpu/vela_purple.png"),
+      cpu_nova_blue: loadSprite("assets/cars/cpu/nova_blue.png"),
+      cpu_nova_green: loadSprite("assets/cars/cpu/nova_green.png"),
+      cpu_nova_yellow: loadSprite("assets/cars/cpu/nova_yellow.png"),
+      cpu_nova_purple: loadSprite("assets/cars/cpu/nova_purple.png"),
+      cpu_dart_blue: loadSprite("assets/cars/cpu/dart_blue.png"),
+      cpu_dart_green: loadSprite("assets/cars/cpu/dart_green.png"),
+      cpu_dart_yellow: loadSprite("assets/cars/cpu/dart_yellow.png"),
+      cpu_dart_purple: loadSprite("assets/cars/cpu/dart_purple.png")
     };
     const tintedSprites = new Map();
 
@@ -5414,8 +5438,9 @@
           ...cpuBaseCar,
           maxSpeed: cpuBaseCar.maxSpeed,
           bodyColor: colorSet.color,
-          spriteId: vehicle.spriteId,
-          tintColor: colorSet.color,
+          // v30: use pre-colored CPU PNGs instead of runtime tinting, so CPU cars never remain red.
+          spriteId: `cpu_${vehicle.spriteId}_${colorSet.label}`,
+          tintColor: null,
           cpuSpeed: cpu.speed * DIFFICULTIES[selectedDifficulty].multiplier * (course.cpuSpeedScale || 1),
           cpuCornerScale: course.cpuCornerScale || 1,
           cpuWobble: cpu.wobble
