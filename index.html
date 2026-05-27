@@ -4328,6 +4328,10 @@
       return Promise.all(spriteReadyPromises).catch(() => true);
     }
 
+    function nextAnimationFrame() {
+      return new Promise(resolve => requestAnimationFrame(() => resolve(true)));
+    }
+
     function hexToRgb(hex) {
       const raw = hex.replace("#", "");
       const num = parseInt(raw.length === 3 ? raw.split("").map(c => c + c).join("") : raw, 16);
@@ -4696,11 +4700,11 @@
         || state === GameState.RETIRE_CONFIRM;
     }
 
-    function resizeCanvas() {
+    function resizeCanvas(force = false) {
       // Do not rebuild the canvas/world while a race is active.
       // On phones, rotating to portrait hides #gameRoot; the old code then measured a tiny/empty
       // canvas and called resetRaceObjects(false), which restarted the race when returning to landscape.
-      if (isRaceLayoutLocked()) {
+      if (!force && isRaceLayoutLocked()) {
         renderDirty = true;
         return;
       }
@@ -5806,7 +5810,13 @@
       initAudio();
       ui.hint.textContent = "Loading cars...";
       await ensureCarSpritesReady();
-      countdownLoadPending = false;
+
+      // v34: switch to countdown layout before measuring the race canvas.
+      // Without this, the first race can start from a menu-sized canvas and cars look small
+      // until retry/finish causes a later resize.
+      setScreen(GameState.COUNTDOWN);
+      await nextAnimationFrame();
+      resizeCanvas(true);
 
       resetRaceObjects(true);
       if (ui.countdown) {
@@ -5816,7 +5826,7 @@
       countdownStart = performance.now();
       countdownSoundStep = 3;
       lastFrameTime = countdownStart;
-      setScreen(GameState.COUNTDOWN);
+      countdownLoadPending = false;
       ui.hint.textContent = "Get ready.";
     }
 

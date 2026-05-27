@@ -1,0 +1,4 @@
+{
+  "version": "v34",
+  "summary": "Fixes first-race small car issue by switching to countdown layout before forcing canvas resize, then creating racers. Keeps v33 sprite preload, v31 opening colors, and v30 precolored CPU cars."
+}
