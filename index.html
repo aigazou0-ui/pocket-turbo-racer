@@ -3867,6 +3867,35 @@
       }
     }
 
+
+    /* --- v41 control safety fix: prevent left steer button from going off-screen --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      /* v39/v40 moved the control cluster too far left on real Android devices.
+         Reset those translations and place the pad safely inside the left edge. */
+      #gameRoot:not(.is-menu) .touchControls,
+      #gameRoot:not(.is-menu) .driveControls,
+      #gameRoot:not(.is-menu) .steerControls,
+      #gameRoot:not(.is-menu) .controlCluster,
+      #gameRoot:not(.is-menu) .controlPad {
+        transform: none !important;
+      }
+
+      #gameRoot:not(.is-menu) [data-control="left"],
+      #gameRoot:not(.is-menu) [data-control="right"] {
+        transform: none !important;
+      }
+
+      #gameRoot:not(.is-menu) .controlPad {
+        left: max(14px, env(safe-area-inset-left)) !important;
+        bottom: 12px !important;
+      }
+
+      #gameRoot:not(.is-menu) .driveBtn {
+        min-width: clamp(76px, 9.2vw, 108px) !important;
+        min-height: clamp(56px, 10vh, 72px) !important;
+      }
+    }
+
   </style>
 </head>
 <body>
