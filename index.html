@@ -3727,6 +3727,71 @@
       }
     }
 
+
+    /* --- v37 Android WebView polish: HUD safe spacing, setup alignment, garage neutral card --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      /* Move the RETIRE area inward so it does not collide with Android navigation/safe edges. */
+      #gameRoot:not(.is-menu) {
+        padding-right: max(30px, env(safe-area-inset-right)) !important;
+      }
+
+      #gameRoot:not(.is-menu) .hud {
+        grid-template-columns:
+          minmax(66px, .62fr)
+          minmax(104px, .95fr)
+          minmax(66px, .62fr)
+          minmax(108px, .95fr)
+          minmax(112px, .95fr)
+          minmax(58px, 64px) !important;
+        gap: 3px !important;
+        font-size: clamp(9.5px, 1.55vw, 13px) !important;
+      }
+
+      #gameRoot:not(.is-menu) .hudItem,
+      #gameRoot:not(.is-menu) .hudButton {
+        padding: 4px 5px !important;
+      }
+
+      #gameRoot:not(.is-menu) .hudButton {
+        min-width: 58px !important;
+        font-size: .9em !important;
+        letter-spacing: -0.4px !important;
+      }
+
+      #gameRoot:not(.is-menu) .turboCell {
+        flex-basis: 7px !important;
+        width: 7px !important;
+      }
+
+      /* Lower the car name/stats in Race Setup slightly inside the frame. */
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview > div:first-child {
+        padding-top: clamp(14px, 3.2vh, 24px) !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCarName,
+      #gameRoot.is-menu #preRaceScreen #setupCar {
+        line-height: 1.08 !important;
+      }
+
+      /* Keep selected garage card readable without the green-filled car background. */
+      #gameRoot.is-menu #garageScreen .garageCard.is-selected {
+        background:
+          linear-gradient(180deg, rgba(248,212,74,.08), transparent 42%),
+          #172232 !important;
+        border-color: #f8d44a !important;
+        box-shadow:
+          inset 0 0 0 2px rgba(248, 212, 74, .78),
+          0 0 0 1px rgba(5, 7, 10, .88) !important;
+      }
+
+      #gameRoot.is-menu #garageScreen .garageCard.is-selected .garageName,
+      #gameRoot.is-menu #garageScreen .garageCard.is-selected .garageMeta,
+      #gameRoot.is-menu #garageScreen .garageCard.is-selected .statBars {
+        background: rgba(16, 25, 36, .88) !important;
+        color: #fff8c9 !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -5103,6 +5168,20 @@
       }
     }
 
+
+    function fadeMp3Volume(targetVolume, duration = 90) {
+      if (!bgmAudio) return;
+      const startVolume = Number.isFinite(bgmAudio.volume) ? bgmAudio.volume : 0;
+      const startTime = performance.now();
+      const step = () => {
+        if (!bgmAudio) return;
+        const t = Math.min(1, (performance.now() - startTime) / duration);
+        bgmAudio.volume = startVolume + (targetVolume - startVolume) * t;
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
     function updateBgmMode(force = false) {
       if (!audioCtx || !bgmMasterGain) return;
       if (!bgmEnabled) {
@@ -5122,7 +5201,11 @@
       bgmMode = nextMode;
       if (bgmAudio) {
         const nextSrc = bgmAudioPath(nextMode);
-        if (bgmAudioSrc !== nextSrc) {
+        const targetVolume = bgmVolumeForMode(nextMode);
+        const sourceChanged = bgmAudioSrc !== nextSrc;
+        if (sourceChanged) {
+          // v37: mute before changing MP3 source to reduce pop/click during screen transitions.
+          bgmAudio.volume = 0;
           bgmAudio.pause();
           bgmPlayPending = false;
           bgmAudio.src = nextSrc;
@@ -5130,18 +5213,22 @@
           bgmAudio.currentTime = 0;
         }
         bgmAudio.loop = true;
-        bgmAudio.volume = bgmVolumeForMode(nextMode);
+        if (!sourceChanged) {
+          bgmAudio.volume = targetVolume;
+        }
         if (bgmPlayPending && !bgmAudio.paused) return;
         bgmPlayPending = true;
         const playPromise = bgmAudio.play();
         if (playPromise && typeof playPromise.then === "function") {
           playPromise.then(() => {
             bgmPlayPending = false;
+            if (sourceChanged) fadeMp3Volume(targetVolume, 120);
           }).catch(() => {
             bgmPlayPending = false;
           });
         } else {
           bgmPlayPending = false;
+          if (sourceChanged) fadeMp3Volume(targetVolume, 120);
         }
         return;
       }
