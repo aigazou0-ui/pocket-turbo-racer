@@ -3829,6 +3829,44 @@
       }
     }
 
+
+    /* --- v40 final visual polish: setup text, control alignment, natural BGM timing --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      /* SETUP: v38 was too low. Raise the car info slightly while keeping it closer to course-title height. */
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview > div:first-child {
+        transform: translateY(clamp(7px, 2.0vh, 17px)) !important;
+        padding-top: 0 !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCarName,
+      #gameRoot.is-menu #preRaceScreen #setupCar {
+        font-size: clamp(20px, 3.15vw, 28px) !important;
+        line-height: 1.02 !important;
+        margin-bottom: clamp(5px, 1.0vh, 10px) !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview .statBars,
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview .statRow,
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview .statLabel,
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview .statValue {
+        font-size: clamp(13px, 2.05vw, 18px) !important;
+        line-height: 1.12 !important;
+      }
+
+      /* Controls: shift left a little more so the left button aligns closer with the LAP box left edge. */
+      #gameRoot:not(.is-menu) .touchControls,
+      #gameRoot:not(.is-menu) .driveControls,
+      #gameRoot:not(.is-menu) .steerControls,
+      #gameRoot:not(.is-menu) .controlCluster {
+        transform: translateX(clamp(-58px, -7.4vw, -34px)) !important;
+      }
+
+      #gameRoot:not(.is-menu) [data-control="left"],
+      #gameRoot:not(.is-menu) [data-control="right"] {
+        transform: translateX(clamp(-58px, -7.4vw, -34px)) !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -5206,8 +5244,8 @@
     }
 
 
-    // v38: quicker MP3 fade so screen-change BGM starts without feeling delayed.
-    function fadeMp3Volume(targetVolume, duration = 45) {
+    // v40: very quick MP3 fade, closer to the natural garage-to-title BGM return speed.
+    function fadeMp3Volume(targetVolume, duration = 24) {
       if (!bgmAudio) return;
       const startVolume = Number.isFinite(bgmAudio.volume) ? bgmAudio.volume : 0;
       const startTime = performance.now();
@@ -5243,7 +5281,7 @@
         const sourceChanged = bgmAudioSrc !== nextSrc;
         if (sourceChanged) {
           // v37: mute before changing MP3 source to reduce pop/click during screen transitions.
-          bgmAudio.volume = Math.min(targetVolume, 0.42);
+          bgmAudio.volume = Math.min(targetVolume, 0.72);
           bgmAudio.pause();
           bgmPlayPending = false;
           bgmAudio.src = nextSrc;
@@ -5260,13 +5298,13 @@
         if (playPromise && typeof playPromise.then === "function") {
           playPromise.then(() => {
             bgmPlayPending = false;
-            if (sourceChanged) fadeMp3Volume(targetVolume, 35);
+            if (sourceChanged) fadeMp3Volume(targetVolume, 18);
           }).catch(() => {
             bgmPlayPending = false;
           });
         } else {
           bgmPlayPending = false;
-          if (sourceChanged) fadeMp3Volume(targetVolume, 35);
+          if (sourceChanged) fadeMp3Volume(targetVolume, 18);
         }
         return;
       }

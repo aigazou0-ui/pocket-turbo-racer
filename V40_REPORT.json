@@ -1,0 +1,4 @@
+{
+  "version": "v40",
+  "summary": "Keeps v39/v38 fixes. Raises Race Setup car name slightly from v38, enlarges setup performance text, shifts left/right controls further left to align with LAP left edge, and makes BGM transition entry quicker/natural."
+}
