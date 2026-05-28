@@ -3792,6 +3792,43 @@
       }
     }
 
+
+    /* --- v38 setup alignment + faster BGM entry --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      /* Move the selected car block in Race Setup lower so its name aligns closer to the course name. */
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview {
+        align-items: center !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview > div:first-child {
+        transform: translateY(clamp(14px, 3.8vh, 32px)) !important;
+        padding-top: 0 !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCarName,
+      #gameRoot.is-menu #preRaceScreen #setupCar {
+        margin-top: 0 !important;
+        line-height: 1.05 !important;
+      }
+    }
+
+
+    /* --- v39 control alignment: move left/right buttons left to align with LAP edge --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #gameRoot:not(.is-menu) .touchControls,
+      #gameRoot:not(.is-menu) .driveControls,
+      #gameRoot:not(.is-menu) .steerControls,
+      #gameRoot:not(.is-menu) .controlCluster {
+        transform: translateX(clamp(-42px, -5.2vw, -24px)) !important;
+      }
+
+      /* Fallback for layouts where the buttons are placed directly by fixed/absolute positioning. */
+      #gameRoot:not(.is-menu) [data-control="left"],
+      #gameRoot:not(.is-menu) [data-control="right"] {
+        transform: translateX(clamp(-42px, -5.2vw, -24px)) !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -5169,7 +5206,8 @@
     }
 
 
-    function fadeMp3Volume(targetVolume, duration = 90) {
+    // v38: quicker MP3 fade so screen-change BGM starts without feeling delayed.
+    function fadeMp3Volume(targetVolume, duration = 45) {
       if (!bgmAudio) return;
       const startVolume = Number.isFinite(bgmAudio.volume) ? bgmAudio.volume : 0;
       const startTime = performance.now();
@@ -5205,7 +5243,7 @@
         const sourceChanged = bgmAudioSrc !== nextSrc;
         if (sourceChanged) {
           // v37: mute before changing MP3 source to reduce pop/click during screen transitions.
-          bgmAudio.volume = 0;
+          bgmAudio.volume = Math.min(targetVolume, 0.42);
           bgmAudio.pause();
           bgmPlayPending = false;
           bgmAudio.src = nextSrc;
@@ -5222,13 +5260,13 @@
         if (playPromise && typeof playPromise.then === "function") {
           playPromise.then(() => {
             bgmPlayPending = false;
-            if (sourceChanged) fadeMp3Volume(targetVolume, 120);
+            if (sourceChanged) fadeMp3Volume(targetVolume, 35);
           }).catch(() => {
             bgmPlayPending = false;
           });
         } else {
           bgmPlayPending = false;
-          if (sourceChanged) fadeMp3Volume(targetVolume, 120);
+          if (sourceChanged) fadeMp3Volume(targetVolume, 35);
         }
         return;
       }

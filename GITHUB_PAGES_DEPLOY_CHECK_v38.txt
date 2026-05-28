@@ -1,0 +1,5 @@
+Pocket Turbo Racer v38 deploy check
+- service-worker.js CACHE_NAME must be pocket-turbo-racer-v38-setup-bgm-polish
+- Garage selected car background remains dark/neutral
+- Race Setup car name should be lower, closer to course name height
+- BGM should start quicker on screen transitions than v37
