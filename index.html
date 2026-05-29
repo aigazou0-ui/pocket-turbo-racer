@@ -3896,6 +3896,25 @@
       }
     }
 
+
+    /* --- v42 android-app match file: push steering pad farther inside WebView builds --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #gameRoot.is-android-app:not(.is-menu) .controlPad {
+        left: max(24px, calc(env(safe-area-inset-left) + 14px)) !important;
+        bottom: 12px !important;
+        transform: none !important;
+      }
+
+      #gameRoot.is-android-app:not(.is-menu) .pedals {
+        right: max(14px, env(safe-area-inset-right)) !important;
+      }
+
+      #gameRoot.is-android-app:not(.is-menu) [data-control="left"],
+      #gameRoot.is-android-app:not(.is-menu) [data-control="right"] {
+        transform: none !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -4079,6 +4098,8 @@
   </main>
 
   <script>
+    const URL_PARAMS = new URLSearchParams(location.search);
+    const IS_ANDROID_APP = URL_PARAMS.get("app") === "android";
     "use strict";
 
     // --- Game state ---------------------------------------------------------
@@ -4540,6 +4561,10 @@
       bctx.putImageData(image, 0, 0);
       tintedSprites.set(cacheKey, buffer);
       return buffer;
+    }
+
+    if (IS_ANDROID_APP) {
+      document.getElementById("gameRoot").classList.add("is-android-app");
     }
 
     const ui = {
