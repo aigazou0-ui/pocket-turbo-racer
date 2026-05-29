@@ -1,4 +1,4 @@
-const CACHE_NAME = "pocket-turbo-racer-v41-control-safe";
+const CACHE_NAME = "pocket-turbo-racer-v43-left-button-lap-align";
 const CORE_ASSETS = [
   "./",
   "./index.html",

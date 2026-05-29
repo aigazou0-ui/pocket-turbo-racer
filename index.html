@@ -3915,6 +3915,44 @@
       }
     }
 
+
+    /* --- v43 Android app exact left alignment: fixed steering buttons at LAP left edge --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      /*
+        Android WebView final check:
+        Put the steering buttons on the viewport itself, not relative to the playfield/canvas.
+        This makes the left edge of the left button align with the HUD/LAP left edge.
+      */
+      #gameRoot.is-android-app:not(.is-menu) .controlPad {
+        position: fixed !important;
+        left: max(8px, env(safe-area-inset-left)) !important;
+        bottom: max(28px, env(safe-area-inset-bottom)) !important;
+        right: auto !important;
+        top: auto !important;
+        transform: none !important;
+        translate: none !important;
+        z-index: 9999 !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+      }
+
+      #gameRoot.is-android-app:not(.is-menu) .controlPad.is-visible {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+
+      #gameRoot.is-android-app:not(.is-menu) [data-control="left"],
+      #gameRoot.is-android-app:not(.is-menu) [data-control="right"] {
+        transform: none !important;
+        translate: none !important;
+      }
+
+      #gameRoot.is-android-app:not(.is-menu) .controlPad .driveBtn {
+        min-width: clamp(82px, 9.2vw, 108px) !important;
+        min-height: clamp(58px, 10vh, 72px) !important;
+      }
+    }
+
   </style>
 </head>
 <body>

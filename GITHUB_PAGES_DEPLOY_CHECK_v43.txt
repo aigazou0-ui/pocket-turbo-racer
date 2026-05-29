@@ -1,0 +1,4 @@
+Pocket Turbo Racer v43 deploy check
+- service-worker.js CACHE_NAME must be pocket-turbo-racer-v43-left-button-lap-align
+- Android WebView URL should use ?app=android&v=43
+- In Android app mode, left button left edge should align with LAP HUD left edge and must not be clipped
