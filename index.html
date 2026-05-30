@@ -3727,6 +3727,385 @@
       }
     }
 
+
+    /* --- v37 Android WebView polish: HUD safe spacing, setup alignment, garage neutral card --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      /* Move the RETIRE area inward so it does not collide with Android navigation/safe edges. */
+      #gameRoot:not(.is-menu) {
+        padding-right: max(30px, env(safe-area-inset-right)) !important;
+      }
+
+      #gameRoot:not(.is-menu) .hud {
+        grid-template-columns:
+          minmax(66px, .62fr)
+          minmax(104px, .95fr)
+          minmax(66px, .62fr)
+          minmax(108px, .95fr)
+          minmax(112px, .95fr)
+          minmax(58px, 64px) !important;
+        gap: 3px !important;
+        font-size: clamp(9.5px, 1.55vw, 13px) !important;
+      }
+
+      #gameRoot:not(.is-menu) .hudItem,
+      #gameRoot:not(.is-menu) .hudButton {
+        padding: 4px 5px !important;
+      }
+
+      #gameRoot:not(.is-menu) .hudButton {
+        min-width: 58px !important;
+        font-size: .9em !important;
+        letter-spacing: -0.4px !important;
+      }
+
+      #gameRoot:not(.is-menu) .turboCell {
+        flex-basis: 7px !important;
+        width: 7px !important;
+      }
+
+      /* Lower the car name/stats in Race Setup slightly inside the frame. */
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview > div:first-child {
+        padding-top: clamp(14px, 3.2vh, 24px) !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCarName,
+      #gameRoot.is-menu #preRaceScreen #setupCar {
+        line-height: 1.08 !important;
+      }
+
+      /* Keep selected garage card readable without the green-filled car background. */
+      #gameRoot.is-menu #garageScreen .garageCard.is-selected {
+        background:
+          linear-gradient(180deg, rgba(248,212,74,.08), transparent 42%),
+          #172232 !important;
+        border-color: #f8d44a !important;
+        box-shadow:
+          inset 0 0 0 2px rgba(248, 212, 74, .78),
+          0 0 0 1px rgba(5, 7, 10, .88) !important;
+      }
+
+      #gameRoot.is-menu #garageScreen .garageCard.is-selected .garageName,
+      #gameRoot.is-menu #garageScreen .garageCard.is-selected .garageMeta,
+      #gameRoot.is-menu #garageScreen .garageCard.is-selected .statBars {
+        background: rgba(16, 25, 36, .88) !important;
+        color: #fff8c9 !important;
+      }
+    }
+
+
+    /* --- v38 setup alignment + faster BGM entry --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      /* Move the selected car block in Race Setup lower so its name aligns closer to the course name. */
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview {
+        align-items: center !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview > div:first-child {
+        transform: translateY(clamp(14px, 3.8vh, 32px)) !important;
+        padding-top: 0 !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCarName,
+      #gameRoot.is-menu #preRaceScreen #setupCar {
+        margin-top: 0 !important;
+        line-height: 1.05 !important;
+      }
+    }
+
+
+    /* --- v39 control alignment: move left/right buttons left to align with LAP edge --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #gameRoot:not(.is-menu) .touchControls,
+      #gameRoot:not(.is-menu) .driveControls,
+      #gameRoot:not(.is-menu) .steerControls,
+      #gameRoot:not(.is-menu) .controlCluster {
+        transform: translateX(clamp(-42px, -5.2vw, -24px)) !important;
+      }
+
+      /* Fallback for layouts where the buttons are placed directly by fixed/absolute positioning. */
+      #gameRoot:not(.is-menu) [data-control="left"],
+      #gameRoot:not(.is-menu) [data-control="right"] {
+        transform: translateX(clamp(-42px, -5.2vw, -24px)) !important;
+      }
+    }
+
+
+    /* --- v40 final visual polish: setup text, control alignment, natural BGM timing --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      /* SETUP: v38 was too low. Raise the car info slightly while keeping it closer to course-title height. */
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview > div:first-child {
+        transform: translateY(clamp(7px, 2.0vh, 17px)) !important;
+        padding-top: 0 !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCarName,
+      #gameRoot.is-menu #preRaceScreen #setupCar {
+        font-size: clamp(20px, 3.15vw, 28px) !important;
+        line-height: 1.02 !important;
+        margin-bottom: clamp(5px, 1.0vh, 10px) !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview .statBars,
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview .statRow,
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview .statLabel,
+      #gameRoot.is-menu #preRaceScreen .setupCarPreview .statValue {
+        font-size: clamp(13px, 2.05vw, 18px) !important;
+        line-height: 1.12 !important;
+      }
+
+      /* Controls: shift left a little more so the left button aligns closer with the LAP box left edge. */
+      #gameRoot:not(.is-menu) .touchControls,
+      #gameRoot:not(.is-menu) .driveControls,
+      #gameRoot:not(.is-menu) .steerControls,
+      #gameRoot:not(.is-menu) .controlCluster {
+        transform: translateX(clamp(-58px, -7.4vw, -34px)) !important;
+      }
+
+      #gameRoot:not(.is-menu) [data-control="left"],
+      #gameRoot:not(.is-menu) [data-control="right"] {
+        transform: translateX(clamp(-58px, -7.4vw, -34px)) !important;
+      }
+    }
+
+
+    /* --- v41 control safety fix: prevent left steer button from going off-screen --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      /* v39/v40 moved the control cluster too far left on real Android devices.
+         Reset those translations and place the pad safely inside the left edge. */
+      #gameRoot:not(.is-menu) .touchControls,
+      #gameRoot:not(.is-menu) .driveControls,
+      #gameRoot:not(.is-menu) .steerControls,
+      #gameRoot:not(.is-menu) .controlCluster,
+      #gameRoot:not(.is-menu) .controlPad {
+        transform: none !important;
+      }
+
+      #gameRoot:not(.is-menu) [data-control="left"],
+      #gameRoot:not(.is-menu) [data-control="right"] {
+        transform: none !important;
+      }
+
+      #gameRoot:not(.is-menu) .controlPad {
+        left: max(14px, env(safe-area-inset-left)) !important;
+        bottom: 12px !important;
+      }
+
+      #gameRoot:not(.is-menu) .driveBtn {
+        min-width: clamp(76px, 9.2vw, 108px) !important;
+        min-height: clamp(56px, 10vh, 72px) !important;
+      }
+    }
+
+
+    /* --- v42 android-app match file: push steering pad farther inside WebView builds --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #gameRoot.is-android-app:not(.is-menu) .controlPad {
+        left: max(24px, calc(env(safe-area-inset-left) + 14px)) !important;
+        bottom: 12px !important;
+        transform: none !important;
+      }
+
+      #gameRoot.is-android-app:not(.is-menu) .pedals {
+        right: max(14px, env(safe-area-inset-right)) !important;
+      }
+
+      #gameRoot.is-android-app:not(.is-menu) [data-control="left"],
+      #gameRoot.is-android-app:not(.is-menu) [data-control="right"] {
+        transform: none !important;
+      }
+    }
+
+
+    /* --- v43 Android app exact left alignment: fixed steering buttons at LAP left edge --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      /*
+        Android WebView final check:
+        Put the steering buttons on the viewport itself, not relative to the playfield/canvas.
+        This makes the left edge of the left button align with the HUD/LAP left edge.
+      */
+      #gameRoot.is-android-app:not(.is-menu) .controlPad {
+        position: fixed !important;
+        left: max(8px, env(safe-area-inset-left)) !important;
+        bottom: max(28px, env(safe-area-inset-bottom)) !important;
+        right: auto !important;
+        top: auto !important;
+        transform: none !important;
+        translate: none !important;
+        z-index: 9999 !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+      }
+
+      #gameRoot.is-android-app:not(.is-menu) .controlPad.is-visible {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+
+      #gameRoot.is-android-app:not(.is-menu) [data-control="left"],
+      #gameRoot.is-android-app:not(.is-menu) [data-control="right"] {
+        transform: none !important;
+        translate: none !important;
+      }
+
+      #gameRoot.is-android-app:not(.is-menu) .controlPad .driveBtn {
+        min-width: clamp(82px, 9.2vw, 108px) !important;
+        min-height: clamp(58px, 10vh, 72px) !important;
+      }
+    }
+
+
+    /* --- v1.2 tutorial + garage car size update --- */
+    .howToBtn {
+      min-width: 132px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 2px solid rgba(240, 233, 167, .65);
+      background: rgba(16, 25, 36, .88);
+      color: #fff8c9;
+      font: inherit;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      box-shadow: inset 0 0 0 1px rgba(5, 7, 10, .82);
+    }
+
+    .howToBtn:active {
+      transform: translateY(1px);
+    }
+
+    .tutorialOverlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+      background: rgba(3, 6, 12, .78);
+      z-index: 20000;
+    }
+
+    .tutorialOverlay.is-visible {
+      display: flex;
+    }
+
+    .tutorialPanel {
+      width: min(760px, 92vw);
+      max-height: min(88vh, 520px);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto auto;
+      gap: 10px;
+      padding: clamp(14px, 2.4vw, 24px);
+      border: 3px solid #f8d44a;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(32, 48, 70, .98), rgba(13, 22, 34, .98));
+      color: #fff8c9;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, .55), inset 0 0 0 2px rgba(5, 7, 10, .82);
+    }
+
+    .tutorialTitle {
+      margin: 0;
+      text-align: center;
+      font-size: clamp(22px, 4.4vw, 34px);
+      line-height: 1;
+      letter-spacing: .06em;
+      text-shadow: 2px 2px 0 #05070a;
+    }
+
+    .tutorialPage {
+      min-height: 0;
+      overflow: auto;
+      padding: 2px 6px;
+      font-size: clamp(14px, 2.45vw, 20px);
+      line-height: 1.45;
+    }
+
+    .tutorialPage h3 {
+      margin: 0 0 8px;
+      color: #f8d44a;
+      font-size: clamp(18px, 3.2vw, 26px);
+      line-height: 1.1;
+    }
+
+    .tutorialPage ul {
+      margin: 0;
+      padding-left: 1.2em;
+    }
+
+    .tutorialPage li {
+      margin: .22em 0;
+    }
+
+    .tutorialDots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .tutorialDot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 248, 201, .34);
+      border: 1px solid rgba(255, 248, 201, .42);
+    }
+
+    .tutorialDot.is-active {
+      background: #f8d44a;
+    }
+
+    .tutorialActions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tutorialActions .menuBtn {
+      min-width: clamp(96px, 18vw, 150px);
+      padding: 10px 14px;
+      font-size: clamp(13px, 2.3vw, 18px);
+    }
+
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #gameRoot.is-menu #garageScreen .garageSprite,
+      #gameRoot.is-menu #garageScreen .garageSprite.is-f1 {
+        /* v1.2: garage-only car images are about 15% larger. Race/title/CPU sizes are unchanged. */
+        width: clamp(62px, 11.2vw, 82px) !important;
+        height: clamp(122px, 22.2vw, 166px) !important;
+        transform: rotate(90deg) scale(.98) !important;
+      }
+
+      .titleActions {
+        gap: 8px !important;
+      }
+
+      .howToBtn {
+        min-width: clamp(108px, 18vw, 148px) !important;
+        padding: 8px 10px !important;
+        font-size: clamp(12px, 2.1vw, 16px) !important;
+      }
+
+      .tutorialPanel {
+        width: min(780px, 94vw);
+        max-height: 88vh;
+        gap: 6px;
+        padding: 12px 14px;
+      }
+
+      .tutorialPage {
+        font-size: clamp(12px, 2.05vw, 17px);
+        line-height: 1.32;
+      }
+
+      .tutorialPage h3 {
+        margin-bottom: 5px;
+      }
+
+      .tutorialActions .menuBtn {
+        padding: 8px 12px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -3762,12 +4141,13 @@
             </div>
             <div class="titleGarage">
               <div class="titleCars" aria-hidden="true">
-                <img class="titleCar" src="assets/cars/shop/nova.png" alt="">
+                <img class="titleCar" src="assets/cars/cpu/nova_blue.png" alt="">
                 <img class="titleCar main" src="assets/cars/shop/aero.png" alt="">
-                <img class="titleCar" src="assets/cars/title/crux-title.png" alt="">
+                <img class="titleCar" src="assets/cars/cpu/crux_yellow.png" alt="">
               </div>
               <div class="titleActions">
                 <button class="menuBtn titleBtn" id="startMenuBtn">START</button>
+                <button class="howToBtn" id="howToTitleBtn" type="button">HOW TO PLAY</button>
               </div>
             </div>
             <button class="titleResetBtn" id="resetSaveBtn" type="button">DataReset</button>
@@ -3801,6 +4181,7 @@
             <div class="garageActions">
               <button class="menuBtn" id="garageRaceBtn">Race</button>
               <button class="menuBtn" id="garageBackBtn">BACK</button>
+              <button class="howToBtn" id="howToGarageBtn" type="button">HOW TO PLAY</button>
             </div>
           </div>
         </div>
@@ -3907,9 +4288,26 @@
       <div id="hintText">Turn, accelerate, and use TURBO for a short burst.</div>
       <div>1 FILE HTML / CANVAS</div>
     </section>
+
+
+    <div class="tutorialOverlay" id="tutorialOverlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+      <div class="tutorialPanel">
+        <h2 class="tutorialTitle" id="tutorialTitle">HOW TO PLAY</h2>
+        <div class="tutorialPage" id="tutorialPage"></div>
+        <div class="tutorialDots" id="tutorialDots" aria-hidden="true"></div>
+        <div class="tutorialActions">
+          <button class="menuBtn" id="tutorialPrevBtn" type="button">BACK</button>
+          <button class="menuBtn titleBtn" id="tutorialNextBtn" type="button">NEXT</button>
+          <button class="menuBtn titleBtn" id="tutorialOkBtn" type="button">OK</button>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <script>
+    const URL_PARAMS = new URLSearchParams(location.search);
+    const IS_ANDROID_APP = URL_PARAMS.get("app") === "android";
     "use strict";
 
     // --- Game state ---------------------------------------------------------
@@ -3940,6 +4338,7 @@
     const SFX_ENABLED_KEY = "pocketTurboRacer_sfxEnabled";
     const PURCHASE_RESET_KEY = "pocketTurboRacer_purchaseResetV2";
     const STARTER_CAR_MIGRATION_KEY = "pocketTurboRacer_starterCarV3";
+    const TUTORIAL_SEEN_KEY = "pocketTurboRacer_tutorialSeenV12";
     const DEFAULT_PLAYER_CAR_ID = "aero";
     const TURBO_MAX_MS = 10000;
     const TURBO_SEGMENT_MS = 1000;
@@ -4056,10 +4455,10 @@
     ];
 
     const CPU_COLOR_POOL = [
-      { color: "#e53935" },
-      { color: "#c62828" },
-      { color: "#b71c1c" },
-      { color: "#8e0000" }
+      { color: "#2f80ed", label: "blue" },
+      { color: "#36b36b", label: "green" },
+      { color: "#f2c94c", label: "yellow" },
+      { color: "#9b51e0", label: "purple" }
     ];
 
     const PLAYER_CARS = [
@@ -4276,6 +4675,7 @@
 
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
+    const spriteReadyPromises = [];
     const carSprites = {
       player: loadSprite("assets/cars/bolt.png"),
       bolt: loadSprite("assets/cars/bolt.png"),
@@ -4283,14 +4683,48 @@
       crux: loadSprite("assets/cars/shop/crux.png"),
       vela: loadSprite("assets/cars/shop/vela.png"),
       nova: loadSprite("assets/cars/shop/nova.png"),
-      dart: loadSprite("assets/cars/shop/dart.png")
+      dart: loadSprite("assets/cars/shop/dart.png"),
+      cpu_bolt_blue: loadSprite("assets/cars/cpu/bolt_blue.png"),
+      cpu_bolt_green: loadSprite("assets/cars/cpu/bolt_green.png"),
+      cpu_bolt_yellow: loadSprite("assets/cars/cpu/bolt_yellow.png"),
+      cpu_bolt_purple: loadSprite("assets/cars/cpu/bolt_purple.png"),
+      cpu_aero_blue: loadSprite("assets/cars/cpu/aero_blue.png"),
+      cpu_aero_green: loadSprite("assets/cars/cpu/aero_green.png"),
+      cpu_aero_yellow: loadSprite("assets/cars/cpu/aero_yellow.png"),
+      cpu_aero_purple: loadSprite("assets/cars/cpu/aero_purple.png"),
+      cpu_crux_blue: loadSprite("assets/cars/cpu/crux_blue.png"),
+      cpu_crux_green: loadSprite("assets/cars/cpu/crux_green.png"),
+      cpu_crux_yellow: loadSprite("assets/cars/cpu/crux_yellow.png"),
+      cpu_crux_purple: loadSprite("assets/cars/cpu/crux_purple.png"),
+      cpu_vela_blue: loadSprite("assets/cars/cpu/vela_blue.png"),
+      cpu_vela_green: loadSprite("assets/cars/cpu/vela_green.png"),
+      cpu_vela_yellow: loadSprite("assets/cars/cpu/vela_yellow.png"),
+      cpu_vela_purple: loadSprite("assets/cars/cpu/vela_purple.png"),
+      cpu_nova_blue: loadSprite("assets/cars/cpu/nova_blue.png"),
+      cpu_nova_green: loadSprite("assets/cars/cpu/nova_green.png"),
+      cpu_nova_yellow: loadSprite("assets/cars/cpu/nova_yellow.png"),
+      cpu_nova_purple: loadSprite("assets/cars/cpu/nova_purple.png"),
+      cpu_dart_blue: loadSprite("assets/cars/cpu/dart_blue.png"),
+      cpu_dart_green: loadSprite("assets/cars/cpu/dart_green.png"),
+      cpu_dart_yellow: loadSprite("assets/cars/cpu/dart_yellow.png"),
+      cpu_dart_purple: loadSprite("assets/cars/cpu/dart_purple.png")
     };
     const tintedSprites = new Map();
 
     function loadSprite(src) {
       const image = new Image();
+      image.decoding = "async";
+      const ready = new Promise(resolve => {
+        image.onload = () => resolve(true);
+        image.onerror = () => resolve(false);
+      });
       image.src = src;
+      spriteReadyPromises.push(ready);
       return image;
+    }
+
+    function ensureCarSpritesReady() {
+      return Promise.all(spriteReadyPromises).catch(() => true);
     }
 
     function hexToRgb(hex) {
@@ -4338,6 +4772,10 @@
       return buffer;
     }
 
+    if (IS_ANDROID_APP) {
+      document.getElementById("gameRoot").classList.add("is-android-app");
+    }
+
     const ui = {
       title: document.getElementById("titleScreen"),
       garage: document.getElementById("garageScreen"),
@@ -4373,7 +4811,15 @@
       difficultyButtons: document.getElementById("difficultyButtons"),
       soundOn: document.getElementById("soundOnBtn"),
       soundOff: document.getElementById("soundOffBtn"),
-      sfxToggle: document.getElementById("sfxToggleBtn")
+      sfxToggle: document.getElementById("sfxToggleBtn"),
+      tutorialOverlay: document.getElementById("tutorialOverlay"),
+      tutorialPage: document.getElementById("tutorialPage"),
+      tutorialDots: document.getElementById("tutorialDots"),
+      tutorialPrev: document.getElementById("tutorialPrevBtn"),
+      tutorialNext: document.getElementById("tutorialNextBtn"),
+      tutorialOk: document.getElementById("tutorialOkBtn"),
+      howToTitle: document.getElementById("howToTitleBtn"),
+      howToGarage: document.getElementById("howToGarageBtn")
     };
 
     const input = {
@@ -4397,6 +4843,7 @@
     let raceStartTime = 0;
     let raceElapsed = 0;
     let countdownStart = 0;
+    let countdownLoadPending = false;
     let countdownSoundStep = null;
     let lastFrameTime = performance.now();
     let finishData = null;
@@ -4660,11 +5107,11 @@
         || state === GameState.RETIRE_CONFIRM;
     }
 
-    function resizeCanvas() {
-      // Do not rebuild the canvas/world while a race is active.
+    function resizeCanvas(force = false) {
+      // Do not rebuild the canvas/world while a race is active unless explicitly forced before race objects are created.
       // On phones, rotating to portrait hides #gameRoot; the old code then measured a tiny/empty
       // canvas and called resetRaceObjects(false), which restarted the race when returning to landscape.
-      if (isRaceLayoutLocked()) {
+      if (isRaceLayoutLocked() && !force) {
         renderDirty = true;
         return;
       }
@@ -4678,7 +5125,7 @@
         canvas.height = height;
         routeMetricsCache = null;
         buildWaypoints();
-        resetRaceObjects(false);
+        if (!force) resetRaceObjects(false);
         renderDirty = true;
       }
     }
@@ -5067,6 +5514,21 @@
       }
     }
 
+
+    // v40: very quick MP3 fade, closer to the natural garage-to-title BGM return speed.
+    function fadeMp3Volume(targetVolume, duration = 24) {
+      if (!bgmAudio) return;
+      const startVolume = Number.isFinite(bgmAudio.volume) ? bgmAudio.volume : 0;
+      const startTime = performance.now();
+      const step = () => {
+        if (!bgmAudio) return;
+        const t = Math.min(1, (performance.now() - startTime) / duration);
+        bgmAudio.volume = startVolume + (targetVolume - startVolume) * t;
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
     function updateBgmMode(force = false) {
       if (!audioCtx || !bgmMasterGain) return;
       if (!bgmEnabled) {
@@ -5086,7 +5548,11 @@
       bgmMode = nextMode;
       if (bgmAudio) {
         const nextSrc = bgmAudioPath(nextMode);
-        if (bgmAudioSrc !== nextSrc) {
+        const targetVolume = bgmVolumeForMode(nextMode);
+        const sourceChanged = bgmAudioSrc !== nextSrc;
+        if (sourceChanged) {
+          // v37: mute before changing MP3 source to reduce pop/click during screen transitions.
+          bgmAudio.volume = Math.min(targetVolume, 0.72);
           bgmAudio.pause();
           bgmPlayPending = false;
           bgmAudio.src = nextSrc;
@@ -5094,18 +5560,22 @@
           bgmAudio.currentTime = 0;
         }
         bgmAudio.loop = true;
-        bgmAudio.volume = bgmVolumeForMode(nextMode);
+        if (!sourceChanged) {
+          bgmAudio.volume = targetVolume;
+        }
         if (bgmPlayPending && !bgmAudio.paused) return;
         bgmPlayPending = true;
         const playPromise = bgmAudio.play();
         if (playPromise && typeof playPromise.then === "function") {
           playPromise.then(() => {
             bgmPlayPending = false;
+            if (sourceChanged) fadeMp3Volume(targetVolume, 18);
           }).catch(() => {
             bgmPlayPending = false;
           });
         } else {
           bgmPlayPending = false;
+          if (sourceChanged) fadeMp3Volume(targetVolume, 18);
         }
         return;
       }
@@ -5414,7 +5884,8 @@
           ...cpuBaseCar,
           maxSpeed: cpuBaseCar.maxSpeed,
           bodyColor: colorSet.color,
-          spriteId: vehicle.spriteId,
+          // v30: use pre-colored CPU PNGs instead of runtime tinting, so CPU cars never remain red.
+          spriteId: `cpu_${vehicle.spriteId}_${colorSet.label}`,
           tintColor: null,
           cpuSpeed: cpu.speed * DIFFICULTIES[selectedDifficulty].multiplier * (course.cpuSpeedScale || 1),
           cpuCornerScale: course.cpuCornerScale || 1,
@@ -5763,17 +6234,32 @@
     }
 
     // --- Race flow ----------------------------------------------------------
-    function startCountdown() {
+    // v36: stable first-race car size via forced canvas sizing and stable touch-landscape sprite scale.
+    async function startCountdown() {
+      if (countdownLoadPending) return;
+      countdownLoadPending = true;
       initAudio();
+      ui.hint.textContent = "Loading cars...";
+      await ensureCarSpritesReady();
+      countdownLoadPending = false;
+
+      setScreen(GameState.COUNTDOWN);
+      resizeCanvas(true);
+      routeMetricsCache = null;
+      buildWaypoints();
       resetRaceObjects(true);
+
       if (ui.countdown) {
         ui.countdown.textContent = "3";
         ui.countdown.classList.remove("is-visible");
+        // Force a reflow so the countdown animation reliably appears even after retries.
+        void ui.countdown.offsetWidth;
+        ui.countdown.classList.add("is-visible");
       }
+
       countdownStart = performance.now();
       countdownSoundStep = 3;
       lastFrameTime = countdownStart;
-      setScreen(GameState.COUNTDOWN);
       ui.hint.textContent = "Get ready.";
     }
 
@@ -6147,6 +6633,77 @@
         + "</span>";
     }
 
+
+    const TUTORIAL_PAGES = [
+      {
+        title: "操作方法",
+        items: [
+          "横画面でプレイします",
+          "左側のボタン：ハンドル操作は左右のみ",
+          "右側のボタン：アクセル / ターボ",
+          "ターボは1周につき10秒使用できます",
+          "右上の10コマがターボ残量です",
+          "1周するとターボ残量は10秒に回復します",
+          "バックはできません",
+          "コースアウトや接触に注意して、ゴールを目指してください"
+        ]
+      },
+      {
+        title: "車種の選択",
+        items: [
+          "ポイントを使って新しい車を購入できます",
+          "各レースの成績でポイントが付与されます",
+          "1位：5P、2位：4P、3位：3P、4位：2P、5位：1P",
+          "ポイントを貯めると新しい車種を購入できます"
+        ]
+      },
+      {
+        title: "設定できること",
+        items: [
+          "車種の選択",
+          "難易度の選択",
+          "BGM ON / OFF",
+          "8種類のコース選択"
+        ]
+      }
+    ];
+
+    let tutorialPageIndex = 0;
+
+    function renderTutorialPage() {
+      const page = TUTORIAL_PAGES[tutorialPageIndex];
+      ui.tutorialPage.innerHTML = `<h3>${page.title}</h3><ul>${page.items.map(item => `<li>${item}</li>`).join("")}</ul>`;
+      ui.tutorialDots.innerHTML = TUTORIAL_PAGES
+        .map((_, index) => `<span class="tutorialDot${index === tutorialPageIndex ? " is-active" : ""}"></span>`)
+        .join("");
+      ui.tutorialPrev.style.visibility = tutorialPageIndex === 0 ? "hidden" : "visible";
+      ui.tutorialNext.style.display = tutorialPageIndex === TUTORIAL_PAGES.length - 1 ? "none" : "inline-flex";
+      ui.tutorialOk.style.display = tutorialPageIndex === TUTORIAL_PAGES.length - 1 ? "inline-flex" : "none";
+    }
+
+    function showTutorial({ markSeen = false } = {}) {
+      tutorialPageIndex = 0;
+      renderTutorialPage();
+      ui.tutorialOverlay.classList.add("is-visible");
+      ui.tutorialOverlay.dataset.markSeen = markSeen ? "1" : "0";
+      clearDriveInputs();
+    }
+
+    function hideTutorial() {
+      if (ui.tutorialOverlay.dataset.markSeen === "1") {
+        localStorage.setItem(TUTORIAL_SEEN_KEY, "1");
+      }
+      ui.tutorialOverlay.classList.remove("is-visible");
+      ui.tutorialOverlay.dataset.markSeen = "0";
+      ui.hint.textContent = "Turn, accelerate, and use TURBO for a short burst.";
+    }
+
+    function maybeShowFirstTutorial() {
+      if (!localStorage.getItem(TUTORIAL_SEEN_KEY)) {
+        setTimeout(() => showTutorial({ markSeen: true }), 250);
+      }
+    }
+
     function bindButton(id, handler, sound = "select") {
       document.getElementById(id).addEventListener("click", event => {
         if (bgmEnabled) initAudio();
@@ -6232,6 +6789,23 @@
     }, "back");
     bindButton("purchaseYesBtn", confirmPurchase, "confirm");
     bindButton("purchaseNoBtn", cancelPurchase, "back");
+
+    bindButton("howToTitleBtn", () => showTutorial({ markSeen: false }), "select");
+    bindButton("howToGarageBtn", () => showTutorial({ markSeen: false }), "select");
+    ui.tutorialPrev.addEventListener("click", () => {
+      playMenuSound("back");
+      tutorialPageIndex = Math.max(0, tutorialPageIndex - 1);
+      renderTutorialPage();
+    });
+    ui.tutorialNext.addEventListener("click", () => {
+      playMenuSound("select");
+      tutorialPageIndex = Math.min(TUTORIAL_PAGES.length - 1, tutorialPageIndex + 1);
+      renderTutorialPage();
+    });
+    ui.tutorialOk.addEventListener("click", () => {
+      playMenuSound("confirm");
+      hideTutorial();
+    });
 
     ui.difficultyButtons.querySelectorAll("[data-difficulty]").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -6661,8 +7235,10 @@
 
       const scale = r.kind === "bolt" ? 1.36 : 1.18;
       const carType = r.car.id || r.car.type || r.car.name.toLowerCase();
-      const isPhoneLandscape = window.matchMedia("(orientation: landscape) and (hover: none) and (pointer: coarse)").matches;
-      const mobileVisualScale = isPhoneLandscape ? 1.45 : 1;
+      // v36: matchMedia(pointer/coarse) can report false during the first race on some mobile browsers/WebViews.
+      // Use viewport + touch capability instead so the first race and retries draw cars at the same size.
+      const isTouchLandscape = (navigator.maxTouchPoints || 0) > 0 && window.innerWidth > window.innerHeight;
+      const mobileVisualScale = isTouchLandscape ? 1.45 : 1;
       const p = Math.max(2.4, Math.round(3.2 * scale * mobileVisualScale));
       const body = r.car.bodyColor;
       const shade = shadeColor(body, -46);
@@ -6679,7 +7255,7 @@
       const sprite = r.car.tintColor ? tintedCarSprite(spriteKey, r.car.tintColor) : baseSprite;
       const spriteReady = sprite && (sprite instanceof HTMLCanvasElement || (sprite.complete && sprite.naturalWidth > 0));
       if (spriteReady) {
-        const f1Sprites = ["bolt"];
+        const f1Sprites = ["bolt", "cpu_bolt_blue", "cpu_bolt_green", "cpu_bolt_yellow", "cpu_bolt_purple"];
         const spriteWidth = sprite.naturalWidth || sprite.width;
         const spriteHeight = sprite.naturalHeight || sprite.height;
         const drawH = (f1Sprites.includes(spriteKey) ? 96 : 88) * mobileVisualScale;
@@ -6823,6 +7399,7 @@
       resetRaceObjects(true);
       setScreen(GameState.TITLE);
       updateSettingsUi();
+      maybeShowFirstTutorial();
       requestAnimationFrame(update);
     }
 

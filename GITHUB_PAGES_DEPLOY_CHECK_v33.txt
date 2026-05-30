@@ -1,0 +1,6 @@
+Pocket Turbo Racer v33 deploy check
+- service-worker.js CACHE_NAME must be pocket-turbo-racer-v33-stable-car-size-final
+- index.html must contain ensureCarSpritesReady
+- title opening cars remain blue / red / yellow
+- race CPU cars remain precolored PNGs
+- old direct color-name car images are not required

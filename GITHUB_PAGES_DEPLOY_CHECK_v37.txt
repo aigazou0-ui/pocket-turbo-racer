@@ -1,0 +1,6 @@
+Pocket Turbo Racer v37 deploy check
+- service-worker.js CACHE_NAME must be pocket-turbo-racer-v37-webview-polish
+- RETIRE button should no longer overlap the right edge in WebView
+- Race Setup car name should sit slightly lower in its frame
+- Garage selected car card should use dark neutral background, not green fill
+- Screen-change pop noise should be reduced by MP3 fade-in after source switches

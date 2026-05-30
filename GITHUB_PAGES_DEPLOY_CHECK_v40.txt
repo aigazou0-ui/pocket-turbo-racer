@@ -1,0 +1,7 @@
+Pocket Turbo Racer v40 deploy check
+- service-worker.js CACHE_NAME must be pocket-turbo-racer-v40-final-polish
+- BGM screen-change entry should feel quicker/natural, close to garage-to-title return
+- SETUP car name should be slightly higher than v38/v39 and parallel with course name
+- SETUP performance text should be larger/readable
+- Left/right buttons should shift a little further left, aligning closer with LAP frame left edge
+- Garage selected background remains dark/neutral
