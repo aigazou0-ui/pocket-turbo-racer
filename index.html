@@ -4064,15 +4064,21 @@
       min-width: clamp(96px, 18vw, 150px);
       padding: 10px 14px;
       font-size: clamp(13px, 2.3vw, 18px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.1;
+      box-sizing: border-box;
     }
 
     @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
       #gameRoot.is-menu #garageScreen .garageSprite,
       #gameRoot.is-menu #garageScreen .garageSprite.is-f1 {
-        /* v1.2: garage-only car images are about 15% larger. Race/title/CPU sizes are unchanged. */
-        width: clamp(62px, 11.2vw, 82px) !important;
-        height: clamp(122px, 22.2vw, 166px) !important;
-        transform: rotate(90deg) scale(.98) !important;
+        /* v1.2d: garage-only car images are a bit larger but still stay inside the frame. Race/title/CPU sizes are unchanged. */
+        width: clamp(68px, 12vw, 90px) !important;
+        height: clamp(132px, 23.8vw, 178px) !important;
+        transform: rotate(90deg) scale(1) !important;
       }
 
       .titleActions {
@@ -6638,32 +6644,40 @@
       {
         title: "操作方法",
         items: [
+          "赤い車を操作して、3周後のゴールを目指そう",
+          "他車やコースに接触すると弾かれます",
           "横画面でプレイします",
-          "左側のボタン：ハンドル操作は左右のみ",
+          "左側のボタン：左右のハンドル操作",
           "右側のボタン：アクセル / ターボ",
-          "ターボは1周につき10秒使用できます",
-          "右上の10コマがターボ残量です",
-          "1周するとターボ残量は10秒に回復します",
           "バックはできません",
-          "コースアウトや接触に注意して、ゴールを目指してください"
+          "ターボは1周につき10秒使用できます",
+          "右上の10コマが10秒のターボ残量です",
+          "ターボが切れると減速します",
+          "1周するとターボ残量は10秒に回復します"
         ]
       },
       {
-        title: "車種の選択",
+        title: "車種の選択について",
         items: [
-          "ポイントを使って新しい車を購入できます",
-          "各レースの成績でポイントが付与されます",
-          "1位：5P、2位：4P、3位：3P、4位：2P、5位：1P",
-          "ポイントを貯めると新しい車種を購入できます"
+          "最初は左上の車のみ選択可能です",
+          "ガレージ画面右上のポイントで新しい車を購入できます",
+          "ポイントは各レースの成績で付与されます",
+          "1位：5P",
+          "2位：4P",
+          "3位：3P",
+          "4位：2P",
+          "5位：1P",
+          "各性能はC→B→A→Sの順で良くなります"
         ]
       },
       {
-        title: "設定できること",
+        title: "レース前に以下の設定を選べます",
         items: [
           "車種の選択",
-          "難易度の選択",
-          "BGM ON / OFF",
-          "8種類のコース選択"
+          "3段階の難易度の選択",
+          "BGMのON / OFF",
+          "8種類のコースの選択",
+          "自分に合った設定でレースに挑戦しよう！"
         ]
       }
     ];
