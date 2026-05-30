@@ -4201,6 +4201,19 @@
     }
 
 
+    /* --- v12i: 5-line tutorial pages for Android app readability. --- */
+    .tutorialPage li {
+      margin: .34em 0;
+    }
+
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      .tutorialPage {
+        font-size: clamp(11px, 1.9vw, 15px) !important;
+        line-height: 1.28 !important;
+      }
+    }
+
+
   </style>
 </head>
 <body>
@@ -6739,13 +6752,10 @@
           title: "操作方法",
           items: [
             "横画面でプレイします",
-            "赤色の自車を操作して、ゴールを目指そう",
-            "左側のボタン：左右のハンドル操作",
-            "右側のボタン：アクセル / ターボ",
-            "バックはできません",
-            "ターボは1周につき10秒使用可能",
-            "右上の10コマがターボの残量です",
-            "1周するとターボ残量は全回復します"
+            "赤色の自車を操作して1位を目指し、より早いタイムでゴールを目指そう！",
+            "左側のボタン：左右のハンドル操作　右側のボタン：アクセル / ターボ　※バックはできません",
+            "ターボは1周につき10秒使用可能：右上の10コマがターボの残量で1秒毎に減っていきます",
+            "ターボが切れると減速しますが、1周すると全回復します"
           ]
         },
         {
@@ -6753,8 +6763,7 @@
           items: [
             "最初は左上の車のみ選択可能です",
             "ポイントを使用して新しい車を購入できます",
-            "ポイントは各レースの成績で付与されます",
-            "1位：5P　2位：4P　3位：3P　4位：2P　5位：1P",
+            "ポイントは各レースの成績で付与されます　1位：5P　2位：4P　3位：3P　4位：2P　5位：1P",
             "車の性能は各車で違い、C→B→A→Sの順で良くなります",
             "車種・難易度・BGMのON / OFF・コースの選択ができます"
           ]
@@ -6765,13 +6774,10 @@
           title: "How to Play",
           items: [
             "Play in landscape mode",
-            "Control the red car and aim for the goal",
-            "Left buttons: steer left and right",
-            "Right buttons: accelerator / turbo",
-            "You cannot drive in reverse",
-            "Turbo can be used for 10 seconds per lap",
-            "The 10 blocks at the top right show your turbo remaining",
-            "After each lap, turbo fully recovers"
+            "Control the red car, aim for 1st place, and go for the fastest goal time!",
+            "Left buttons: steering　Right buttons: accelerator / turbo　※No reverse gear",
+            "Turbo lasts 10 seconds per lap: the 10 blocks at the top right decrease once per second",
+            "When turbo runs out, your car slows down, but it fully recovers after each lap"
           ]
         },
         {
@@ -6779,9 +6785,8 @@
           items: [
             "At first, only the top-left car can be selected",
             "Use points to buy new cars",
-            "Points are awarded based on your race result",
-            "1st: 5P　2nd: 4P　3rd: 3P　4th: 2P　5th: 1P",
-            "Car performance improves in this order: C → B → A → S",
+            "Points are awarded by race result　1st: 5P　2nd: 4P　3rd: 3P　4th: 2P　5th: 1P",
+            "Each car has different performance, improving in this order: C → B → A → S",
             "You can choose the car, difficulty, BGM ON / OFF, and course"
           ]
         }
