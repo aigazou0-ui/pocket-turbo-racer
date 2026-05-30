@@ -4134,12 +4134,69 @@
     @media (min-width: 761px) and (hover: hover) and (pointer: fine) {
       #gameRoot.is-menu #garageScreen .garageSprite,
       #gameRoot.is-menu #garageScreen .garageSprite.is-f1 {
-        /* v12e: make garage car images visibly larger on PC while staying inside each frame. */
-        width: clamp(132px, 15.8vw, 184px) !important;
-        height: clamp(76px, 9.4vw, 106px) !important;
-        margin: -6px auto 2px !important;
+        /* v12g: make garage car images larger on PC while still clipping safely inside each frame. */
+        width: clamp(152px, 17.4vw, 206px) !important;
+        height: clamp(86px, 10.2vw, 118px) !important;
+        margin: -10px auto -2px !important;
         object-fit: contain;
-        transform: rotate(90deg) scale(1) !important;
+        transform: rotate(90deg) scale(1.08) !important;
+      }
+    }
+
+    /* --- v12g extra garage density + unified tutorial frame --- */
+    /* --- v12h garage-only cropped sprites use tighter image assets for bigger car display. --- */
+    .garageGrid {
+      gap: 5px;
+    }
+
+    .garageCard {
+      padding: 18px 5px 5px;
+      overflow: hidden;
+    }
+
+    .tutorialPanel {
+      width: min(760px, 92vw);
+      height: min(78vh, 520px);
+      max-height: min(78vh, 520px);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .tutorialPage {
+      height: 100%;
+      min-height: 0;
+      padding: 2px 4px;
+    }
+
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #gameRoot.is-menu #garageScreen .garageCard {
+        padding: 16px 4px 4px !important;
+      }
+
+      #gameRoot.is-menu #garageScreen .garageGrid {
+        gap: 4px !important;
+      }
+
+      #gameRoot.is-menu #garageScreen .garageSprite,
+      #gameRoot.is-menu #garageScreen .garageSprite.is-f1 {
+        width: clamp(74px, 13.2vw, 102px) !important;
+        height: clamp(142px, 25.2vw, 192px) !important;
+        margin: -10px auto -2px !important;
+        transform: rotate(90deg) scale(1.08) !important;
+      }
+
+      .tutorialPanel {
+        width: min(780px, 94vw) !important;
+        height: min(84vh, 500px) !important;
+        max-height: min(84vh, 500px) !important;
+        gap: 8px !important;
+        padding: 12px 14px !important;
+      }
+
+      .tutorialPage {
+        font-size: clamp(12px, 2.05vw, 17px) !important;
+        line-height: 1.32 !important;
+        padding: 2px 2px !important;
       }
     }
 
@@ -6500,6 +6557,10 @@
       return car.spriteId === "bolt" ? "assets/cars/bolt.png" : `assets/cars/shop/${car.spriteId}.png`;
     }
 
+    function garageSpriteSrc(car) {
+      return car.spriteId === "bolt" ? "assets/cars/garage/bolt.png" : `assets/cars/garage/${car.spriteId}.png`;
+    }
+
     function showResetConfirm() {
       setScreen(GameState.RESET_CONFIRM);
       ui.hint.textContent = "Confirm reset.";
@@ -6564,7 +6625,7 @@
           bolt: "BOLT"
         };
         card.innerHTML = `
-          <img class="garageSprite${car.id === "bolt" ? " is-f1" : ""}" src="${car.spriteId === "bolt" ? "assets/cars/bolt.png" : `assets/cars/shop/${car.spriteId}.png`}" alt="">
+          <img class="garageSprite${car.id === "bolt" ? " is-f1" : ""}" src="${garageSpriteSrc(car)}" alt="">
           <div class="garageName">${garageDisplayNames[car.id] || car.name}</div>
           <div class="garageMeta">${meta}</div>
           <div class="statBars">${carStats(car.id)}</div>
