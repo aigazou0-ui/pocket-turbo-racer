@@ -702,6 +702,7 @@
     }
 
     .garageHeader {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -722,6 +723,53 @@
       color: #f8d44a;
       text-align: center;
       font-weight: 700;
+    }
+
+    .garageRewardAdBox {
+      position: absolute;
+      top: 50%;
+      right: 98px;
+      transform: translateY(-50%);
+      height: 31px;
+      display: flex;
+      align-items: center;
+      pointer-events: auto;
+    }
+
+    .rewardAdBtn {
+      width: 118px;
+      height: 31px;
+      padding: 0 8px;
+      border: 2px solid #315a3a;
+      background: #123d22;
+      color: #d7f3a2;
+      font-family: inherit;
+      font-size: clamp(8px, 1.05vw, 10px);
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    .rewardAdBtn:disabled {
+      opacity: .45;
+      border-color: #315a3a;
+      background: #1f3126;
+      color: #9fb594;
+    }
+
+    @media (orientation: landscape) and (max-width: 760px) {
+      .garageRewardAdBox {
+        right: 76px;
+        height: 28px;
+      }
+
+      .rewardAdBtn {
+        width: 96px;
+        height: 28px;
+        padding: 0 5px;
+        font-size: 8px;
+      }
     }
 
     .garageGrid {
@@ -4267,6 +4315,9 @@
           <div class="panel garagePanel">
             <div class="garageHeader">
               <h2>Garage</h2>
+              <div class="garageRewardAdBox" id="rewardAdBox">
+                <button class="rewardAdBtn" id="rewardAdBtn" type="button">広告で +10P</button>
+              </div>
               <div class="pointsBadge" id="garagePoints">0P</div>
             </div>
             <div class="garageGrid" id="garageGrid"></div>
@@ -4440,6 +4491,8 @@
     const OVERALL_BEST_KEY = "pocketTurboRacer_best_overall";
     const POINTS_KEY = "pocketTurboRacer_points";
     const POINTS_TEST_RESET_KEY = "pocketTurboRacer_pointsTestResetV1";
+    const REWARD_AD_DAILY_KEY = "pocketTurboRacer_rewardAdDateV17";
+    const REWARD_AD_POINTS = 10;
     const OWNED_CARS_KEY = "pocketTurboRacer_ownedCars";
     const SELECTED_PLAYER_CAR_KEY = "pocketTurboRacer_selectedPlayerCar";
     const DIFFICULTY_KEY = "pocketTurboRacer_difficulty";
@@ -4897,6 +4950,8 @@
       garage: document.getElementById("garageScreen"),
       garageGrid: document.getElementById("garageGrid"),
       garagePoints: document.getElementById("garagePoints"),
+      rewardAdBox: document.getElementById("rewardAdBox"),
+      rewardAdBtn: document.getElementById("rewardAdBtn"),
       course: document.getElementById("courseScreen"),
       courseGrid: document.getElementById("courseGrid"),
       preRace: document.getElementById("preRaceScreen"),
@@ -5107,6 +5162,72 @@
     function setPoints(points) {
       localStorage.setItem(POINTS_KEY, String(Math.max(0, Math.round(points))));
     }
+
+    function rewardAdTodayKey() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function hasClaimedRewardAdToday() {
+      return localStorage.getItem(REWARD_AD_DAILY_KEY) === rewardAdTodayKey();
+    }
+
+    function rewardAdLabel(texts) {
+      return TUTORIAL_LANG === "ja" ? texts.ja : texts.en;
+    }
+
+    function updateRewardAdUi() {
+      if (!ui.rewardAdBtn) return;
+      ui.rewardAdBtn.textContent = rewardAdLabel({
+        ja: `広告で +${REWARD_AD_POINTS}P`,
+        en: `AD +${REWARD_AD_POINTS}P`
+      });
+
+      if (!IS_ANDROID_APP || hasClaimedRewardAdToday()) {
+        ui.rewardAdBtn.disabled = true;
+        return;
+      }
+
+      const ready = Boolean(window.AndroidRewardAd && typeof window.AndroidRewardAd.showRewardAd === "function");
+      ui.rewardAdBtn.disabled = !ready;
+    }
+
+    function requestRewardAd() {
+      if (!IS_ANDROID_APP || hasClaimedRewardAdToday()) {
+        updateRewardAdUi();
+        return;
+      }
+
+      if (!window.AndroidRewardAd || typeof window.AndroidRewardAd.showRewardAd !== "function") {
+        updateRewardAdUi();
+        return;
+      }
+
+      ui.rewardAdBtn.disabled = true;
+      window.AndroidRewardAd.showRewardAd();
+    }
+
+    window.ptrRewardAdGranted = function(points) {
+      if (hasClaimedRewardAdToday()) {
+        updateRewardAdUi();
+        return;
+      }
+
+      const addPoints = Math.max(0, Number(points) || REWARD_AD_POINTS);
+      setPoints(getPoints() + addPoints);
+      localStorage.setItem(REWARD_AD_DAILY_KEY, rewardAdTodayKey());
+      renderGarage();
+      updateHud();
+      ui.hint.textContent = rewardAdLabel({
+        ja: `広告ボーナス +${addPoints}P を受け取りました。`,
+        en: `Reward bonus +${addPoints}P claimed.`
+      });
+      updateRewardAdUi();
+    };
+
 
     function storageFlag(key, fallback = true) {
       const raw = localStorage.getItem(key);
@@ -6682,6 +6803,7 @@
         ui.garageGrid.appendChild(card);
       });
       updateSettingsUi();
+      updateRewardAdUi();
     }
 
     function courseDisplayName(course) {
@@ -6940,6 +7062,7 @@
 
     bindButton("howToTitleBtn", () => showTutorial({ markSeen: false }), "select");
     bindButton("howToGarageBtn", () => showTutorial({ markSeen: false }), "select");
+    bindButton("rewardAdBtn", requestRewardAd, "select");
     ui.tutorialPrev.addEventListener("click", () => {
       playMenuSound("back");
       tutorialPageIndex = Math.max(0, tutorialPageIndex - 1);
