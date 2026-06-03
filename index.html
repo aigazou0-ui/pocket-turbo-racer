@@ -4594,12 +4594,24 @@
       }
     ];
 
+    // v18: CPU pack balance tightened so CPU cars race closer together.
     const CPU_CONFIG = [
-      { name: "CPU-A", speed: 1.21, wobble: 0.10, offset: 0.02 },
-      { name: "CPU-B", speed: 1.29, wobble: 0.07, offset: 0.18 },
-      { name: "CPU-C", speed: 1.24, wobble: 0.08, offset: -0.16 },
-      { name: "CPU-D", speed: 1.18, wobble: 0.10, offset: -0.03 }
+      { name: "CPU-A", speed: 1.20, wobble: 0.09, offset: 0.02 },
+      { name: "CPU-B", speed: 1.23, wobble: 0.08, offset: 0.18 },
+      { name: "CPU-C", speed: 1.21, wobble: 0.08, offset: -0.16 },
+      { name: "CPU-D", speed: 1.19, wobble: 0.09, offset: -0.03 }
     ];
+
+    // v18: CPU-only car balance. Fast F1/BOLT is slightly held back,
+    // slower body types are lifted so every CPU feels more competitive.
+    const CPU_CAR_BALANCE = {
+      bolt: 0.94,
+      vela: 0.97,
+      crux: 1.00,
+      nova: 1.02,
+      dart: 1.04,
+      aero: 1.03
+    };
 
     const DIFFICULTIES = {
       easy: { label: "EASY", multiplier: 0.88 },
@@ -6003,10 +6015,28 @@
       return { x: x + nx * offset, y: y + ny * offset };
     }
 
-    function nearestTrackProgress(x, y) {
+    function nearestTrackProgress(x, y, previousProgress = null, searchWindow = null) {
       let bestIndex = 0;
       let bestDist = Infinity;
-      for (let i = 0; i < cpWaypoints.length; i++) {
+
+      if (previousProgress === null || searchWindow === null || !cpWaypoints.length) {
+        for (let i = 0; i < cpWaypoints.length; i++) {
+          const p = cpWaypoints[i];
+          const dist = (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestIndex = i;
+          }
+        }
+        return bestIndex / cpWaypoints.length;
+      }
+
+      // v18: rank/lap stability. Search near the previous progress first,
+      // so close parallel roads or sharp corners do not jump to a wrong segment.
+      const center = waypointIndexForProgress(previousProgress);
+      const windowSize = Math.max(6, Math.floor(cpWaypoints.length * searchWindow));
+      for (let offset = -windowSize; offset <= windowSize; offset++) {
+        const i = (center + offset + cpWaypoints.length) % cpWaypoints.length;
         const p = cpWaypoints[i];
         const dist = (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y);
         if (dist < bestDist) {
@@ -6082,6 +6112,7 @@
         finishTime: 0,
         exitTimer: 0,
         progress: 0,
+        rankProgress: 0,
         rankScore: 0,
         waypointIndex: 0,
         laneOffset,
@@ -6107,6 +6138,7 @@
       player = makeRacer("bolt", car, start.x, start.y, startAngle, playerGrid.lane);
       player.moveAngle = startAngle;
       player.progress = playerGrid.progress;
+      player.rankProgress = playerGrid.progress;
 
       racers = [player];
       const cpuGrids = startGrid.filter((_, index) => index !== playerGridIndex);
@@ -6124,7 +6156,7 @@
           // v30: use pre-colored CPU PNGs instead of runtime tinting, so CPU cars never remain red.
           spriteId: `cpu_${vehicle.spriteId}_${colorSet.label}`,
           tintColor: null,
-          cpuSpeed: cpu.speed * DIFFICULTIES[selectedDifficulty].multiplier * (course.cpuSpeedScale || 1),
+          cpuSpeed: cpu.speed * (CPU_CAR_BALANCE[vehicle.carId] || 1) * DIFFICULTIES[selectedDifficulty].multiplier * (course.cpuSpeedScale || 1),
           cpuCornerScale: course.cpuCornerScale || 1,
           cpuWobble: cpu.wobble
         };
@@ -6135,6 +6167,7 @@
         racer.name = cpu.name;
         racer.laneBias = cpu.offset || 0;
         racer.progress = grid.progress;
+        racer.rankProgress = grid.progress;
         racer.waypointIndex = (waypointIndexForProgress(grid.progress) + 5) % cpWaypoints.length;
         racers.push(racer);
       });
@@ -6216,7 +6249,7 @@
       r.prevY = r.y;
 
       const wobble = Math.sin(time * 0.0017 + r.laneOffset * 18) * (r.car.cpuWobble || 0.1);
-      const nearestProgress = nearestTrackProgress(r.x, r.y);
+      const nearestProgress = nearestTrackProgress(r.x, r.y, r.progress, 0.075);
       const nearestIndex = waypointIndexForProgress(nearestProgress);
 
       // CPU driving line v12w:
@@ -6429,9 +6462,15 @@
 
     function updateLapProgress(r) {
       const previousProgress = r.progress;
-      const currentProgress = nearestTrackProgress(r.x, r.y);
+      const currentProgress = nearestTrackProgress(r.x, r.y, previousProgress, 0.085);
       const forwardDelta = progressForwardDelta(previousProgress, currentProgress);
-      const validTrackStep = forwardDelta > 0 && forwardDelta < 0.12;
+
+      // v18: reduce progress jumps that can cause wrong rank/lap displays.
+      // A wider allowance is kept only near the start line so lap crossing still works.
+      const nearStartLine = previousProgress > 0.88 || previousProgress < 0.12 || currentProgress > 0.88 || currentProgress < 0.12;
+      const maxForwardStep = nearStartLine ? 0.085 : 0.055;
+      const validTrackStep = forwardDelta > 0 && forwardDelta < maxForwardStep;
+
       if (validTrackStep) {
         r.progress = currentProgress;
         if (crossedProgressLine(previousProgress, currentProgress, 0.22) || currentProgress > 0.22 && currentProgress < 0.36) r.cp1 = true;
@@ -6443,6 +6482,7 @@
         r.lap += 1;
         r.cp1 = false;
         r.cp2 = false;
+        r.rankProgress = r.progress;
         if (r.kind === "bolt") refillTurbo();
         if (r.lap >= TOTAL_LAPS && !r.finished) {
           r.finished = true;
@@ -6455,7 +6495,15 @@
           ui.hint.textContent = "Turbo refilled.";
         }
       }
-      r.rankScore = r.lap + r.progress;
+
+      // v18: smooth only the display/ranking value. Lap logic still uses raw progress.
+      const rankDelta = progressForwardDelta(r.rankProgress || 0, r.progress);
+      if (rankDelta > 0 && rankDelta < 0.08) {
+        r.rankProgress = wrapProgress((r.rankProgress || 0) + rankDelta * 0.42);
+      } else if (validTrackStep) {
+        r.rankProgress = r.progress;
+      }
+      r.rankScore = r.lap + (r.rankProgress || r.progress);
     }
 
     function refillTurbo() {
@@ -6475,7 +6523,11 @@
       const ordered = [...racers].sort((a, b) => {
         const af = a.finished ? 10 + (999999 - a.finishTime) / 999999 : a.rankScore;
         const bf = b.finished ? 10 + (999999 - b.finishTime) / 999999 : b.rankScore;
-        return bf - af;
+        const diff = bf - af;
+        if (Math.abs(diff) < 0.006) {
+          return (a.position || 99) - (b.position || 99);
+        }
+        return diff;
       });
       ordered.forEach((r, index) => {
         r.position = index + 1;

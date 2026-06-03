@@ -1,4 +1,4 @@
-const CACHE_NAME = "pocket-turbo-racer-v17e-reward-absolute";
+const CACHE_NAME = "pocket-turbo-racer-v18-cpu-rank-balance";
 const CORE_ASSETS = [
   "./",
   "./index.html",
