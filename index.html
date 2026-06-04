@@ -4602,16 +4602,33 @@
       { name: "CPU-D", speed: 1.19, wobble: 0.09, offset: -0.03 }
     ];
 
-    // v18: CPU-only car balance. Fast F1/BOLT is slightly held back,
-    // slower body types are lifted so every CPU feels more competitive.
+    // v18b: CPU-only car balance. BOLT/F1 is restored to its original speed,
+    // slower body types are lifted so CPU cars still race closer together.
     const CPU_CAR_BALANCE = {
-      bolt: 0.94,
+      bolt: 1.00,
       vela: 0.97,
       crux: 1.00,
       nova: 1.02,
       dart: 1.04,
       aero: 1.03
     };
+
+    // v18m: course-by-course CPU final-corner line settings.
+    // This avoids one global correction causing strange behavior on other courses.
+    const CPU_FINAL_CORNER_LINE = {
+      lakesideGp:  { enabled: true, mode: "player", strength: 1.00, start: 0.035, end: 0.300, maxLane: 1.24 }, // SUN: v18l OK
+      harborBend: { enabled: true, mode: "player", strength: 0.78, start: 0.045, end: 0.260, maxLane: 1.00 }, // PINE
+      speedBowl:  { enabled: true, mode: "player", strength: 0.54, start: 0.045, end: 0.225, maxLane: 0.78 }, // DOCK: wide/oval, weak
+      aeroCanyon: { enabled: true, mode: "player", strength: 0.72, start: 0.045, end: 0.270, maxLane: 0.96 }, // DUNE
+      neonEsses:  { enabled: true, mode: "player", strength: 0.62, start: 0.050, end: 0.245, maxLane: 0.86 }, // LUNA
+      metroLoop:  { enabled: true, mode: "player", strength: 0.62, start: 0.050, end: 0.245, maxLane: 0.86 }, // NEON
+      skySprint:  { enabled: true, mode: "player", strength: 0.68, start: 0.045, end: 0.260, maxLane: 0.92 }, // SKY
+      ridgeRun:   { enabled: true, mode: "player", strength: 0.64, start: 0.050, end: 0.250, maxLane: 0.88 }  // RIDGE
+    };
+
+    function cpuFinalLineSettings() {
+      return CPU_FINAL_CORNER_LINE[currentCourse().id] || { enabled: false, mode: "player", strength: 0, start: 0.05, end: 0.25, maxLane: 0.72 };
+    }
 
     const DIFFICULTIES = {
       easy: { label: "EASY", multiplier: 0.88 },
@@ -6047,10 +6064,28 @@
       return bestIndex / cpWaypoints.length;
     }
 
-    function nearestTrackPoint(x, y) {
+    function nearestTrackPoint(x, y, previousProgress = null, searchWindow = null) {
       let bestPoint = cpWaypoints[0];
       let bestDist = Infinity;
-      for (let i = 0; i < cpWaypoints.length; i++) {
+
+      if (previousProgress === null || searchWindow === null || !cpWaypoints.length) {
+        for (let i = 0; i < cpWaypoints.length; i++) {
+          const p = cpWaypoints[i];
+          const dist = (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestPoint = p;
+          }
+        }
+        return bestPoint;
+      }
+
+      // v18e: CPU final-corner safety. Snap back to the nearest point only
+      // around the current progress, so close straights/final corners are not mixed up.
+      const center = waypointIndexForProgress(previousProgress);
+      const windowSize = Math.max(6, Math.floor(cpWaypoints.length * searchWindow));
+      for (let offset = -windowSize; offset <= windowSize; offset++) {
+        const i = (center + offset + cpWaypoints.length) % cpWaypoints.length;
         const p = cpWaypoints[i];
         const dist = (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y);
         if (dist < bestDist) {
@@ -6112,7 +6147,7 @@
         finishTime: 0,
         exitTimer: 0,
         progress: 0,
-        rankProgress: 0,
+        raceDistance: 0,
         rankScore: 0,
         waypointIndex: 0,
         laneOffset,
@@ -6138,7 +6173,8 @@
       player = makeRacer("bolt", car, start.x, start.y, startAngle, playerGrid.lane);
       player.moveAngle = startAngle;
       player.progress = playerGrid.progress;
-      player.rankProgress = playerGrid.progress;
+      player.raceDistance = -progressForwardDelta(playerGrid.progress, course.startLineProgress);
+      player.rankScore = player.raceDistance;
 
       racers = [player];
       const cpuGrids = startGrid.filter((_, index) => index !== playerGridIndex);
@@ -6167,7 +6203,8 @@
         racer.name = cpu.name;
         racer.laneBias = cpu.offset || 0;
         racer.progress = grid.progress;
-        racer.rankProgress = grid.progress;
+        racer.raceDistance = -progressForwardDelta(grid.progress, course.startLineProgress);
+        racer.rankScore = racer.raceDistance;
         racer.waypointIndex = (waypointIndexForProgress(grid.progress) + 5) % cpWaypoints.length;
         racers.push(racer);
       });
@@ -6248,47 +6285,108 @@
       r.prevX = r.x;
       r.prevY = r.y;
 
-      const wobble = Math.sin(time * 0.0017 + r.laneOffset * 18) * (r.car.cpuWobble || 0.1);
       const nearestProgress = nearestTrackProgress(r.x, r.y, r.progress, 0.075);
       const nearestIndex = waypointIndexForProgress(nearestProgress);
+      const startLineProgress = currentCourse().startLineProgress;
+      const distanceToStartLine = progressForwardDelta(nearestProgress, startLineProgress);
 
-      // CPU driving line v12w:
-      // Do not aim for the shortest inside line. In corners, look a little closer
-      // and bias the target lane toward the outside so CPU cars use the whole road.
-      const baseLookAhead = clamp(Math.floor(8 + Math.abs(r.speed) * 1.35), 9, 22);
+      // v18l: stable player-side final apex.
+      // v18k is discarded. It used forced world points and made the line look wrong.
+      // This version returns to the stable v18i base, then uses a large road-lane value
+      // only in the final sector. The side is chosen by which lane is closer to the
+      // player's red-car side, so CPU cars move toward the visible inner/red area.
+      const finalLine = cpuFinalLineSettings();
+      const finalStart = finalLine.start;
+      const finalEnd = finalLine.end;
+      const finalStrength = finalLine.enabled ? finalLine.strength : 0;
+      const finalCornerZone = finalLine.enabled && distanceToStartLine > finalStart && distanceToStartLine < finalEnd;
+      const apexIn = clamp((distanceToStartLine - finalStart) / 0.085, 0, 1);
+      const apexOut = clamp((finalEnd - distanceToStartLine) / 0.095, 0, 1);
+      const apexBlend = finalCornerZone ? Math.min(apexIn, apexOut) * finalStrength : 0;
+
+      const wobbleRaw = Math.sin(time * 0.0017 + r.laneOffset * 18) * (r.car.cpuWobble || 0.1);
+      const wobble = wobbleRaw * (1 - apexBlend * 0.80);
+
+      const baseLookAhead = clamp(Math.floor(8 + Math.abs(r.speed) * (1.35 - apexBlend * 0.52)), 8, Math.round(22 - apexBlend * 8));
       const previewProgress = ((nearestIndex + baseLookAhead) % cpWaypoints.length) / cpWaypoints.length;
       const previewTurn = angleDistance(tangentAngleAt(nearestProgress), tangentAngleAt(previewProgress));
-      const lookAhead = clamp(Math.floor(baseLookAhead * (1 - clamp(previewTurn * 0.22, 0, 0.38))), 8, 22);
+      const lookAhead = clamp(
+        Math.floor(baseLookAhead * (1 - clamp(previewTurn * (0.22 + apexBlend * 0.15), 0, 0.38 + apexBlend * 0.15))),
+        7,
+        Math.round(22 - apexBlend * 9)
+      );
       const targetIndex = (nearestIndex + lookAhead) % cpWaypoints.length;
       const targetProgress = targetIndex / cpWaypoints.length;
+
       const avoidanceLane = cpuAvoidanceLane(r, nearestProgress);
       if (r.avoidBiasTimer > 0) {
         r.avoidBiasTimer -= scale;
       } else {
         r.avoidBias = 0;
       }
+
       const signedUpcomingTurn = signedAngleDelta(tangentAngleAt(nearestProgress), tangentAngleAt(targetProgress));
       const upcomingTurn = Math.abs(signedUpcomingTurn);
       const turnDirection = signedUpcomingTurn === 0 ? 0 : signedUpcomingTurn > 0 ? 1 : -1;
-      const outsideCornerLane = turnDirection * clamp(upcomingTurn * 0.28, 0, 0.25);
-      const baseLane = r.laneOffset * 0.10 + (r.laneBias || 0) * 0.045;
-      const safeAvoidanceLane = avoidanceLane * clamp(1 - upcomingTurn * 0.22, 0.55, 1);
-      const safeAvoidBias = r.avoidBias * clamp(1 - upcomingTurn * 0.18, 0.62, 1);
-      const targetLane = clamp(baseLane + outsideCornerLane + wobble * 0.010 + safeAvoidanceLane * 0.92 + safeAvoidBias * 0.92, -0.63, 0.63);
+
+      const normalCornerLane = turnDirection * clamp(upcomingTurn * 0.28, 0, 0.25);
+
+      // Choose the large lane side that is closer to the player's current side.
+      // This directly addresses the user's screenshot: CPU should move toward the red car area.
+      const courseMaxLane = finalLine.maxLane || 0.92;
+      const strongLaneAbs = clamp(0.72 + apexBlend * 0.42, 0.60, courseMaxLane);
+      let playerSideSign = turnDirection || 1;
+      if (player && apexBlend > 0) {
+        const plusPoint = roadCenterAt(targetProgress, strongLaneAbs);
+        const minusPoint = roadCenterAt(targetProgress, -strongLaneAbs);
+        const plusScore = Math.abs(plusPoint.x - player.x) + Math.abs(plusPoint.y - player.y) * 0.34;
+        const minusScore = Math.abs(minusPoint.x - player.x) + Math.abs(minusPoint.y - player.y) * 0.34;
+        playerSideSign = plusScore <= minusScore ? 1 : -1;
+      }
+      const playerSideApexLane = playerSideSign * strongLaneAbs;
+      const cornerLane = normalCornerLane * (1 - apexBlend) + playerSideApexLane * apexBlend;
+
+      const baseLane = r.laneOffset * (0.10 - apexBlend * 0.094) + (r.laneBias || 0) * (0.045 - apexBlend * 0.042);
+      const safeAvoidanceLane = avoidanceLane * clamp(1 - upcomingTurn * (0.22 + apexBlend * 0.34), 0.55 - apexBlend * 0.44, 1);
+      const safeAvoidBias = r.avoidBias * clamp(1 - upcomingTurn * (0.18 + apexBlend * 0.32), 0.62 - apexBlend * 0.50, 1);
+      const laneLimit = 1.28;
+      const targetLane = clamp(
+        baseLane + cornerLane +
+        wobble * (0.010 - apexBlend * 0.009) +
+        safeAvoidanceLane * (0.92 - apexBlend * 0.72) +
+        safeAvoidBias * (0.92 - apexBlend * 0.72),
+        -laneLimit,
+        laneLimit
+      );
+
       const target = roadCenterAt(targetProgress, targetLane);
       const targetAngle = angleToPoint(r, target);
-      r.angle = angleLerp(r.angle, targetAngle + wobble * 0.016, 0.12 * scale);
-      r.moveAngle = angleLerp(r.moveAngle, r.angle, (0.11 + (1 - r.car.grip) * 0.52) * scale);
 
-      const turnAmount = angleDistance(r.moveAngle, targetAngle);
+      // Anti-spin guard retained from v18i. Stronger lane is allowed, but not a sideways target.
+      const courseTangent = tangentAngleAt(nearestProgress);
+      const rawDeltaFromTangent = signedAngleDelta(courseTangent, targetAngle);
+      const maxSteerFromTangent = Math.PI - apexBlend * 2.28; // about 0.86 rad at full apex
+      const safeTargetAngle = apexBlend > 0
+        ? courseTangent + clamp(rawDeltaFromTangent, -maxSteerFromTangent, maxSteerFromTangent)
+        : targetAngle;
+
+      r.angle = angleLerp(r.angle, safeTargetAngle + wobble * (0.016 - apexBlend * 0.012), (0.12 - apexBlend * 0.034) * scale);
+      r.moveAngle = angleLerp(r.moveAngle, r.angle, ((0.11 + apexBlend * 0.004) + (1 - r.car.grip) * (0.52 - apexBlend * 0.07)) * scale);
+
+      const turnAmount = angleDistance(r.moveAngle, safeTargetAngle);
       const cornerScale = r.car.cpuCornerScale || 1;
-      const cornerSlowdown = clamp(1 - turnAmount * 0.17 * cornerScale - upcomingTurn * 0.39 * cornerScale, 0.60, 1);
-      const desiredSpeed = r.car.maxSpeed * (r.car.cpuSpeed || 0.92) * cornerSlowdown * cpuBattlePace(r);
-      r.speed = lerp(r.speed, desiredSpeed, 0.062 * scale);
+      const finalCornerGuard = clamp(1 - apexBlend * (upcomingTurn * 0.22 + turnAmount * 0.11), 0.74, 1);
+      const cornerSlowdown = clamp(
+        1 - turnAmount * 0.17 * cornerScale - upcomingTurn * (0.39 + apexBlend * 0.10) * cornerScale,
+        0.60 - apexBlend * 0.13,
+        1
+      );
+      const desiredSpeed = r.car.maxSpeed * (r.car.cpuSpeed || 0.92) * cornerSlowdown * finalCornerGuard * cpuBattlePace(r);
+      r.speed = lerp(r.speed, desiredSpeed, (0.062 - apexBlend * 0.013) * scale);
       r.x += Math.cos(r.moveAngle) * r.speed * scale;
       r.y += Math.sin(r.moveAngle) * r.speed * scale;
 
-      if (Math.hypot(target.x - r.x, target.y - r.y) < 34) {
+      if (Math.hypot(target.x - r.x, target.y - r.y) < (34 - apexBlend * 9)) {
         r.waypointIndex = (targetIndex + 1) % cpWaypoints.length;
       } else {
         r.waypointIndex = targetIndex;
@@ -6359,7 +6457,7 @@
 
     function pushCpuAvoidBias(cpu, other) {
       if (cpu.kind !== "cpu" || cpu.finished) return;
-      const progress = nearestTrackProgress(cpu.x, cpu.y);
+      const progress = nearestTrackProgress(cpu.x, cpu.y, cpu.progress, 0.085);
       const right = tangentAngleAt(progress) + Math.PI / 2;
       const rightX = Math.cos(right);
       const rightY = Math.sin(right);
@@ -6379,7 +6477,7 @@
       r.stuckTimer = Math.abs(r.speed) < 0.55 ? (r.stuckTimer || 0) + scale : 0;
       if (r.stuckTimer < 95) return;
 
-      const progress = nearestTrackProgress(r.x, r.y);
+      const progress = nearestTrackProgress(r.x, r.y, r.progress, 0.120);
       const safeProgress = (progress + 0.012) % 1;
       const safeLane = clamp(r.laneOffset * 0.22, -0.18, 0.18);
       const safePoint = roadCenterAt(safeProgress, safeLane);
@@ -6397,7 +6495,7 @@
 
     function handleCourseCollision(r) {
       if (isOnRoad(r.x, r.y)) return;
-      const target = nearestTrackPoint(r.x, r.y);
+      const target = nearestTrackPoint(r.x, r.y, r.progress, r.kind === "cpu" ? 0.105 : null);
       const dx = target.x - r.x;
       const dy = target.y - r.y;
       const dist = Math.hypot(dx, dy) || 1;
@@ -6446,10 +6544,15 @@
             const bounceDamping = playerContact ? 0.20 : 0.19;
             const aBounce = Math.max(Math.abs(a.speed) * bounceDamping, 0.38);
             const bBounce = Math.max(Math.abs(b.speed) * bounceDamping, 0.38);
-            a.moveAngle = Math.atan2(-ny, -nx);
-            b.moveAngle = Math.atan2(ny, nx);
-            a.angle = angleLerp(a.angle, a.moveAngle, 0.28);
-            b.angle = angleLerp(b.angle, b.moveAngle, 0.28);
+            const aContactAngle = Math.atan2(-ny, -nx);
+            const bContactAngle = Math.atan2(ny, nx);
+            const aTrackAngle = a.kind === "cpu" ? tangentAngleAt(a.progress) : aContactAngle;
+            const bTrackAngle = b.kind === "cpu" ? tangentAngleAt(b.progress) : bContactAngle;
+            // v18i: CPU cars should not spin from contact near the final corner.
+            a.moveAngle = a.kind === "cpu" ? angleLerp(aContactAngle, aTrackAngle, 0.58) : aContactAngle;
+            b.moveAngle = b.kind === "cpu" ? angleLerp(bContactAngle, bTrackAngle, 0.58) : bContactAngle;
+            a.angle = angleLerp(a.angle, a.moveAngle, 0.24);
+            b.angle = angleLerp(b.angle, b.moveAngle, 0.24);
             a.speed = aBounce;
             b.speed = bBounce;
             pushCpuAvoidBias(a, b);
@@ -6462,17 +6565,24 @@
 
     function updateLapProgress(r) {
       const previousProgress = r.progress;
-      const currentProgress = nearestTrackProgress(r.x, r.y, previousProgress, 0.085);
+
+      // v18d: use a tighter local search for lap/rank progress than CPU steering.
+      // This reduces accidental jumps to a nearby but wrong road segment.
+      const currentProgress = nearestTrackProgress(r.x, r.y, previousProgress, 0.060);
       const forwardDelta = progressForwardDelta(previousProgress, currentProgress);
 
-      // v18: reduce progress jumps that can cause wrong rank/lap displays.
-      // A wider allowance is kept only near the start line so lap crossing still works.
-      const nearStartLine = previousProgress > 0.88 || previousProgress < 0.12 || currentProgress > 0.88 || currentProgress < 0.12;
-      const maxForwardStep = nearStartLine ? 0.085 : 0.055;
+      // Ranking must not use raw route progress directly.
+      // Raw progress wraps at route 1.0/0.0, while the start/finish line is
+      // progressOnRoute(segment 0, 0.5). raceDistance stays monotonic from grid start.
+      const nearRouteOrigin =
+        previousProgress > 0.90 || previousProgress < 0.10 ||
+        currentProgress > 0.90 || currentProgress < 0.10;
+      const maxForwardStep = nearRouteOrigin ? 0.095 : 0.065;
       const validTrackStep = forwardDelta > 0 && forwardDelta < maxForwardStep;
 
       if (validTrackStep) {
         r.progress = currentProgress;
+        r.raceDistance = (r.raceDistance || 0) + forwardDelta;
         if (crossedProgressLine(previousProgress, currentProgress, 0.22) || currentProgress > 0.22 && currentProgress < 0.36) r.cp1 = true;
         if (crossedProgressLine(previousProgress, currentProgress, 0.62) || currentProgress > 0.62 && currentProgress < 0.78) r.cp2 = true;
       }
@@ -6482,7 +6592,6 @@
         r.lap += 1;
         r.cp1 = false;
         r.cp2 = false;
-        r.rankProgress = r.progress;
         if (r.kind === "bolt") refillTurbo();
         if (r.lap >= TOTAL_LAPS && !r.finished) {
           r.finished = true;
@@ -6496,14 +6605,7 @@
         }
       }
 
-      // v18: smooth only the display/ranking value. Lap logic still uses raw progress.
-      const rankDelta = progressForwardDelta(r.rankProgress || 0, r.progress);
-      if (rankDelta > 0 && rankDelta < 0.08) {
-        r.rankProgress = wrapProgress((r.rankProgress || 0) + rankDelta * 0.42);
-      } else if (validTrackStep) {
-        r.rankProgress = r.progress;
-      }
-      r.rankScore = r.lap + (r.rankProgress || r.progress);
+      r.rankScore = r.raceDistance || 0;
     }
 
     function refillTurbo() {
@@ -6523,11 +6625,7 @@
       const ordered = [...racers].sort((a, b) => {
         const af = a.finished ? 10 + (999999 - a.finishTime) / 999999 : a.rankScore;
         const bf = b.finished ? 10 + (999999 - b.finishTime) / 999999 : b.rankScore;
-        const diff = bf - af;
-        if (Math.abs(diff) < 0.006) {
-          return (a.position || 99) - (b.position || 99);
-        }
-        return diff;
+        return bf - af;
       });
       ordered.forEach((r, index) => {
         r.position = index + 1;
@@ -7727,6 +7825,30 @@
     }
 
     window.__pcrDebug = {
+      finalLineStatus() {
+        return {
+          course: currentCourse().name,
+          courseId: currentCourse().id,
+          settings: cpuFinalLineSettings(),
+          cpu: racers.filter(r => r.kind === "cpu").map(r => ({
+            name: r.name || "",
+            progress: Number((r.progress || 0).toFixed(4)),
+            distanceToStart: Number(progressForwardDelta(r.progress || 0, currentCourse().startLineProgress).toFixed(4))
+          }))
+        };
+      },
+      rankStatus() {
+        return racers.map(r => ({
+          kind: r.kind,
+          name: r.name || r.car?.name || "",
+          lap: r.lap,
+          progress: Number((r.progress || 0).toFixed(4)),
+          raceDistance: Number((r.raceDistance || 0).toFixed(4)),
+          rankScore: Number((r.rankScore || 0).toFixed(4)),
+          position: r.position || null,
+          finished: !!r.finished
+        }));
+      },
       audioStatus() {
         return {
           bgmEnabled,
