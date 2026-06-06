@@ -4262,6 +4262,23 @@
       }
     }
   </style>
+
+<script>
+(function(){
+  try {
+    var KEY = 'ptrTitleCacheBust18aeDone';
+    if (!localStorage.getItem(KEY) && window.caches && caches.keys) {
+      caches.keys().then(function(keys){
+        return Promise.all(keys.map(function(k){
+          if (String(k).indexOf('pocket-turbo-racer-') === 0) return caches.delete(k);
+          return false;
+        }));
+      }).then(function(){ localStorage.setItem(KEY, '1'); });
+    }
+  } catch (e) {}
+})();
+</script>
+
 </head>
 <body>
   <div id="portraitMessage">スマホを横向きにして遊んでください</div>
@@ -4296,9 +4313,9 @@
             </div>
             <div class="titleGarage">
                                                                                     <div class="titleCars" aria-hidden="true">
-                <img class="titleCar" src="assets/cars/cpu/nova_blue.png" alt="">
-                <img class="titleCar main" src="assets/cars/shop/aero.png" alt="">
-                <img class="titleCar" src="assets/cars/cpu/crux_yellow.png" alt="">
+                <img class="titleCar" src="assets/cars/cpu/nova_blue.png?v=18ae-title" alt="">
+                <img class="titleCar main" src="assets/cars/shop/aero.png?v=18ae-title" alt="">
+                <img class="titleCar" src="assets/cars/cpu/crux_yellow.png?v=18ae-title" alt="">
               </div>
               <div class="titleActions">
                 <button class="menuBtn titleBtn" id="startMenuBtn">START</button>
