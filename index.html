@@ -3835,6 +3835,295 @@
       }
     }
 
+  
+
+    /* --- v18av: restore HOW TO manual + reward ad UI.
+       This block intentionally avoids garage car-size rules. --- */
+    .howToBtn {
+      min-width: 160px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: 3px solid #f8d44a;
+      background: linear-gradient(180deg, rgba(37, 54, 78, .96), rgba(7, 11, 18, .96));
+      color: #fff8c9;
+      font: inherit;
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-align: center;
+      box-shadow:
+        0 6px 0 rgba(0, 0, 0, .55),
+        0 0 18px rgba(248, 212, 74, .28),
+        inset 0 0 0 2px rgba(255, 255, 255, .08);
+    }
+
+    #howToTitleBtn {
+      min-width: min(240px, 70vw);
+      min-height: clamp(46px, 6.5vw, 58px);
+      font-size: clamp(18px, 3.1vw, 26px);
+    }
+
+    .howToBtn:active {
+      transform: translateY(2px);
+      box-shadow:
+        0 3px 0 rgba(0, 0, 0, .55),
+        0 0 18px rgba(248, 212, 74, .22),
+        inset 0 0 0 2px rgba(255, 255, 255, .08);
+    }
+
+    .tutorialOverlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+      background: rgba(3, 6, 12, .78);
+      z-index: 20000;
+    }
+
+    .tutorialOverlay.is-visible {
+      display: flex;
+    }
+
+    .tutorialPanel {
+      width: min(760px, 92vw);
+      height: min(78vh, 520px);
+      max-height: min(78vh, 520px);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto auto;
+      gap: 10px;
+      padding: clamp(14px, 2.4vw, 24px);
+      border: 3px solid #f8d44a;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(32, 48, 70, .98), rgba(13, 22, 34, .98));
+      color: #fff8c9;
+      box-sizing: border-box;
+      overflow: hidden;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, .55), inset 0 0 0 2px rgba(5, 7, 10, .82);
+    }
+
+    .tutorialTitle {
+      margin: 0;
+      text-align: center;
+      font-size: clamp(22px, 4.4vw, 34px);
+      line-height: 1;
+      letter-spacing: .06em;
+      text-shadow: 2px 2px 0 #05070a;
+    }
+
+    .tutorialPage {
+      min-height: 0;
+      height: 100%;
+      overflow: auto;
+      padding: 2px 4px;
+      font-size: clamp(14px, 2.45vw, 20px);
+      line-height: 1.45;
+    }
+
+    .tutorialPage h3 {
+      margin: 0 0 8px;
+      color: #f8d44a;
+      font-size: clamp(18px, 3.2vw, 26px);
+      line-height: 1.1;
+    }
+
+    .tutorialPage ul {
+      margin: 0;
+      padding-left: 1.2em;
+    }
+
+    .tutorialPage li {
+      margin: .34em 0;
+    }
+
+    .tutorialDots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .tutorialDot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 248, 201, .34);
+      border: 1px solid rgba(255, 248, 201, .42);
+    }
+
+    .tutorialDot.is-active {
+      background: #f8d44a;
+    }
+
+    .tutorialActions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tutorialActions .menuBtn {
+      min-width: clamp(96px, 18vw, 150px);
+      padding: 10px 14px;
+      font-size: clamp(13px, 2.3vw, 18px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.1;
+      box-sizing: border-box;
+    }
+
+    .garageRewardAdBox {
+      position: absolute;
+      top: 50%;
+      right: 98px;
+      transform: translateY(-50%);
+      height: 31px;
+      display: flex;
+      align-items: center;
+      pointer-events: auto;
+    }
+
+    .rewardAdBtn {
+      width: 118px;
+      height: 31px;
+      padding: 0 8px;
+      border: 2px solid #315a3a;
+      background: #123d22;
+      color: #d7f3a2;
+      font-family: inherit;
+      font-size: clamp(8px, 1.05vw, 10px);
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    .rewardAdBtn:disabled {
+      opacity: .45;
+      border-color: #315a3a;
+      background: #1f3126;
+      color: #9fb594;
+    }
+
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      .titleActions {
+        gap: 8px !important;
+      }
+
+      .howToBtn {
+        min-width: clamp(140px, 22vw, 190px) !important;
+        padding: 10px 16px !important;
+        font-size: clamp(14px, 2.4vw, 18px) !important;
+      }
+
+      #howToTitleBtn {
+        min-width: clamp(170px, 30vw, 230px) !important;
+        min-height: clamp(42px, 7vh, 56px) !important;
+      }
+
+      .tutorialPanel {
+        width: min(780px, 94vw) !important;
+        height: min(84vh, 500px) !important;
+        max-height: min(84vh, 500px) !important;
+        gap: 8px !important;
+        padding: 12px 14px !important;
+      }
+
+      .tutorialPage {
+        font-size: clamp(11px, 1.9vw, 15px) !important;
+        line-height: 1.28 !important;
+        padding: 2px 2px !important;
+      }
+
+      .garageRewardAdBox {
+        right: 76px;
+        height: 28px;
+      }
+
+      .rewardAdBtn {
+        width: 96px;
+        height: 28px;
+        padding: 0 5px;
+        font-size: 8px;
+      }
+    }
+
+  
+
+    /* --- v18aw: force visible Garage reward ad button.
+       Put the ad button in the normal Garage header flow so it cannot disappear
+       behind the points badge or outside the header. --- */
+    #garageScreen .garageHeader {
+      display: grid !important;
+      grid-template-columns: minmax(92px, 1fr) auto auto !important;
+      align-items: center !important;
+      column-gap: 8px !important;
+      position: relative !important;
+      overflow: visible !important;
+    }
+
+    #garageScreen .garageHeader h2 {
+      min-width: 0 !important;
+    }
+
+    #garageScreen .garageRewardAdBox {
+      position: static !important;
+      top: auto !important;
+      right: auto !important;
+      transform: none !important;
+      height: auto !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      pointer-events: auto !important;
+      z-index: 30 !important;
+    }
+
+    #garageScreen .rewardAdBtn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: clamp(104px, 15vw, 128px) !important;
+      min-width: 104px !important;
+      height: 32px !important;
+      padding: 0 8px !important;
+      border-radius: 8px !important;
+      border: 2px solid #f8d44a !important;
+      background: linear-gradient(180deg, #2b7a35, #123d22) !important;
+      color: #fff8c9 !important;
+      font-family: inherit !important;
+      font-size: clamp(9px, 1.2vw, 12px) !important;
+      font-weight: 900 !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+      box-shadow: 0 3px 0 rgba(0,0,0,.42) !important;
+    }
+
+    #garageScreen .rewardAdBtn:disabled {
+      display: inline-flex !important;
+      opacity: .72 !important;
+      filter: grayscale(.08) !important;
+    }
+
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #garageScreen .garageHeader {
+        grid-template-columns: minmax(58px, 1fr) auto auto !important;
+        column-gap: 4px !important;
+      }
+
+      #garageScreen .rewardAdBtn {
+        width: clamp(88px, 16vw, 108px) !important;
+        min-width: 88px !important;
+        height: 27px !important;
+        padding: 0 4px !important;
+        font-size: clamp(7.5px, 1.6vw, 9.5px) !important;
+        border-radius: 7px !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -3876,6 +4165,7 @@
               </div>
               <div class="titleActions">
                 <button class="menuBtn titleBtn" id="startMenuBtn">START</button>
+                <button class="howToBtn" id="howToTitleBtn" type="button">HOW TO PLAY</button>
               </div>
             </div>
             <button class="titleResetBtn" id="resetSaveBtn" type="button">DataReset</button>
@@ -3886,6 +4176,9 @@
           <div class="panel garagePanel">
             <div class="garageHeader">
               <h2>Garage</h2>
+              <div class="garageRewardAdBox" id="rewardAdBox">
+                <button class="rewardAdBtn" id="rewardAdBtn" type="button">広告で +10P</button>
+              </div>
               <div class="pointsBadge" id="garagePoints">0P</div>
             </div>
             <div class="garageGrid" id="garageGrid"></div>
@@ -3909,6 +4202,7 @@
             <div class="garageActions">
               <button class="menuBtn" id="garageRaceBtn">Race</button>
               <button class="menuBtn" id="garageBackBtn">BACK</button>
+              <button class="howToBtn" id="howToGarageBtn" type="button">HOW TO PLAY</button>
             </div>
           </div>
         </div>
@@ -4017,8 +4311,25 @@
     </section>
   </main>
 
+
+  <div class="tutorialOverlay" id="tutorialOverlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+    <div class="tutorialPanel">
+      <h2 class="tutorialTitle" id="tutorialTitle">HOW TO PLAY</h2>
+      <div class="tutorialPage" id="tutorialPage"></div>
+      <div class="tutorialDots" id="tutorialDots" aria-hidden="true"></div>
+      <div class="tutorialActions">
+        <button class="menuBtn" id="tutorialPrevBtn" type="button">BACK</button>
+        <button class="menuBtn titleBtn" id="tutorialNextBtn" type="button">NEXT</button>
+        <button class="menuBtn titleBtn" id="tutorialOkBtn" type="button">OK</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     "use strict";
+
+    const URL_PARAMS = new URLSearchParams(location.search);
+    const IS_ANDROID_APP = URL_PARAMS.get("app") === "android";
 
     // --- Game state ---------------------------------------------------------
     const GameState = {
@@ -4041,6 +4352,8 @@
     const OVERALL_BEST_KEY = "pocketTurboRacer_best_overall";
     const POINTS_KEY = "pocketTurboRacer_points";
     const POINTS_TEST_RESET_KEY = "pocketTurboRacer_pointsTestResetV1";
+    const REWARD_AD_DAILY_KEY = "pocketTurboRacer_rewardAdDateV17";
+    const REWARD_AD_POINTS = 10;
     const OWNED_CARS_KEY = "pocketTurboRacer_ownedCars";
     const SELECTED_PLAYER_CAR_KEY = "pocketTurboRacer_selectedPlayerCar";
     const DIFFICULTY_KEY = "pocketTurboRacer_difficulty";
@@ -4048,6 +4361,7 @@
     const SFX_ENABLED_KEY = "pocketTurboRacer_sfxEnabled";
     const PURCHASE_RESET_KEY = "pocketTurboRacer_purchaseResetV2";
     const STARTER_CAR_MIGRATION_KEY = "pocketTurboRacer_starterCarV3";
+    const TUTORIAL_SEEN_KEY = "pocketTurboRacer_tutorialSeenV12";
     const DEFAULT_PLAYER_CAR_ID = "aero";
     const TURBO_MAX_MS = 10000;
     const TURBO_SEGMENT_MS = 1000;
@@ -4490,11 +4804,17 @@
       return buffer;
     }
 
+    if (IS_ANDROID_APP) {
+      document.getElementById("gameRoot").classList.add("is-android-app");
+    }
+
     const ui = {
       title: document.getElementById("titleScreen"),
       garage: document.getElementById("garageScreen"),
       garageGrid: document.getElementById("garageGrid"),
       garagePoints: document.getElementById("garagePoints"),
+      rewardAdBox: document.getElementById("rewardAdBox"),
+      rewardAdBtn: document.getElementById("rewardAdBtn"),
       course: document.getElementById("courseScreen"),
       courseGrid: document.getElementById("courseGrid"),
       preRace: document.getElementById("preRaceScreen"),
@@ -4525,7 +4845,15 @@
       difficultyButtons: document.getElementById("difficultyButtons"),
       soundOn: document.getElementById("soundOnBtn"),
       soundOff: document.getElementById("soundOffBtn"),
-      sfxToggle: document.getElementById("sfxToggleBtn")
+      sfxToggle: document.getElementById("sfxToggleBtn"),
+      tutorialOverlay: document.getElementById("tutorialOverlay"),
+      tutorialPage: document.getElementById("tutorialPage"),
+      tutorialDots: document.getElementById("tutorialDots"),
+      tutorialPrev: document.getElementById("tutorialPrevBtn"),
+      tutorialNext: document.getElementById("tutorialNextBtn"),
+      tutorialOk: document.getElementById("tutorialOkBtn"),
+      howToTitle: document.getElementById("howToTitleBtn"),
+      howToGarage: document.getElementById("howToGarageBtn")
     };
 
     const input = {
@@ -4696,6 +5024,72 @@
     function setPoints(points) {
       localStorage.setItem(POINTS_KEY, String(Math.max(0, Math.round(points))));
     }
+
+    function rewardAdTodayKey() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function hasClaimedRewardAdToday() {
+      return localStorage.getItem(REWARD_AD_DAILY_KEY) === rewardAdTodayKey();
+    }
+
+    function rewardAdLabel(texts) {
+      return TUTORIAL_LANG === "ja" ? texts.ja : texts.en;
+    }
+
+    function updateRewardAdUi() {
+      if (!ui.rewardAdBtn) return;
+      ui.rewardAdBtn.textContent = rewardAdLabel({
+        ja: `広告で +${REWARD_AD_POINTS}P`,
+        en: `AD +${REWARD_AD_POINTS}P`
+      });
+
+      // v18aw: keep the button visible in Garage at all times.
+      // Disable only after today's reward has already been claimed.
+      ui.rewardAdBtn.disabled = hasClaimedRewardAdToday();
+    }
+
+    function requestRewardAd() {
+      if (hasClaimedRewardAdToday()) {
+        updateRewardAdUi();
+        return;
+      }
+
+      if (!IS_ANDROID_APP || !window.AndroidRewardAd || typeof window.AndroidRewardAd.showRewardAd !== "function") {
+        ui.hint.textContent = rewardAdLabel({
+          ja: "広告ボーナスはAndroidアプリ版で利用できます。",
+          en: "Reward ads are available in the Android app."
+        });
+        updateRewardAdUi();
+        return;
+      }
+
+      ui.rewardAdBtn.disabled = true;
+      window.AndroidRewardAd.showRewardAd();
+    }
+
+    window.ptrRewardAdGranted = function(points) {
+      if (hasClaimedRewardAdToday()) {
+        updateRewardAdUi();
+        return;
+      }
+
+      const addPoints = Math.max(0, Number(points) || REWARD_AD_POINTS);
+      setPoints(getPoints() + addPoints);
+      localStorage.setItem(REWARD_AD_DAILY_KEY, rewardAdTodayKey());
+      renderGarage();
+      updateHud();
+      ui.hint.textContent = rewardAdLabel({
+        ja: `広告ボーナス +${addPoints}P を受け取りました。`,
+        en: `Reward bonus +${addPoints}P claimed.`
+      });
+      updateRewardAdUi();
+    };
+
 
     function storageFlag(key, fallback = true) {
       const raw = localStorage.getItem(key);
@@ -6662,6 +7056,7 @@
         ui.garageGrid.appendChild(card);
       });
       updateSettingsUi();
+      updateRewardAdUi();
     }
 
     function courseDisplayName(course) {
@@ -6743,6 +7138,93 @@
           `<span class="turboCell${index < turboCells ? " is-full" : ""}"></span>`
         )).join("")
         + "</span>";
+    }
+
+
+    const TUTORIAL_PAGES_BY_LANG = {
+      ja: [
+        {
+          title: "操作方法",
+          items: [
+            "横画面でプレイします",
+            "赤色の自車を操作して1位を目指し、より早いタイムでゴールを目指そう！",
+            "左側のボタン：左右のハンドル操作　右側のボタン：アクセル / ターボ　※バックはできません",
+            "ターボは1周につき10秒使用可能：右上の10コマがターボの残量で1秒毎に減っていきます",
+            "ターボが切れると減速しますが、1周すると全回復します"
+          ]
+        },
+        {
+          title: "車種の選択と設定について",
+          items: [
+            "最初は左上の車のみ選択可能です",
+            "ポイントを使用して新しい車を購入できます",
+            "ポイントは各レースの成績で付与されます　1位：5P　2位：4P　3位：3P　4位：2P　5位：1P",
+            "車の性能は各車で違い、C→B→A→Sの順で良くなります",
+            "車種・難易度・BGMのON / OFF・コースの選択ができます"
+          ]
+        }
+      ],
+      en: [
+        {
+          title: "How to Play",
+          items: [
+            "Play in landscape mode",
+            "Control the red car, aim for 1st place, and go for the fastest goal time!",
+            "Left buttons: steering　Right buttons: accelerator / turbo　※No reverse gear",
+            "Turbo lasts 10 seconds per lap: the 10 blocks at the top right decrease once per second",
+            "When turbo runs out, your car slows down, but it fully recovers after each lap"
+          ]
+        },
+        {
+          title: "Cars and Settings",
+          items: [
+            "At first, only the top-left car can be selected",
+            "Use points to buy new cars",
+            "Points are awarded by race result　1st: 5P　2nd: 4P　3rd: 3P　4th: 2P　5th: 1P",
+            "Each car has different performance, improving in this order: C → B → A → S",
+            "You can choose the car, difficulty, BGM ON / OFF, and course"
+          ]
+        }
+      ]
+    };
+
+    const TUTORIAL_LANG = (navigator.language || "ja").toLowerCase().startsWith("ja") ? "ja" : "en";
+    const TUTORIAL_PAGES = TUTORIAL_PAGES_BY_LANG[TUTORIAL_LANG];
+
+    let tutorialPageIndex = 0;
+
+    function renderTutorialPage() {
+      const page = TUTORIAL_PAGES[tutorialPageIndex];
+      ui.tutorialPage.innerHTML = `<h3>${page.title}</h3><ul>${page.items.map(item => `<li>${item}</li>`).join("")}</ul>`;
+      ui.tutorialDots.innerHTML = TUTORIAL_PAGES
+        .map((_, index) => `<span class="tutorialDot${index === tutorialPageIndex ? " is-active" : ""}"></span>`)
+        .join("");
+      ui.tutorialPrev.style.visibility = tutorialPageIndex === 0 ? "hidden" : "visible";
+      ui.tutorialNext.style.display = tutorialPageIndex === TUTORIAL_PAGES.length - 1 ? "none" : "inline-flex";
+      ui.tutorialOk.style.display = tutorialPageIndex === TUTORIAL_PAGES.length - 1 ? "inline-flex" : "none";
+    }
+
+    function showTutorial({ markSeen = false } = {}) {
+      tutorialPageIndex = 0;
+      renderTutorialPage();
+      ui.tutorialOverlay.classList.add("is-visible");
+      ui.tutorialOverlay.dataset.markSeen = markSeen ? "1" : "0";
+      clearDriveInputs();
+    }
+
+    function hideTutorial() {
+      if (ui.tutorialOverlay.dataset.markSeen === "1") {
+        localStorage.setItem(TUTORIAL_SEEN_KEY, "1");
+      }
+      ui.tutorialOverlay.classList.remove("is-visible");
+      ui.tutorialOverlay.dataset.markSeen = "0";
+      ui.hint.textContent = "Turn, accelerate, and use TURBO for a short burst.";
+    }
+
+    function maybeShowFirstTutorial() {
+      if (!localStorage.getItem(TUTORIAL_SEEN_KEY)) {
+        setTimeout(() => showTutorial({ markSeen: true }), 250);
+      }
     }
 
     function bindButton(id, handler, sound = "select") {
@@ -6914,6 +7396,24 @@
     }, "back");
     bindButton("purchaseYesBtn", confirmPurchase, "confirm");
     bindButton("purchaseNoBtn", cancelPurchase, "back");
+
+    bindButton("howToTitleBtn", () => showTutorial({ markSeen: false }), "select");
+    bindButton("howToGarageBtn", () => showTutorial({ markSeen: false }), "select");
+    bindButton("rewardAdBtn", requestRewardAd, "select");
+    ui.tutorialPrev.addEventListener("click", () => {
+      playMenuSound("back");
+      tutorialPageIndex = Math.max(0, tutorialPageIndex - 1);
+      renderTutorialPage();
+    });
+    ui.tutorialNext.addEventListener("click", () => {
+      playMenuSound("select");
+      tutorialPageIndex = Math.min(TUTORIAL_PAGES.length - 1, tutorialPageIndex + 1);
+      renderTutorialPage();
+    });
+    ui.tutorialOk.addEventListener("click", () => {
+      playMenuSound("confirm");
+      hideTutorial();
+    });
 
     ui.difficultyButtons.querySelectorAll("[data-difficulty]").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -7505,6 +8005,8 @@
       resetRaceObjects(true);
       setScreen(GameState.TITLE);
       updateSettingsUi();
+      updateRewardAdUi();
+      maybeShowFirstTutorial();
       requestAnimationFrame(update);
     }
 
