@@ -4263,6 +4263,62 @@
     }
 
 
+  
+
+    /* --- v18t: opening title cars equal size + different visual colors. --- */
+    .titleCar,
+    .titleCar.main,
+    #gameRoot.is-menu .titleCar,
+    #gameRoot.is-menu .titleCar.main {
+      width: clamp(44px, 6.8vw, 76px) !important;
+      max-width: 76px !important;
+    }
+
+    #gameRoot.is-menu .titleCar,
+    #gameRoot.is-menu .titleCar.main {
+      width: clamp(34px, 5.1vw, 52px) !important;
+      max-width: 52px !important;
+    }
+
+    .titleCar:nth-child(1) {
+      filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65)) hue-rotate(190deg) saturate(1.12) !important;
+    }
+
+    .titleCar:nth-child(2) {
+      filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65)) hue-rotate(0deg) saturate(1.08) !important;
+    }
+
+    .titleCar:nth-child(3) {
+      filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65)) hue-rotate(70deg) saturate(1.18) !important;
+    }
+
+  
+
+    /* --- v18u: title cars same size but larger than v18t. --- */
+    .titleCar,
+    .titleCar.main {
+      width: clamp(58px, 8.2vw, 92px) !important;
+      max-width: 92px !important;
+    }
+
+    #gameRoot.is-menu .titleCar,
+    #gameRoot.is-menu .titleCar.main {
+      width: clamp(46px, 6.6vw, 72px) !important;
+      max-width: 72px !important;
+    }
+
+    .titleCar:nth-child(1) {
+      filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65)) hue-rotate(190deg) saturate(1.12) !important;
+    }
+
+    .titleCar:nth-child(2) {
+      filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65)) hue-rotate(0deg) saturate(1.08) !important;
+    }
+
+    .titleCar:nth-child(3) {
+      filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65)) hue-rotate(70deg) saturate(1.18) !important;
+    }
+
   </style>
 </head>
 <body>
@@ -4299,7 +4355,7 @@
             <div class="titleGarage">
               <div class="titleCars" aria-hidden="true">
                 <img class="titleCar" src="assets/cars/cpu/nova_blue.png" alt="">
-                <img class="titleCar main" src="assets/cars/shop/aero.png" alt="">
+                <img class="titleCar" src="assets/cars/shop/aero.png" alt="">
                 <img class="titleCar" src="assets/cars/cpu/crux_yellow.png" alt="">
               </div>
               <div class="titleActions">
@@ -4829,20 +4885,18 @@
         theme: { grass: "#68c83f", grassDot: "#102b16", road: "#a0a5a2", roadNoise: "rgba(255,255,255,.12)", accent: "#b6e35a" },
         route: [
           { x: 0.90, y: 0.80 },
-          { x: 0.14, y: 0.80 },
-          { x: 0.14, y: 0.61 },
-          { x: 0.39, y: 0.61 },
-          { x: 0.39, y: 0.47 },
-          { x: 0.18, y: 0.47 },
-          { x: 0.18, y: 0.25 },
-          { x: 0.50, y: 0.25 },
-          { x: 0.50, y: 0.41 },
-          { x: 0.74, y: 0.41 },
-          { x: 0.74, y: 0.22 },
-          { x: 0.91, y: 0.22 },
-          { x: 0.91, y: 0.52 },
-          { x: 0.77, y: 0.52 },
-          { x: 0.77, y: 0.66 },
+          { x: 0.10, y: 0.80 },
+          { x: 0.06, y: 0.62 },
+          { x: 0.12, y: 0.42 },
+          { x: 0.28, y: 0.30 },
+          { x: 0.48, y: 0.28 },
+          { x: 0.66, y: 0.20 },
+          { x: 0.82, y: 0.24 },
+          { x: 0.92, y: 0.36 },
+          { x: 0.88, y: 0.52 },
+          { x: 0.76, y: 0.60 },
+          { x: 0.84, y: 0.68 },
+          { x: 0.94, y: 0.74 },
           { x: 0.90, y: 0.80 }
         ]
       }),
