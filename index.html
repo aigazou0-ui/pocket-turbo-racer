@@ -3238,34 +3238,7 @@
 
     /* v7: readable large garage, faster race, title animation, larger mini maps/setup previews */
     @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
-      #gameRoot.is-menu .titleLogo {
-        animation: titlePulseBlink 1.05s steps(2, end) infinite;
-      }
-
-      #titleScreen.is-starting .titleLogo,
-      #titleScreen.is-starting .titleBtn {
-        animation: none !important;
-        opacity: .72;
-      }
-
-      #titleScreen.is-starting .titleCar {
-        animation: titleCarRunLeft 1.95s cubic-bezier(.18,.62,.18,1) forwards;
-      }
-      #titleScreen.is-starting .titleCar:nth-child(2) { animation-delay: .06s; }
-      #titleScreen.is-starting .titleCar:nth-child(3) { animation-delay: .12s; }
-
-      @keyframes titlePulseBlink {
-        0%, 48% { opacity: 1; filter: brightness(1.18); }
-        49%, 100% { opacity: .66; filter: brightness(.86); }
-      }
-
-      @keyframes titleCarRunLeft {
-        0% { translate: 0 0; opacity: 1; }
-        70% { opacity: 1; }
-        100% { translate: -145vw 0; opacity: 0; }
-      }
-
-      #gameRoot.is-menu #garageScreen .garageCard {
+#gameRoot.is-menu #garageScreen .garageCard {
         grid-template-rows: 20px minmax(58px, 1fr) 32px !important;
         grid-template-columns: minmax(0, 1fr) auto !important;
         padding: 4px 6px 5px !important;
@@ -3735,49 +3708,7 @@
         line-height: 1 !important;
       }
     }
-
-  
-    /* PTR v12 minimal fix: make title car run animation work on PC localhost as well as mobile */
-    #titleScreen.is-starting .titleCar {
-      animation: titleCarRunLeft 1.95s cubic-bezier(.18,.62,.18,1) forwards !important;
-    }
-    #titleScreen.is-starting .titleCar:nth-child(2) { animation-delay: .06s !important; }
-    #titleScreen.is-starting .titleCar:nth-child(3) { animation-delay: .12s !important; }
-
-    @keyframes titleCarRunLeft {
-      0% { translate: 0 0; opacity: 1; }
-      70% { opacity: 1; }
-      100% { translate: -145vw 0; opacity: 0; }
-    }
-
-  
-    
-  
-    /* PTR v14 fallback: slower transform-based title run */
-    #titleScreen.is-starting .titleCar {
-      animation: titleCarRunTransformV14 2.35s cubic-bezier(.16,.72,.14,1) forwards !important;
-    }
-    #titleScreen.is-starting .titleCar:nth-child(2) { animation-delay: .11s !important; }
-    #titleScreen.is-starting .titleCar:nth-child(3) { animation-delay: .22s !important; }
-
-    @keyframes titleCarRunTransformV14 {
-      0% {
-        opacity: 1;
-      }
-      72% {
-        opacity: 1;
-      }
-      93% {
-        opacity: .82;
-      }
-      100% {
-        transform: translateX(-165vw) rotate(90deg);
-        opacity: 0;
-      }
-    }
-
-
-    /* --- v37 Android WebView polish: HUD safe spacing, setup alignment, garage neutral card --- */
+/* --- v37 Android WebView polish: HUD safe spacing, setup alignment, garage neutral card --- */
     @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
       /* Move the RETIRE area inward so it does not collide with Android navigation/safe edges. */
       #gameRoot:not(.is-menu) {
@@ -4261,23 +4192,103 @@
         line-height: 1.28 !important;
       }
     }
+  
+
+    /* --- v18ag clean title only: one safe title-car layout for PC and Android WebView.
+       This block intentionally touches only the title screen.  Race, CPU, ads, garage,
+       course data, lap and rank logic are not changed. --- */
+    #titleScreen .titleGarage {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(8px, 1.8vw, 16px);
+      min-width: 0;
+      min-height: 0;
+      padding: clamp(4px, 1vw, 10px);
+    }
+
+    #titleScreen .titleCars {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: clamp(24px, 5.2vw, 58px) !important;
+      width: min(100%, 360px) !important;
+      min-height: clamp(96px, 16vw, 142px) !important;
+      position: relative !important;
+      overflow: visible !important;
+      transform: none !important;
+      flex: 0 0 auto !important;
+    }
+
+    #titleScreen .titleCars .titleCar,
+    #titleScreen .titleCars .titleCar.main {
+      position: static !important;
+      display: block !important;
+      box-sizing: border-box !important;
+      flex: 0 0 auto !important;
+      width: clamp(48px, 7.4vw, 82px) !important;
+      max-width: 82px !important;
+      height: auto !important;
+      max-height: 96px !important;
+      object-fit: contain !important;
+      opacity: 1;
+      visibility: visible !important;
+      image-rendering: auto !important;
+      filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65));
+      will-change: auto;
+    }
+
+    #titleScreen .titleCars .titleCar:nth-child(1) {
+      transform: translateY(-42%) rotate(90deg) !important;
+    }
+
+    #titleScreen .titleCars .titleCar:nth-child(2) {
+      transform: translateY(14%) rotate(90deg) !important;
+    }
+
+    #titleScreen .titleCars .titleCar:nth-child(3) {
+      transform: translateY(-36%) rotate(90deg) !important;
+    }
+
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #gameRoot.is-menu #titleScreen .titleCars,
+      #titleScreen .titleCars {
+        gap: clamp(18px, 4vw, 34px) !important;
+        width: min(100%, 320px) !important;
+        min-height: 72px !important;
+      }
+
+      #gameRoot.is-menu #titleScreen .titleCars .titleCar,
+      #gameRoot.is-menu #titleScreen .titleCars .titleCar.main,
+      #titleScreen .titleCars .titleCar,
+      #titleScreen .titleCars .titleCar.main {
+        width: clamp(38px, 5.6vw, 56px) !important;
+        max-width: 56px !important;
+        height: auto !important;
+        max-height: 68px !important;
+      }
+
+      #gameRoot.is-menu #titleScreen .titleCars .titleCar:nth-child(1),
+      #titleScreen .titleCars .titleCar:nth-child(1) {
+        transform: translateY(-34%) rotate(90deg) !important;
+      }
+
+      #gameRoot.is-menu #titleScreen .titleCars .titleCar:nth-child(2),
+      #titleScreen .titleCars .titleCar:nth-child(2) {
+        transform: translateY(10%) rotate(90deg) !important;
+      }
+
+      #gameRoot.is-menu #titleScreen .titleCars .titleCar:nth-child(3),
+      #titleScreen .titleCars .titleCar:nth-child(3) {
+        transform: translateY(-28%) rotate(90deg) !important;
+      }
+    }
+
   </style>
 
-<script>
-(function(){
-  try {
-    var KEY = 'ptrTitleCacheBust18aeDone';
-    if (!localStorage.getItem(KEY) && window.caches && caches.keys) {
-      caches.keys().then(function(keys){
-        return Promise.all(keys.map(function(k){
-          if (String(k).indexOf('pocket-turbo-racer-') === 0) return caches.delete(k);
-          return false;
-        }));
-      }).then(function(){ localStorage.setItem(KEY, '1'); });
-    }
-  } catch (e) {}
-})();
-</script>
 
 </head>
 <body>
@@ -4313,9 +4324,9 @@
             </div>
             <div class="titleGarage">
                                                                                     <div class="titleCars" aria-hidden="true">
-                <img class="titleCar" src="assets/cars/cpu/nova_blue.png?v=18ae-title" alt="">
-                <img class="titleCar main" src="assets/cars/shop/aero.png?v=18ae-title" alt="">
-                <img class="titleCar" src="assets/cars/cpu/crux_yellow.png?v=18ae-title" alt="">
+                <img class="titleCar" src="assets/cars/cpu/nova_blue.png?v=18ag-title" alt="">
+                <img class="titleCar main" src="assets/cars/shop/aero.png?v=18ag-title" alt="">
+                <img class="titleCar" src="assets/cars/cpu/crux_yellow.png?v=18ag-title" alt="">
               </div>
               <div class="titleActions">
                 <button class="menuBtn titleBtn" id="startMenuBtn">START</button>
@@ -7154,49 +7165,66 @@
       setTimeout(() => blip(185, 0.36, "sawtooth", 0.040), 520);
       setTimeout(() => blip(225, 0.34, "sawtooth", 0.034), 980);
 
-      // PTR v14: slower title car run.
-      // Keep each car's original waiting position/rotation, then slide it left.
+      // v18ah:
+      // v18ag title CSS uses transform !important to keep Android title cars stable.
+      // Web Animations cannot reliably override that, so the START run uses
+      // important inline transforms frame-by-frame.
       const titleCars = Array.from(titleScreen.querySelectorAll(".titleCar"));
-      const runAnimations = [];
       titleScreen.classList.add("is-starting");
 
-      titleCars.forEach((car, index) => {
+      const baseTransforms = titleCars.map(car => {
         const computed = getComputedStyle(car);
-        const baseTransform = computed.transform && computed.transform !== "none"
-          ? computed.transform
-          : "";
-        car.style.opacity = "1";
-        car.style.willChange = "transform, opacity";
-
-        const anim = car.animate(
-          [
-            { transform: baseTransform, opacity: 1, offset: 0 },
-            { transform: `translateX(-28vw) ${baseTransform}`, opacity: 1, offset: 0.22 },
-            { transform: `translateX(-92vw) ${baseTransform}`, opacity: 1, offset: 0.72 },
-            { transform: `translateX(-145vw) ${baseTransform}`, opacity: 0.82, offset: 0.93 },
-            { transform: `translateX(-165vw) ${baseTransform}`, opacity: 0, offset: 1 }
-          ],
-          {
-            duration: 2350,
-            delay: index * 110,
-            easing: "cubic-bezier(.16,.72,.14,1)",
-            fill: "forwards"
-          }
-        );
-        runAnimations.push(anim);
+        return computed.transform && computed.transform !== "none" ? computed.transform : "";
       });
+
+      titleCars.forEach(car => {
+        car.style.setProperty("opacity", "1", "important");
+        car.style.setProperty("will-change", "transform, opacity");
+      });
+
+      const duration = 2350;
+      const totalTime = 2750;
+      const delays = titleCars.map((_, index) => index * 110);
+      const startTime = performance.now();
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function runFrame(now) {
+        const elapsed = now - startTime;
+        let allDone = true;
+
+        titleCars.forEach((car, index) => {
+          const local = elapsed - delays[index];
+          const raw = Math.max(0, Math.min(1, local / duration));
+          if (raw < 1) allDone = false;
+
+          const eased = easeOutCubic(raw);
+          const move = -165 * eased;
+          const baseTransform = baseTransforms[index] || "";
+          const opacity = raw < 0.88 ? 1 : Math.max(0, 1 - ((raw - 0.88) / 0.12));
+
+          car.style.setProperty("transform", `translateX(${move}vw) ${baseTransform}`, "important");
+          car.style.setProperty("opacity", String(opacity), "important");
+        });
+
+        if (elapsed < totalTime || !allDone) {
+          requestAnimationFrame(runFrame);
+        }
+      }
+
+      requestAnimationFrame(runFrame);
 
       setTimeout(() => {
         titleScreen.classList.remove("is-starting");
-        runAnimations.forEach(anim => {
-          try { anim.cancel(); } catch (err) {}
-        });
         titleCars.forEach(car => {
-          car.style.opacity = "";
-          car.style.willChange = "";
+          car.style.removeProperty("transform");
+          car.style.removeProperty("opacity");
+          car.style.removeProperty("will-change");
         });
         showGarage();
-      }, 2750);
+      }, totalTime);
     }
 
     bindButton("startMenuBtn", playTitleStartSequence, null);
