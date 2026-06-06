@@ -1,4 +1,0 @@
-{
-  "version": "v43",
-  "summary": "Based on v42. For Android WebView app mode only, steering controlPad is fixed to the viewport left edge so the left button left edge aligns with the LAP HUD frame left edge."
-}

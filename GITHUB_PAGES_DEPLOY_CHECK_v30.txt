@@ -1,3 +1,0 @@
-Pocket Turbo Racer v30 CPU pre-colored image fix
-
-Confirm service-worker.js contains v30 and assets/cars/cpu/ exists.

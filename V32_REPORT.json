@@ -1,4 +1,0 @@
-{
-  "version": "v32",
-  "summary": "Preloads car sprites before countdown to prevent temporary fallback drawing and car size changes on retry. Keeps v31 opening colors and v30 race CPU color behavior."
-}

@@ -1,5 +1,0 @@
-Pocket Turbo Racer v39 deploy check
-- service-worker.js CACHE_NAME must be pocket-turbo-racer-v39-control-align
-- Left/right buttons should move slightly left
-- Left button left edge should align closer to LAP frame left edge
-- v38 fixes remain: garage selected background, setup name adjustment, faster BGM entry

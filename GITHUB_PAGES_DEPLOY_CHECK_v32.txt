@@ -1,6 +1,0 @@
-v32
-- Car sprites are awaited before countdown/race start.
-- Prevents temporary fallback car drawing that can make cars appear different sizes after retries.
-- Opening cars remain blue/red/yellow.
-- CPU precolored race cars remain from v30.
-- Service worker cache key updated to v32.

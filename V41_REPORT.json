@@ -1,4 +1,0 @@
-{
-  "version": "v41",
-  "summary": "Based on v40. Fixes left/right control buttons being pushed off-screen on Android WebView by resetting v39/v40 translateX overrides and safely positioning the control pad inside the screen."
-}

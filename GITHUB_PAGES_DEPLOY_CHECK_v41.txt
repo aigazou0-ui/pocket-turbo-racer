@@ -1,5 +1,0 @@
-Pocket Turbo Racer v41 deploy check
-- service-worker.js CACHE_NAME must be pocket-turbo-racer-v41-control-safe
-- Left/right steering buttons must be fully visible on Android WebView
-- Left button should no longer be clipped by the screen edge
-- v40 fixes remain: setup text alignment/readability, garage selected background, BGM transition tuning

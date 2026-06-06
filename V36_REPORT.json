@@ -1,4 +1,0 @@
-{
-  "version": "v36",
-  "summary": "Fixes first-race small car size by forcing canvas sizing before race object creation and replacing unstable matchMedia mobile scale detection with touch+landscape detection. Keeps countdown, opening colors, and CPU precolored cars."
-}

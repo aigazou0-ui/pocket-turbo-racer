@@ -1,4 +1,0 @@
-Pocket Turbo Racer v34 deploy check
-- service-worker.js CACHE_NAME must be pocket-turbo-racer-v34-first-race-size-fix
-- index.html must contain resizeCanvas(true) inside startCountdown
-- first race car size should match retry size

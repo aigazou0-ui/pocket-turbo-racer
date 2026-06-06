@@ -1,4 +1,0 @@
-{
-  "version": "v38",
-  "summary": "Keeps v37 garage background fix. Lowers Race Setup car name block to align closer to course name. Speeds up BGM entry on screen transitions by using a short 35ms fade from partial volume."
-}

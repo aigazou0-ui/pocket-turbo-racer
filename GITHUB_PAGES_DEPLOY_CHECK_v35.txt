@@ -1,6 +1,0 @@
-Pocket Turbo Racer v35 deploy check
-- service-worker.js CACHE_NAME must be pocket-turbo-racer-v35-countdown-size-fix
-- countdown 3 -> 2 -> 1 -> GO should display again
-- first race car size should match retry size
-- opening cars remain blue / red / yellow
-- race CPU cars remain precolored PNGs

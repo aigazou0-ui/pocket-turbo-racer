@@ -1,4 +1,0 @@
-{
-  "version": "v35",
-  "summary": "Rebuilt from v33 safe base. Restores countdown display while keeping first-race car size stable by switching to countdown screen, resizing canvas, then creating race objects. Keeps opening blue/red/yellow and CPU precolored race cars."
-}
