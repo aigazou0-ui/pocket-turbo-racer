@@ -3801,6 +3801,40 @@
       }
     }
 
+  
+
+    /* --- v18au: RETIRE button safe-area fix kept from v18at.
+       Keep the HUD inside the visible width on phone landscape so the right edge
+       of RETIRE is not clipped. Race layout only. --- */
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #gameRoot:not(.is-menu) {
+        padding-right: max(12px, calc(env(safe-area-inset-right) + 12px)) !important;
+      }
+
+      #gameRoot:not(.is-menu) .hud {
+        grid-template-columns:
+          minmax(78px, .70fr)
+          minmax(108px, .94fr)
+          minmax(70px, .62fr)
+          minmax(104px, .90fr)
+          minmax(118px, .98fr)
+          minmax(66px, 78px) !important;
+        gap: 4px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      #gameRoot:not(.is-menu) #retireBtn {
+        min-width: 66px !important;
+        max-width: 78px !important;
+        padding: 4px 5px !important;
+        font-size: clamp(9.5px, 1.45vw, 12.5px) !important;
+        letter-spacing: -0.7px !important;
+        box-sizing: border-box !important;
+        justify-self: end !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -6719,6 +6753,69 @@
       });
     }
 
+    function resetTitleCarsForMenu(animate = false) {
+      const titleScreen = document.getElementById("titleScreen");
+      if (!titleScreen) return;
+      const titleCars = Array.from(titleScreen.querySelectorAll(".titleCar"));
+      titleScreen.classList.remove("is-starting");
+
+      titleCars.forEach(car => {
+        car.style.removeProperty("transform");
+        car.style.removeProperty("opacity");
+        car.style.removeProperty("will-change");
+      });
+
+      if (!animate || !titleCars.length) {
+        return;
+      }
+
+      const baseTransforms = titleCars.map(car => {
+        const computed = getComputedStyle(car);
+        return computed.transform && computed.transform !== "none" ? computed.transform : "";
+      });
+
+      titleCars.forEach((car, index) => {
+        car.style.setProperty("opacity", "0", "important");
+        car.style.setProperty("transform", `translateX(${110 + index * 10}vw) ${baseTransforms[index] || ""}`, "important");
+        car.style.setProperty("will-change", "transform, opacity");
+      });
+
+      const duration = 780;
+      const delays = titleCars.map((_, index) => index * 70);
+      const startTime = performance.now();
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function frame(now) {
+        const elapsed = now - startTime;
+        let done = true;
+
+        titleCars.forEach((car, index) => {
+          const local = elapsed - delays[index];
+          const raw = Math.max(0, Math.min(1, local / duration));
+          if (raw < 1) done = false;
+          const eased = easeOutCubic(raw);
+          const move = (110 + index * 10) * (1 - eased);
+          car.style.setProperty("transform", `translateX(${move}vw) ${baseTransforms[index] || ""}`, "important");
+          car.style.setProperty("opacity", String(raw < 0.16 ? raw / 0.16 : 1), "important");
+        });
+
+        if (!done) {
+          requestAnimationFrame(frame);
+        } else {
+          titleCars.forEach(car => {
+            car.style.removeProperty("transform");
+            car.style.removeProperty("opacity");
+            car.style.removeProperty("will-change");
+          });
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
     function playTitleStartSequence() {
       const titleScreen = document.getElementById("titleScreen");
       if (!titleScreen || titleScreen.classList.contains("is-starting")) return;
@@ -6733,6 +6830,7 @@
       // Web Animations cannot reliably override that, so the START run uses
       // important inline transforms frame-by-frame.
       const titleCars = Array.from(titleScreen.querySelectorAll(".titleCar"));
+      resetTitleCarsForMenu(false);
       titleScreen.classList.add("is-starting");
 
       const baseTransforms = titleCars.map(car => {
@@ -6792,6 +6890,9 @@
 
     bindButton("startMenuBtn", playTitleStartSequence, null);
     bindButton("garageBackBtn", () => {
+      // v18au: Return title cars to their normal original positions.
+      // Do not replay the entrance animation here.
+      resetTitleCarsForMenu(false);
       setScreen(GameState.TITLE);
       ui.hint.textContent = "Turn, accelerate, and use TURBO for a short burst.";
     }, "back");
