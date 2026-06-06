@@ -1,4 +1,4 @@
-const CACHE_NAME = "pocket-turbo-racer-v18ah-title-start-run-fix";
+const CACHE_NAME = "pocket-turbo-racer-v18as-restore-v17e-race-bolt-sprites";
 const CORE_ASSETS = [
   "./",
   "./index.html",
