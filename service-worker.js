@@ -1,4 +1,4 @@
-const CACHE_NAME = "pocket-turbo-racer-v18u-neon-flow-title-big";
+const CACHE_NAME = "pocket-turbo-racer-v18v-title-car-visual-balance";
 const CORE_ASSETS = [
   "./",
   "./index.html",

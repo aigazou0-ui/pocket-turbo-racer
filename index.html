@@ -4319,6 +4319,46 @@
       filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65)) hue-rotate(70deg) saturate(1.18) !important;
     }
 
+  
+    /* --- v18v: title car visual balance.
+       Goal: left blue F1 slightly smaller, center red as base,
+       right green slightly larger, so all three LOOK similar in size. --- */
+    .titleCar {
+      transform-origin: center center !important;
+    }
+
+    .titleCarF1 {
+      width: clamp(50px, 7.2vw, 80px) !important;
+      max-width: 80px !important;
+      filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65)) saturate(1.16) brightness(1.03) !important;
+    }
+
+    .titleCarRed {
+      width: clamp(56px, 7.9vw, 88px) !important;
+      max-width: 88px !important;
+      filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65)) saturate(1.08) brightness(1.02) !important;
+    }
+
+    .titleCarGreen {
+      width: clamp(60px, 8.5vw, 94px) !important;
+      max-width: 94px !important;
+      filter: drop-shadow(5px 5px 0 rgba(0,0,0,.65)) hue-rotate(105deg) saturate(2.45) brightness(1.08) contrast(1.08) !important;
+    }
+
+    #gameRoot.is-menu .titleCarF1 {
+      width: clamp(40px, 5.8vw, 62px) !important;
+      max-width: 62px !important;
+    }
+
+    #gameRoot.is-menu .titleCarRed {
+      width: clamp(45px, 6.4vw, 68px) !important;
+      max-width: 68px !important;
+    }
+
+    #gameRoot.is-menu .titleCarGreen {
+      width: clamp(49px, 7.0vw, 74px) !important;
+      max-width: 74px !important;
+    }
   </style>
 </head>
 <body>
@@ -4355,7 +4395,7 @@
             <div class="titleGarage">
               <div class="titleCars" aria-hidden="true">
                 <img class="titleCar" src="assets/cars/cpu/nova_blue.png" alt="">
-                <img class="titleCar" src="assets/cars/shop/aero.png" alt="">
+                <img class="titleCar titleCarRed" src="assets/cars/shop/aero.png" alt="">
                 <img class="titleCar" src="assets/cars/cpu/crux_yellow.png" alt="">
               </div>
               <div class="titleActions">
