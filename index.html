@@ -4124,6 +4124,129 @@
       }
     }
 
+  
+
+    /* --- v18ax safety: keep Garage reward ad button visible. --- */
+    #garageScreen .garageHeader {
+      display: grid !important;
+      grid-template-columns: minmax(92px, 1fr) auto auto !important;
+      align-items: center !important;
+      column-gap: 8px !important;
+      overflow: visible !important;
+    }
+
+    #garageScreen .garageRewardAdBox {
+      position: static !important;
+      transform: none !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      z-index: 30 !important;
+    }
+
+    #garageScreen .rewardAdBtn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-width: 104px !important;
+      height: 32px !important;
+      padding: 0 8px !important;
+      border: 2px solid #f8d44a !important;
+      border-radius: 8px !important;
+      background: linear-gradient(180deg, #2b7a35, #123d22) !important;
+      color: #fff8c9 !important;
+      font-family: inherit !important;
+      font-size: clamp(9px, 1.2vw, 12px) !important;
+      font-weight: 900 !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+    }
+
+    #garageScreen .rewardAdBtn:disabled {
+      display: inline-flex !important;
+      opacity: .72 !important;
+    }
+
+  
+
+    /* --- v18ax: show CPU difficulty in race HUD. --- */
+    .hud {
+      grid-template-columns:
+        minmax(76px, .66fr)
+        minmax(112px, .96fr)
+        minmax(76px, .66fr)
+        minmax(92px, .74fr)
+        minmax(116px, .98fr)
+        minmax(126px, 1.02fr)
+        auto !important;
+    }
+
+    #cpuHud {
+      border-color: #f8d44a;
+      color: #f8d44a;
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: .03em;
+    }
+
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      .hud {
+        grid-template-columns:
+          minmax(58px, .56fr)
+          minmax(88px, .86fr)
+          minmax(58px, .56fr)
+          minmax(72px, .66fr)
+          minmax(86px, .78fr)
+          minmax(112px, .98fr)
+          minmax(66px, 74px) !important;
+        gap: 3px !important;
+        font-size: clamp(8.8px, 1.44vw, 12.2px) !important;
+      }
+
+      #cpuHud {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+        letter-spacing: -0.35px !important;
+      }
+
+      #turboHud .turboCell {
+        flex-basis: 7px !important;
+        width: 7px !important;
+      }
+    }
+
+  
+
+    /* --- v18ax: larger and wider setup mini map. --- */
+    #gameRoot.is-menu #preRaceScreen .setupCoursePreview {
+      grid-template-columns: minmax(0, .78fr) minmax(150px, 1.22fr) !important;
+      gap: 12px !important;
+      align-items: center !important;
+    }
+
+    #gameRoot.is-menu #preRaceScreen .setupCourseMap {
+      width: 100% !important;
+      max-width: none !important;
+      min-height: clamp(112px, 18vw, 170px) !important;
+      height: clamp(112px, 18vw, 170px) !important;
+      margin: 4px 0 0 !important;
+      justify-self: stretch !important;
+    }
+
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #gameRoot.is-menu #preRaceScreen .setupCoursePreview {
+        grid-template-columns: minmax(82px, .62fr) minmax(132px, 1.38fr) !important;
+        gap: 6px !important;
+      }
+
+      #gameRoot.is-menu #preRaceScreen .setupCourseMap {
+        width: 100% !important;
+        min-height: clamp(76px, 17vh, 116px) !important;
+        height: clamp(76px, 17vh, 116px) !important;
+        margin: 0 !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -4134,6 +4257,7 @@
       <div class="hudItem" id="lapHud">Lap - / 3</div>
       <div class="hudItem" id="timeHud">Time 0:00.000</div>
       <div class="hudItem" id="rankHud">Pos - / 3</div>
+      <div class="hudItem" id="cpuHud">CPU NORMAL</div>
       <div class="hudItem" id="bestHud">Best --:--.---</div>
       <div class="hudItem" id="turboHud">Turbo 0s</div>
       <button class="hudButton" id="retireBtn" type="button" disabled>RETIRE</button>
@@ -4463,14 +4587,14 @@
     ];
 
     const CPU_COURSE_LINE_TUNING = {
-      lakesideGp: { lineScale: 1.00 },
-      harborBend: { lineScale: 0.96 },
-      speedBowl: { lineScale: 0.82 },
-      aeroCanyon: { lineScale: 0.90 },
-      neonEsses: { lineScale: 0.88 },
-      ridgeSwitch: { lineScale: 0.88 },
-      fujiCrest: { lineScale: 0.90 },
-      suzukaRhythm: { lineScale: 0.88 }
+      lakesideGp: { lineScale: 1.08 },
+      harborBend: { lineScale: 1.04 },
+      speedBowl: { lineScale: 0.94 },
+      aeroCanyon: { lineScale: 1.02 },
+      neonEsses: { lineScale: 1.00 },
+      ridgeSwitch: { lineScale: 1.00 },
+      fujiCrest: { lineScale: 1.02 },
+      suzukaRhythm: { lineScale: 1.00 }
     };
 
     const DIFFICULTIES = {
@@ -4828,6 +4952,7 @@
       lap: document.getElementById("lapHud"),
       time: document.getElementById("timeHud"),
       rank: document.getElementById("rankHud"),
+      cpu: document.getElementById("cpuHud"),
       best: document.getElementById("bestHud"),
       turbo: document.getElementById("turboHud"),
       retire: document.getElementById("retireBtn"),
@@ -6119,10 +6244,14 @@
       } else {
         r.avoidBias = 0;
       }
-      const baseLane = r.laneOffset * 0.055 + (r.laneBias || 0) * 0.035;
-      const desiredLineLane = clamp(baseLane + line.lane + wobble * 0.014, -0.38, 0.38);
-      r.cpuLineLane = lerp(r.cpuLineLane || 0, desiredLineLane, clamp((0.038 + curveStrength * 0.025) * scale, 0, 0.13));
-      const targetLane = clamp(r.cpuLineLane + avoidanceLane + overtakeLane + r.avoidBias, -0.44, 0.44);
+
+      // v18ax: in corners, prioritize the racing line/apex more strongly.
+      // Avoidance/overtake still works, but does not pull CPU cars wide as much.
+      const cornerLinePriority = clamp(1 - curveStrength * 0.36, 0.58, 1);
+      const baseLane = r.laneOffset * 0.035 + (r.laneBias || 0) * 0.020;
+      const desiredLineLane = clamp(baseLane + line.lane + wobble * 0.010, -0.46, 0.46);
+      r.cpuLineLane = lerp(r.cpuLineLane || 0, desiredLineLane, clamp((0.050 + curveStrength * 0.040) * scale, 0, 0.18));
+      const targetLane = clamp(r.cpuLineLane + avoidanceLane * cornerLinePriority + overtakeLane * cornerLinePriority + r.avoidBias * cornerLinePriority, -0.52, 0.52);
       const target = roadCenterAt(targetProgress, targetLane);
       const targetAngle = angleToPoint(r, target);
       const upcomingTurn = angleDistance(tangentAngleAt(nearestProgress), tangentAngleAt(targetProgress));
@@ -6167,16 +6296,19 @@
         return { lane: 0, strength: 0, exit: 0 };
       }
 
-      const approach = clamp((Math.abs(exitTurn) - Math.abs(entryTurn) * 0.35) / 0.58, 0, 1);
-      const apex = clamp((Math.abs(midTurn) + Math.abs(entryTurn) * 0.45) / 0.70, 0, 1);
-      const exit = clamp((Math.abs(entryTurn) - Math.abs(exitTurn) * 0.55) / 0.58, 0, 1);
+      const approach = clamp((Math.abs(exitTurn) - Math.abs(entryTurn) * 0.30) / 0.56, 0, 1);
+      const apex = clamp((Math.abs(midTurn) + Math.abs(entryTurn) * 0.62) / 0.66, 0, 1);
+      const exit = clamp((Math.abs(entryTurn) - Math.abs(exitTurn) * 0.48) / 0.56, 0, 1);
       const phaseTotal = approach + apex + exit || 1;
-      const outsideWeight = (approach * 0.95 + exit * 0.58) / phaseTotal;
-      const insideWeight = apex / phaseTotal;
-      const amount = clamp(0.12 + strength * 0.24, 0.10, 0.34) * tuning.lineScale;
-      const lane = turnDir * amount * (insideWeight - outsideWeight * 0.72);
+
+      // v18ax: stronger inside apex. Approach/exit still open the line slightly,
+      // but apex now dominates so CPU cars look like they are clipping the inside.
+      const outsideWeight = (approach * 0.70 + exit * 0.42) / phaseTotal;
+      const insideWeight = (apex * 1.24) / phaseTotal;
+      const amount = clamp(0.16 + strength * 0.30, 0.14, 0.44) * tuning.lineScale;
+      const lane = turnDir * amount * (insideWeight - outsideWeight * 0.52);
       return {
-        lane: clamp(lane, -0.34, 0.34),
+        lane: clamp(lane, -0.43, 0.43),
         strength,
         exit
       };
@@ -7131,6 +7263,7 @@
       ui.lap.textContent = `Lap ${currentLap} / ${TOTAL_LAPS}`;
       ui.time.textContent = `Time ${formatTime(displayTime)}`;
       ui.rank.textContent = `Pos ${rank} / ${racers.length || 3}`;
+      ui.cpu.textContent = `CPU ${DIFFICULTIES[selectedDifficulty].label}`;
       ui.best.textContent = `Best ${formatTime(best)}`;
       const turboCells = Math.ceil(turboFuel / TURBO_SEGMENT_MS);
       ui.turbo.innerHTML = `<span class="turboLabel">T</span><span class="turboGauge" aria-label="${turboCells} seconds">`
