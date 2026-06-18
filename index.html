@@ -4284,7 +4284,7 @@
     }
 
   
-    /* --- v18az: force Android compact CPU HUD and prevent wrapping. --- */
+    /* --- v18ba: force Android compact CPU HUD and prevent wrapping. --- */
     #cpuHud {
       white-space: nowrap !important;
       word-break: keep-all !important;
@@ -4325,10 +4325,31 @@
       user-select: none;
     }
 
+  
+    /* v18ba force Android race HUD into one row */
+    #buildBadge { position: fixed !important; right: 4px !important; bottom: 2px !important; z-index: 99999 !important; font-size: 8px !important; line-height: 1 !important; color: rgba(255,255,255,.45) !important; pointer-events: none !important; user-select: none !important; }
+    @media (orientation: landscape) {
+      body[data-build="v18ba"] #gameRoot:not(.is-menu) { grid-template-rows: auto minmax(0, 1fr) auto !important; gap: 3px !important; padding-top: max(3px, env(safe-area-inset-top)) !important; padding-left: max(4px, env(safe-area-inset-left)) !important; padding-right: max(4px, env(safe-area-inset-right)) !important; overflow: hidden !important; }
+      body[data-build="v18ba"] .hud { display: grid !important; width: 100% !important; max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; grid-template-columns: minmax(42px,.58fr) minmax(62px,.84fr) minmax(42px,.58fr) minmax(48px,.60fr) minmax(66px,.86fr) minmax(62px,.66fr) minmax(50px,56px) !important; grid-template-rows: 28px !important; grid-auto-rows: 28px !important; grid-auto-flow: column !important; align-items: stretch !important; gap: 2px !important; font-size: clamp(6.8px,1.04vw,9.4px) !important; line-height: 1 !important; overflow: hidden !important; }
+      body[data-build="v18ba"] .hudItem, body[data-build="v18ba"] .hudButton { min-width: 0 !important; min-height: 0 !important; height: 28px !important; max-height: 28px !important; padding: 1px 2px !important; box-sizing: border-box !important; white-space: nowrap !important; word-break: keep-all !important; overflow: hidden !important; text-overflow: clip !important; line-height: 1 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+      body[data-build="v18ba"] #lapHud, body[data-build="v18ba"] #timeHud, body[data-build="v18ba"] #rankHud, body[data-build="v18ba"] #cpuHud, body[data-build="v18ba"] #bestHud, body[data-build="v18ba"] #turboHud, body[data-build="v18ba"] #retireBtn { grid-row: 1 !important; }
+      body[data-build="v18ba"] #lapHud { grid-column: 1 !important; letter-spacing: -.6px !important; }
+      body[data-build="v18ba"] #timeHud { grid-column: 2 !important; letter-spacing: -.75px !important; }
+      body[data-build="v18ba"] #rankHud { grid-column: 3 !important; letter-spacing: -.75px !important; }
+      body[data-build="v18ba"] #cpuHud { grid-column: 4 !important; color: #f8d44a !important; border-color: #f8d44a !important; font-weight: 900 !important; letter-spacing: -.45px !important; font-size: clamp(7px,1.04vw,9.2px) !important; }
+      body[data-build="v18ba"] #bestHud { grid-column: 5 !important; letter-spacing: -.85px !important; }
+      body[data-build="v18ba"] #turboHud { grid-column: 6 !important; gap: 1px !important; padding-left: 1px !important; padding-right: 1px !important; }
+      body[data-build="v18ba"] #turboHud .turboLabel { flex: 0 0 auto !important; margin-right: 1px !important; }
+      body[data-build="v18ba"] #turboHud .turboGauge { display: flex !important; flex: 1 1 auto !important; min-width: 0 !important; gap: 1px !important; overflow: hidden !important; }
+      body[data-build="v18ba"] #turboHud .turboCell { flex: 1 1 3px !important; width: auto !important; min-width: 2px !important; max-width: 5px !important; height: 10px !important; }
+      body[data-build="v18ba"] #retireBtn { grid-column: 7 !important; width: auto !important; min-width: 50px !important; max-width: 56px !important; padding-left: 1px !important; padding-right: 1px !important; font-size: clamp(6.6px,1vw,8.8px) !important; letter-spacing: -.9px !important; }
+      body[data-build="v18ba"] .canvasWrap { max-height: calc(100dvh - 76px) !important; }
+    }
+
   </style>
 </head>
-<body data-build="v18az">
-  <div id="buildBadge">v18az</div>
+<body data-build="v18ba">
+  <div id="buildBadge">v18ba</div>
   <div id="portraitMessage">スマホを横向きにして遊んでください</div>
 
   <main id="gameRoot" aria-label="Pocket Turbo Racer game">
