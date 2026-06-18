@@ -4283,9 +4283,52 @@
       }
     }
 
+  
+    /* --- v18az: force Android compact CPU HUD and prevent wrapping. --- */
+    #cpuHud {
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      line-height: 1 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      overflow: hidden !important;
+      text-overflow: clip !important;
+      min-width: 0 !important;
+    }
+
+    @media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+      #cpuHud {
+        white-space: nowrap !important;
+        word-break: keep-all !important;
+        line-height: 1 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+        text-overflow: clip !important;
+        min-width: 0 !important;
+        letter-spacing: -0.65px !important;
+        font-size: clamp(7.2px, 1.16vw, 9.8px) !important;
+      }
+    }
+
+    #buildBadge {
+      position: fixed;
+      right: 4px;
+      bottom: 2px;
+      z-index: 99999;
+      font-size: 8px;
+      line-height: 1;
+      color: rgba(255,255,255,.45);
+      pointer-events: none;
+      user-select: none;
+    }
+
   </style>
 </head>
-<body>
+<body data-build="v18az">
+  <div id="buildBadge">v18az</div>
   <div id="portraitMessage">スマホを横向きにして遊んでください</div>
 
   <main id="gameRoot" aria-label="Pocket Turbo Racer game">
@@ -7300,7 +7343,9 @@
       ui.time.textContent = `Time ${formatTime(displayTime)}`;
       ui.rank.textContent = `Pos ${rank} / ${racers.length || 3}`;
       const cpuLabel = DIFFICULTIES[selectedDifficulty].label;
-      const compactCpuLabel = window.matchMedia("(orientation: landscape) and (hover: none) and (pointer: coarse)").matches;
+      const compactCpuLabel =
+        IS_ANDROID_APP ||
+        window.matchMedia("(orientation: landscape) and (hover: none) and (pointer: coarse)").matches;
       ui.cpu.textContent = compactCpuLabel ? cpuLabel : `CPU ${cpuLabel}`;
       ui.best.textContent = `Best ${formatTime(best)}`;
       const turboCells = Math.ceil(turboFuel / TURBO_SEGMENT_MS);

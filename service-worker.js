@@ -1,4 +1,4 @@
-const CACHE_NAME = "pocket-turbo-racer-v18ay-mobile-hud-fit-cpu-label";
+const CACHE_NAME = "pocket-turbo-racer-v18az-force-android-compact-cpu-hud";
 const CORE_ASSETS = [
   "./",
   "./index.html",
