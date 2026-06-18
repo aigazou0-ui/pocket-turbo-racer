@@ -1,4 +1,4 @@
-const CACHE_NAME = "pocket-turbo-racer-v18ax-cpu-difficulty-map-inside-line";
+const CACHE_NAME = "pocket-turbo-racer-v18ay-mobile-hud-fit-cpu-label";
 const CORE_ASSETS = [
   "./",
   "./index.html",
