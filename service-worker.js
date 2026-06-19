@@ -1,4 +1,4 @@
-const CACHE_NAME = "pocket-turbo-racer-v18bb-adjust-turbo-hud-width";
+const CACHE_NAME = "pocket-turbo-racer-v18be-final-hud-ai-line";
 const CORE_ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 
 self["add" + "EventListener"]("install", event => {

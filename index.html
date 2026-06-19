@@ -4284,7 +4284,7 @@
     }
 
   
-    /* --- v18bb: force Android compact CPU HUD and prevent wrapping. --- */
+    /* --- v18be: force Android compact CPU HUD and prevent wrapping. --- */
     #cpuHud {
       white-space: nowrap !important;
       word-break: keep-all !important;
@@ -4326,50 +4326,36 @@
     }
 
   
-    /* v18bb force Android race HUD into one row */
-    #buildBadge { position: fixed !important; right: 4px !important; bottom: 2px !important; z-index: 99999 !important; font-size: 8px !important; line-height: 1 !important; color: rgba(255,255,255,.45) !important; pointer-events: none !important; user-select: none !important; }
-    @media (orientation: landscape) {
-      body[data-build="v18bb"] #gameRoot:not(.is-menu) { grid-template-rows: auto minmax(0, 1fr) auto !important; gap: 3px !important; padding-top: max(3px, env(safe-area-inset-top)) !important; padding-left: max(4px, env(safe-area-inset-left)) !important; padding-right: max(4px, env(safe-area-inset-right)) !important; overflow: hidden !important; }
-      body[data-build="v18bb"] .hud { display: grid !important; width: 100% !important; max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; grid-template-columns: minmax(42px,.58fr) minmax(62px,.84fr) minmax(42px,.58fr) minmax(48px,.60fr) minmax(66px,.86fr) minmax(62px,.66fr) minmax(50px,56px) !important; grid-template-rows: 28px !important; grid-auto-rows: 28px !important; grid-auto-flow: column !important; align-items: stretch !important; gap: 2px !important; font-size: clamp(6.8px,1.04vw,9.4px) !important; line-height: 1 !important; overflow: hidden !important; }
-      body[data-build="v18bb"] .hudItem, body[data-build="v18bb"] .hudButton { min-width: 0 !important; min-height: 0 !important; height: 28px !important; max-height: 28px !important; padding: 1px 2px !important; box-sizing: border-box !important; white-space: nowrap !important; word-break: keep-all !important; overflow: hidden !important; text-overflow: clip !important; line-height: 1 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
-      body[data-build="v18bb"] #lapHud, body[data-build="v18bb"] #timeHud, body[data-build="v18bb"] #rankHud, body[data-build="v18bb"] #cpuHud, body[data-build="v18bb"] #bestHud, body[data-build="v18bb"] #turboHud, body[data-build="v18bb"] #retireBtn { grid-row: 1 !important; }
-      body[data-build="v18bb"] #lapHud { grid-column: 1 !important; letter-spacing: -.6px !important; }
-      body[data-build="v18bb"] #timeHud { grid-column: 2 !important; letter-spacing: -.75px !important; }
-      body[data-build="v18bb"] #rankHud { grid-column: 3 !important; letter-spacing: -.75px !important; }
-      body[data-build="v18bb"] #cpuHud { grid-column: 4 !important; color: #f8d44a !important; border-color: #f8d44a !important; font-weight: 900 !important; letter-spacing: -.45px !important; font-size: clamp(7px,1.04vw,9.2px) !important; }
-      body[data-build="v18bb"] #bestHud { grid-column: 5 !important; letter-spacing: -.85px !important; }
-      body[data-build="v18bb"] #turboHud { grid-column: 6 !important; gap: 1px !important; padding-left: 1px !important; padding-right: 1px !important; }
-      body[data-build="v18bb"] #turboHud .turboLabel { flex: 0 0 auto !important; margin-right: 1px !important; }
-      body[data-build="v18bb"] #turboHud .turboGauge { display: flex !important; flex: 1 1 auto !important; min-width: 0 !important; gap: 1px !important; overflow: hidden !important; }
-      body[data-build="v18bb"] #turboHud .turboCell { flex: 1 1 3px !important; width: auto !important; min-width: 2px !important; max-width: 5px !important; height: 10px !important; }
-      body[data-build="v18bb"] #retireBtn { grid-column: 7 !important; width: auto !important; min-width: 50px !important; max-width: 56px !important; padding-left: 1px !important; padding-right: 1px !important; font-size: clamp(6.6px,1vw,8.8px) !important; letter-spacing: -.9px !important; }
-      body[data-build="v18bb"] .canvasWrap { max-height: calc(100dvh - 76px) !important; }
-    }
-
-  
-    /* v18bb adjust Android race HUD: smaller CPU, wider TURBO, right-safe left alignment */
+    /* v18be final HUD and CPU racing line review */
     #buildBadge { position: fixed !important; right: 4px !important; bottom: 2px !important; z-index: 99999 !important; font-size: 8px !important; line-height: 1 !important; color: rgba(255,255,255,.45) !important; pointer-events: none !important; user-select: none !important; }
 
     @media (orientation: landscape) {
-      body[data-build="v18bb"] #gameRoot:not(.is-menu) {
+      body[data-build="v18be"][data-app="android"] #gameRoot:not(.is-menu) {
         grid-template-rows: auto minmax(0, 1fr) auto !important;
         gap: 3px !important;
         padding-top: max(3px, env(safe-area-inset-top)) !important;
         padding-left: max(3px, env(safe-area-inset-left)) !important;
-        padding-right: max(12px, env(safe-area-inset-right)) !important;
+        padding-right: max(14px, env(safe-area-inset-right)) !important;
         overflow: hidden !important;
       }
 
-      body[data-build="v18bb"] .hud {
+      body[data-build="v18be"][data-app="android"] .hud {
         display: grid !important;
-        width: calc(100% - 12px) !important;
-        max-width: calc(100% - 12px) !important;
+        width: calc(100% - 14px) !important;
+        max-width: calc(100% - 14px) !important;
         justify-self: start !important;
         margin-left: 0 !important;
-        margin-right: 12px !important;
+        margin-right: 14px !important;
         min-width: 0 !important;
         box-sizing: border-box !important;
-        grid-template-columns: minmax(42px,.58fr) minmax(62px,.84fr) minmax(42px,.58fr) minmax(40px,.48fr) minmax(66px,.84fr) minmax(82px,.90fr) minmax(50px,56px) !important;
+        grid-template-columns:
+          minmax(42px,.58fr)
+          minmax(62px,.84fr)
+          minmax(42px,.58fr)
+          minmax(42px,48px)
+          minmax(66px,.82fr)
+          minmax(104px,1.18fr)
+          minmax(50px,56px) !important;
         grid-template-rows: 28px !important;
         grid-auto-rows: 28px !important;
         grid-auto-flow: column !important;
@@ -4380,8 +4366,8 @@
         overflow: hidden !important;
       }
 
-      body[data-build="v18bb"] .hudItem,
-      body[data-build="v18bb"] .hudButton {
+      body[data-build="v18be"][data-app="android"] .hudItem,
+      body[data-build="v18be"][data-app="android"] .hudButton {
         min-width: 0 !important;
         min-height: 0 !important;
         height: 28px !important;
@@ -4398,43 +4384,64 @@
         justify-content: center !important;
       }
 
-      body[data-build="v18bb"] #lapHud,
-      body[data-build="v18bb"] #timeHud,
-      body[data-build="v18bb"] #rankHud,
-      body[data-build="v18bb"] #cpuHud,
-      body[data-build="v18bb"] #bestHud,
-      body[data-build="v18bb"] #turboHud,
-      body[data-build="v18bb"] #retireBtn { grid-row: 1 !important; }
+      body[data-build="v18be"][data-app="android"] #lapHud,
+      body[data-build="v18be"][data-app="android"] #timeHud,
+      body[data-build="v18be"][data-app="android"] #rankHud,
+      body[data-build="v18be"][data-app="android"] #cpuHud,
+      body[data-build="v18be"][data-app="android"] #bestHud,
+      body[data-build="v18be"][data-app="android"] #turboHud,
+      body[data-build="v18be"][data-app="android"] #retireBtn { grid-row: 1 !important; }
 
-      body[data-build="v18bb"] #lapHud { grid-column: 1 !important; letter-spacing: -.6px !important; }
-      body[data-build="v18bb"] #timeHud { grid-column: 2 !important; letter-spacing: -.75px !important; }
-      body[data-build="v18bb"] #rankHud { grid-column: 3 !important; letter-spacing: -.75px !important; }
+      body[data-build="v18be"][data-app="android"] #lapHud { grid-column: 1 !important; letter-spacing: -.6px !important; }
+      body[data-build="v18be"][data-app="android"] #timeHud { grid-column: 2 !important; letter-spacing: -.75px !important; }
+      body[data-build="v18be"][data-app="android"] #rankHud { grid-column: 3 !important; letter-spacing: -.75px !important; }
 
-      body[data-build="v18bb"] #cpuHud {
+      body[data-build="v18be"][data-app="android"] #cpuHud {
         grid-column: 4 !important;
         color: #f8d44a !important;
         border-color: #f8d44a !important;
         font-weight: 900 !important;
         letter-spacing: -.55px !important;
-        font-size: clamp(6.7px,1vw,8.8px) !important;
+        font-size: clamp(6.8px,1vw,8.8px) !important;
         padding-left: 1px !important;
         padding-right: 1px !important;
       }
 
-      body[data-build="v18bb"] #bestHud { grid-column: 5 !important; letter-spacing: -.85px !important; }
+      body[data-build="v18be"][data-app="android"] #bestHud { grid-column: 5 !important; letter-spacing: -.85px !important; }
 
-      body[data-build="v18bb"] #turboHud {
+      body[data-build="v18be"][data-app="android"] #turboHud {
         grid-column: 6 !important;
-        gap: 2px !important;
+        gap: 3px !important;
         padding-left: 2px !important;
         padding-right: 2px !important;
+        justify-content: stretch !important;
       }
 
-      body[data-build="v18bb"] #turboHud .turboLabel { flex: 0 0 auto !important; margin-right: 2px !important; }
-      body[data-build="v18bb"] #turboHud .turboGauge { display: flex !important; flex: 1 1 auto !important; min-width: 0 !important; gap: 2px !important; overflow: hidden !important; }
-      body[data-build="v18bb"] #turboHud .turboCell { flex: 1 1 5px !important; width: auto !important; min-width: 3px !important; max-width: 7px !important; height: 10px !important; }
+      body[data-build="v18be"][data-app="android"] #turboHud .turboLabel {
+        flex: 0 0 auto !important;
+        margin-right: 3px !important;
+      }
 
-      body[data-build="v18bb"] #retireBtn {
+      body[data-build="v18be"][data-app="android"] #turboHud .turboGauge {
+        display: grid !important;
+        grid-template-columns: repeat(10, minmax(5px, 1fr)) !important;
+        flex: 1 1 auto !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        gap: 2px !important;
+        overflow: hidden !important;
+        align-items: center !important;
+      }
+
+      body[data-build="v18be"][data-app="android"] #turboHud .turboCell {
+        flex: none !important;
+        width: auto !important;
+        min-width: 5px !important;
+        max-width: none !important;
+        height: 11px !important;
+      }
+
+      body[data-build="v18be"][data-app="android"] #retireBtn {
         grid-column: 7 !important;
         width: auto !important;
         min-width: 50px !important;
@@ -4445,13 +4452,13 @@
         letter-spacing: -.9px !important;
       }
 
-      body[data-build="v18bb"] .canvasWrap { max-height: calc(100dvh - 76px) !important; }
+      body[data-build="v18be"][data-app="android"] .canvasWrap { max-height: calc(100dvh - 76px) !important; }
     }
 
   </style>
 </head>
-<body data-build="v18bb">
-  <div id="buildBadge">v18bb</div>
+<body data-build="v18be">
+  <div id="buildBadge">v18be</div>
   <div id="portraitMessage">スマホを横向きにして遊んでください</div>
 
   <main id="gameRoot" aria-label="Pocket Turbo Racer game">
@@ -4656,6 +4663,7 @@
 
     const URL_PARAMS = new URLSearchParams(location.search);
     const IS_ANDROID_APP = URL_PARAMS.get("app") === "android";
+    if (IS_ANDROID_APP) document.body.dataset.app = "android";
 
     // --- Game state ---------------------------------------------------------
     const GameState = {
@@ -6433,10 +6441,14 @@
       const wobble = Math.sin(time * 0.0017 + r.laneOffset * 18) * (r.car.cpuWobble || 0.1);
       const nearestProgress = nearestTrackProgress(r.x, r.y);
       const nearestIndex = waypointIndexForProgress(nearestProgress);
-      const line = cpuRacingLine(nearestProgress);
+
+      // v18be: CPU cars use a natural racing line, not a simple center line.
+      // They aim toward inside/apex lines, but car performance and exit stability keep them
+      // from cutting too far into grass, walls, or overly sharp angles.
+      const line = cpuRacingLine(nearestProgress, r);
       const curveStrength = line.strength;
       const lookAheadBase = 10 + Math.abs(r.speed) * 1.12;
-      const lookAhead = clamp(Math.floor(lookAheadBase - curveStrength * 7), 7, 21);
+      const lookAhead = clamp(Math.floor(lookAheadBase - curveStrength * 7 + line.exit * 2), 7, 22);
       const targetIndex = (nearestIndex + lookAhead) % cpWaypoints.length;
       const targetProgress = targetIndex / cpWaypoints.length;
       const avoidanceLane = cpuAvoidanceLane(r, nearestProgress);
@@ -6447,26 +6459,32 @@
         r.avoidBias = 0;
       }
 
-      // v18ax: in corners, prioritize the racing line/apex more strongly.
-      // Avoidance/overtake still works, but does not pull CPU cars wide as much.
-      const cornerLinePriority = clamp(1 - curveStrength * 0.36, 0.58, 1);
-      const baseLane = r.laneOffset * 0.035 + (r.laneBias || 0) * 0.020;
-      const desiredLineLane = clamp(baseLane + line.lane + wobble * 0.010, -0.46, 0.46);
-      r.cpuLineLane = lerp(r.cpuLineLane || 0, desiredLineLane, clamp((0.050 + curveStrength * 0.040) * scale, 0, 0.18));
-      const targetLane = clamp(r.cpuLineLane + avoidanceLane * cornerLinePriority + overtakeLane * cornerLinePriority + r.avoidBias * cornerLinePriority, -0.52, 0.52);
+      const cornerLinePriority = clamp(1 - curveStrength * 0.34, 0.60, 1);
+      const baseLane = r.laneOffset * 0.028 + (r.laneBias || 0) * 0.016;
+      const desiredLineLane = clamp(baseLane + line.lane + wobble * 0.008, -0.45, 0.45);
+      r.cpuLineLane = lerp(r.cpuLineLane || 0, desiredLineLane, clamp((0.055 + curveStrength * 0.045) * scale, 0, 0.20));
+      const targetLane = clamp(r.cpuLineLane + avoidanceLane * cornerLinePriority + overtakeLane * cornerLinePriority + r.avoidBias * cornerLinePriority, -0.50, 0.50);
       const target = roadCenterAt(targetProgress, targetLane);
       const targetAngle = angleToPoint(r, target);
       const upcomingTurn = angleDistance(tangentAngleAt(nearestProgress), tangentAngleAt(targetProgress));
-      const steerResponse = clamp((0.086 + curveStrength * 0.028) * scale, 0, 0.16);
-      r.angle = angleLerp(r.angle, targetAngle + wobble * 0.012, steerResponse);
+      const steerResponse = clamp((0.088 + curveStrength * 0.030 + line.apex * 0.010) * scale, 0, 0.17);
+      r.angle = angleLerp(r.angle, targetAngle + wobble * 0.010, steerResponse);
       r.moveAngle = angleLerp(r.moveAngle, r.angle, clamp((0.10 + (1 - r.car.grip) * 0.34) * scale, 0, 0.18));
 
       const turnAmount = angleDistance(r.moveAngle, targetAngle);
       const cornerScale = r.car.cpuCornerScale || 1;
-      const exitBoost = 1 + line.exit * 0.035;
-      const cornerSlowdown = clamp(1 - turnAmount * 0.14 * cornerScale - upcomingTurn * 0.24 * cornerScale - curveStrength * 0.08, 0.62, 1) * exitBoost;
+      const grip = r.car.grip ?? 0.9;
+      const turnAbility = r.car.turnSpeed ?? 0.05;
+      const naturalCornerAbility = clamp(0.96 + (grip - 0.90) * 0.70 + (turnAbility - 0.05) * 2.4, 0.90, 1.06);
+      const exitBoost = 1 + line.exit * 0.045;
+      const apexPenalty = line.apex * curveStrength * 0.020;
+      const cornerSlowdown = clamp(
+        1 - turnAmount * 0.14 * cornerScale - upcomingTurn * 0.24 * cornerScale - curveStrength * 0.075 - apexPenalty,
+        0.60,
+        1
+      ) * exitBoost * naturalCornerAbility;
       const desiredSpeed = r.car.maxSpeed * (r.car.cpuSpeed || 0.92) * cornerSlowdown * cpuBattlePace(r);
-      r.speed = lerp(r.speed, desiredSpeed, 0.062 * scale);
+      r.speed = lerp(r.speed, desiredSpeed, 0.064 * scale);
       r.x += Math.cos(r.moveAngle) * r.speed * scale;
       r.y += Math.sin(r.moveAngle) * r.speed * scale;
 
@@ -6482,7 +6500,7 @@
       recordCpuAngleStats(r, previousDebugAngle);
     }
 
-    function cpuRacingLine(progress) {
+    function cpuRacingLine(progress, racer = null) {
       const tuning = CPU_COURSE_LINE_TUNING[currentCourse().id] || { lineScale: 0.88 };
       const a0 = tangentAngleAt(progress);
       const aEntry = tangentAngleAt(wrapProgress(progress + 0.030));
@@ -6495,24 +6513,36 @@
       const turnDir = Math.sign(combinedTurn || midTurn || entryTurn || exitTurn);
       const strength = clamp(Math.max(Math.abs(entryTurn), Math.abs(midTurn), Math.abs(exitTurn) * 0.85), 0, 1.35);
       if (!turnDir || strength < 0.08) {
-        return { lane: 0, strength: 0, exit: 0 };
+        return { lane: 0, strength: 0, exit: 0, apex: 0 };
       }
 
+      // v18be: not just "take the center".
+      // Approach opens the line, apex moves inside, and exit opens again.
+      // Each CPU car's grip/turning/top-speed changes how aggressively it can cut the inside.
       const approach = clamp((Math.abs(exitTurn) - Math.abs(entryTurn) * 0.30) / 0.56, 0, 1);
       const apex = clamp((Math.abs(midTurn) + Math.abs(entryTurn) * 0.62) / 0.66, 0, 1);
       const exit = clamp((Math.abs(entryTurn) - Math.abs(exitTurn) * 0.48) / 0.56, 0, 1);
       const phaseTotal = approach + apex + exit || 1;
 
-      // v18ax: stronger inside apex. Approach/exit still open the line slightly,
-      // but apex now dominates so CPU cars look like they are clipping the inside.
-      const outsideWeight = (approach * 0.70 + exit * 0.42) / phaseTotal;
-      const insideWeight = (apex * 1.24) / phaseTotal;
-      const amount = clamp(0.16 + strength * 0.30, 0.14, 0.44) * tuning.lineScale;
-      const lane = turnDir * amount * (insideWeight - outsideWeight * 0.52);
+      const car = racer?.car || {};
+      const grip = car.grip ?? 0.90;
+      const turnSpeed = car.turnSpeed ?? 0.05;
+      const maxSpeed = car.maxSpeed ?? 5.2;
+      const gripFactor = clamp((grip - 0.84) / 0.14, 0, 1);
+      const turnFactor = clamp((turnSpeed - 0.04) / 0.035, 0, 1);
+      const speedRisk = clamp((maxSpeed - 5.2) / 1.2, 0, 1);
+      const naturalAbility = clamp(0.78 + gripFactor * 0.12 + turnFactor * 0.14 - speedRisk * strength * 0.08, 0.70, 1.08);
+
+      const outsideWeight = (approach * 0.78 + exit * 0.50) / phaseTotal;
+      const insideWeight = (apex * 1.30) / phaseTotal;
+      const amount = clamp(0.15 + strength * 0.31, 0.14, 0.43) * (tuning.lineScale || 0.88) * naturalAbility;
+      const lane = turnDir * amount * (insideWeight - outsideWeight * 0.56);
+
       return {
-        lane: clamp(lane, -0.43, 0.43),
+        lane: clamp(lane, -0.42, 0.42),
         strength,
-        exit
+        exit,
+        apex
       };
     }
 
