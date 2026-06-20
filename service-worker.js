@@ -1,4 +1,4 @@
-const CACHE_NAME = "pocket-turbo-racer-v18bf-fullscreen-challenge";
+const CACHE_NAME = "pocket-turbo-racer-v18bg-fullscreen-tune";
 const CORE_ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
 
 self["add" + "EventListener"]("install", event => {
