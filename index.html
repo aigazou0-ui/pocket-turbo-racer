@@ -4284,7 +4284,7 @@
     }
 
   
-    /* --- v18be: force Android compact CPU HUD and prevent wrapping. --- */
+    /* --- v18bf: force Android compact CPU HUD and prevent wrapping. --- */
     #cpuHud {
       white-space: nowrap !important;
       word-break: keep-all !important;
@@ -4326,20 +4326,223 @@
     }
 
   
-    /* v18be final HUD and CPU racing line review */
+    /* v18bf fullscreen challenge: Android app fills menu screens and keeps race HUD safe */
     #buildBadge { position: fixed !important; right: 4px !important; bottom: 2px !important; z-index: 99999 !important; font-size: 8px !important; line-height: 1 !important; color: rgba(255,255,255,.45) !important; pointer-events: none !important; user-select: none !important; }
 
+    body[data-build="v18bf"][data-app="android"] {
+      width: 100dvw !important;
+      height: 100dvh !important;
+      overflow: hidden !important;
+      background: #0c1017 !important;
+    }
+
+    body[data-build="v18bf"][data-app="android"] #gameRoot {
+      inset: 0 !important;
+      width: 100dvw !important;
+      height: 100dvh !important;
+      max-width: none !important;
+      max-height: none !important;
+      overflow: hidden !important;
+    }
+
     @media (orientation: landscape) {
-      body[data-build="v18be"][data-app="android"] #gameRoot:not(.is-menu) {
-        grid-template-rows: auto minmax(0, 1fr) auto !important;
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu {
+        grid-template-rows: 1fr !important;
+        gap: 0 !important;
+        padding: 0 !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .hud,
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .bottomBar {
+        display: none !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .playfield,
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .canvasWrap {
+        width: 100dvw !important;
+        height: 100dvh !important;
+        max-width: none !important;
+        max-height: none !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        aspect-ratio: auto !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .canvasWrap {
+        border-width: 0 !important;
+        box-shadow: none !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .screen {
+        inset: 0 !important;
+        padding: 0 !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .panel {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        min-height: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        overflow: hidden !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .titlePanel {
+        width: 100% !important;
+        height: 100% !important;
+        border-width: 0 !important;
+        padding: clamp(4px, 1.1vw, 10px) clamp(6px, 1.4vw, 14px) !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .titleLogoImage {
+        width: min(100%, clamp(610px, 77vw, 1240px)) !important;
+        max-width: 100% !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .titleGarage {
+        min-height: 0 !important;
+        gap: clamp(2px, .8vw, 8px) !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .titleCars {
+        min-height: clamp(64px, 17vh, 118px) !important;
+        gap: clamp(18px, 4vw, 42px) !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .titleCar,
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .titleCar.main {
+        width: clamp(42px, 6.8vw, 74px) !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu .titleBtn {
+        min-height: clamp(38px, 8vh, 58px) !important;
+        font-size: clamp(18px, 3.8vw, 30px) !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garagePanel {
+        display: grid !important;
+        grid-template-rows: auto minmax(0, 1fr) auto 42px !important;
+        gap: 7px !important;
+        padding: 7px 8px 6px !important;
+        align-content: stretch !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageHeader {
+        min-height: 26px !important;
+        margin: 0 !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageHeader h2 {
+        font-size: clamp(16px, 3.2vw, 24px) !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageGrid {
+        grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageCard {
+        padding: 18px 5px 6px !important;
+        min-height: 0 !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageSprite,
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageSprite.is-f1 {
+        width: clamp(88px, 13vw, 128px) !important;
+        height: clamp(50px, 7.6vw, 72px) !important;
+        margin-bottom: 3px !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageName {
+        font-size: clamp(10px, 1.7vw, 13px) !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageMeta,
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .statLine {
+        font-size: clamp(8px, 1.35vw, 10.5px) !important;
+        line-height: 1.12 !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageTools {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+        margin-top: 0 !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .settingBox {
+        padding: 5px 6px !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .settingLabel {
+        font-size: 8.5px !important;
+        margin-bottom: 3px !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .segBtn {
+        min-height: 25px !important;
+        font-size: 10.5px !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageActions,
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #courseScreen .courseActions,
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #preRaceScreen .garageActions {
+        align-self: end !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        margin: 0 !important;
+        display: grid !important;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, .85fr) !important;
+        gap: 6px !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #garageScreen .garageActions .menuBtn,
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #courseScreen .courseActions .menuBtn,
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #preRaceScreen .garageActions .menuBtn {
+        width: 100% !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        padding: 4px 8px !important;
+        font-size: clamp(15px, 3vw, 22px) !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #courseScreen .coursePanel,
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #preRaceScreen .setupPanel {
+        display: grid !important;
+        grid-template-rows: auto minmax(0, 1fr) 42px !important;
+        gap: 7px !important;
+        padding: 7px 8px 6px !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #courseScreen .courseGrid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        margin-top: 0 !important;
+        min-height: 0 !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot.is-menu #preRaceScreen .setupGrid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        grid-template-rows: minmax(64px, 1fr) minmax(50px, .75fr) !important;
+        gap: 6px !important;
+        margin-top: 0 !important;
+        min-height: 0 !important;
+      }
+
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) {
+        grid-template-rows: 28px minmax(0, 1fr) auto !important;
         gap: 3px !important;
         padding-top: max(3px, env(safe-area-inset-top)) !important;
         padding-left: max(3px, env(safe-area-inset-left)) !important;
         padding-right: max(14px, env(safe-area-inset-right)) !important;
+        padding-bottom: max(3px, env(safe-area-inset-bottom)) !important;
         overflow: hidden !important;
       }
 
-      body[data-build="v18be"][data-app="android"] .hud {
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) .hud {
         display: grid !important;
         width: calc(100% - 14px) !important;
         max-width: calc(100% - 14px) !important;
@@ -4358,7 +4561,6 @@
           minmax(50px,56px) !important;
         grid-template-rows: 28px !important;
         grid-auto-rows: 28px !important;
-        grid-auto-flow: column !important;
         align-items: stretch !important;
         gap: 2px !important;
         font-size: clamp(6.8px,1.04vw,9.4px) !important;
@@ -4366,8 +4568,8 @@
         overflow: hidden !important;
       }
 
-      body[data-build="v18be"][data-app="android"] .hudItem,
-      body[data-build="v18be"][data-app="android"] .hudButton {
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) .hudItem,
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) .hudButton {
         min-width: 0 !important;
         min-height: 0 !important;
         height: 28px !important;
@@ -4384,19 +4586,19 @@
         justify-content: center !important;
       }
 
-      body[data-build="v18be"][data-app="android"] #lapHud,
-      body[data-build="v18be"][data-app="android"] #timeHud,
-      body[data-build="v18be"][data-app="android"] #rankHud,
-      body[data-build="v18be"][data-app="android"] #cpuHud,
-      body[data-build="v18be"][data-app="android"] #bestHud,
-      body[data-build="v18be"][data-app="android"] #turboHud,
-      body[data-build="v18be"][data-app="android"] #retireBtn { grid-row: 1 !important; }
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #lapHud,
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #timeHud,
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #rankHud,
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #cpuHud,
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #bestHud,
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #turboHud,
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #retireBtn { grid-row: 1 !important; }
 
-      body[data-build="v18be"][data-app="android"] #lapHud { grid-column: 1 !important; letter-spacing: -.6px !important; }
-      body[data-build="v18be"][data-app="android"] #timeHud { grid-column: 2 !important; letter-spacing: -.75px !important; }
-      body[data-build="v18be"][data-app="android"] #rankHud { grid-column: 3 !important; letter-spacing: -.75px !important; }
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #lapHud { grid-column: 1 !important; letter-spacing: -.6px !important; }
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #timeHud { grid-column: 2 !important; letter-spacing: -.75px !important; }
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #rankHud { grid-column: 3 !important; letter-spacing: -.75px !important; }
 
-      body[data-build="v18be"][data-app="android"] #cpuHud {
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #cpuHud {
         grid-column: 4 !important;
         color: #f8d44a !important;
         border-color: #f8d44a !important;
@@ -4407,9 +4609,9 @@
         padding-right: 1px !important;
       }
 
-      body[data-build="v18be"][data-app="android"] #bestHud { grid-column: 5 !important; letter-spacing: -.85px !important; }
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #bestHud { grid-column: 5 !important; letter-spacing: -.85px !important; }
 
-      body[data-build="v18be"][data-app="android"] #turboHud {
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #turboHud {
         grid-column: 6 !important;
         gap: 3px !important;
         padding-left: 2px !important;
@@ -4417,12 +4619,12 @@
         justify-content: stretch !important;
       }
 
-      body[data-build="v18be"][data-app="android"] #turboHud .turboLabel {
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #turboHud .turboLabel {
         flex: 0 0 auto !important;
         margin-right: 3px !important;
       }
 
-      body[data-build="v18be"][data-app="android"] #turboHud .turboGauge {
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #turboHud .turboGauge {
         display: grid !important;
         grid-template-columns: repeat(10, minmax(5px, 1fr)) !important;
         flex: 1 1 auto !important;
@@ -4433,7 +4635,7 @@
         align-items: center !important;
       }
 
-      body[data-build="v18be"][data-app="android"] #turboHud .turboCell {
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #turboHud .turboCell {
         flex: none !important;
         width: auto !important;
         min-width: 5px !important;
@@ -4441,7 +4643,7 @@
         height: 11px !important;
       }
 
-      body[data-build="v18be"][data-app="android"] #retireBtn {
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) #retireBtn {
         grid-column: 7 !important;
         width: auto !important;
         min-width: 50px !important;
@@ -4452,13 +4654,20 @@
         letter-spacing: -.9px !important;
       }
 
-      body[data-build="v18be"][data-app="android"] .canvasWrap { max-height: calc(100dvh - 76px) !important; }
+      body[data-build="v18bf"][data-app="android"] #gameRoot:not(.is-menu) .canvasWrap {
+        width: 100% !important;
+        height: calc(100dvh - 70px) !important;
+        max-width: none !important;
+        max-height: none !important;
+        min-height: 0 !important;
+        aspect-ratio: auto !important;
+      }
     }
 
   </style>
 </head>
-<body data-build="v18be">
-  <div id="buildBadge">v18be</div>
+<body data-build="v18bf">
+  <div id="buildBadge">v18bf</div>
   <div id="portraitMessage">スマホを横向きにして遊んでください</div>
 
   <main id="gameRoot" aria-label="Pocket Turbo Racer game">
@@ -6442,7 +6651,7 @@
       const nearestProgress = nearestTrackProgress(r.x, r.y);
       const nearestIndex = waypointIndexForProgress(nearestProgress);
 
-      // v18be: CPU cars use a natural racing line, not a simple center line.
+      // v18bf: CPU cars use a natural racing line, not a simple center line.
       // They aim toward inside/apex lines, but car performance and exit stability keep them
       // from cutting too far into grass, walls, or overly sharp angles.
       const line = cpuRacingLine(nearestProgress, r);
@@ -6516,7 +6725,7 @@
         return { lane: 0, strength: 0, exit: 0, apex: 0 };
       }
 
-      // v18be: not just "take the center".
+      // v18bf: not just "take the center".
       // Approach opens the line, apex moves inside, and exit opens again.
       // Each CPU car's grip/turning/top-speed changes how aggressively it can cut the inside.
       const approach = clamp((Math.abs(exitTurn) - Math.abs(entryTurn) * 0.30) / 0.56, 0, 1);
